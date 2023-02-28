@@ -8,6 +8,18 @@ English | link:docs/README-ja.adoc[日本語]
 Better Styles is a GUI for managing styles that has a UI similar to Extra networks' gallery. While the original Styles feature can only save prompts and negative prompts, Better Styles can save parameters such as "Sampling method" and "CFG Scale" as styles. Additionally, by setting a thumbnail for each style like in Extra networks' UI, you can handle styles intuitively.
 image:docs/images/overview.png[Image - Better Styles UI]
 
+== Installation
+=== Installing from the Browser (Recommended)
+You can install it from the Install from URL in the Extensions tab. Just enter https://github.com/eideehi/sd-webui-better-styles.git in the "URL for extension's git repository" field and press the "Install" button.
+image:docs/images/install.png[Image - Install]
+
+=== Installing using Git
+You can also install it by running the following command in the directory where you installed Stable Diffusion web UI:
+[source,shell]
+----
+git clone https://github.com/eideehi/sd-webui-better-styles.git extensions/sd-webui-better-styles
+----
+
 == Usage
 === Displaying Better Styles content
 When you install Better Styles, a new button (an emoji of a label 🏷) will be added under the "Generate" button in the txt2img and img2img tabs. Clicking this button will display the content of Better Styles.

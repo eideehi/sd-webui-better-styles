@@ -8,6 +8,18 @@ link:../README.adoc[English] | 日本語
 Better Stylesは Extra networks のギャラリーに似たUIをもつスタイル管理用GUIです。オリジナルのStyles機能ではプロンプトとネガティブプロンプトしか保存できませんが、Better StylesはサンプリングメソッドやCFGスケールなどのパラメータもスタイルとして保存することができます。さらに、Extra networks のUIと同じように、スタイルに対してサムネイルを設定することで、直感的にスタイルを扱うことができます。
 image:images/overview.png[Image - Better Styles UI]
 
+== インストール
+=== ブラウザからインストール (推奨)
+Extensions タブの Install from URL からインストールすることができます。"URL for extension's git repository" の項目に https://github.com/eideehi/sd-webui-better-styles.git を入力して「Install」ボタンを押すだけです。
+image:images/install.png[Image - Install]
+
+=== Gitを使用してインストール
+Stable Diffusion web UIをインストールしたディレクトリで以下のコマンドを実行してもインストールすることが可能です。
+[source,shell]
+----
+git clone https://github.com/eideehi/sd-webui-better-styles.git extensions/sd-webui-better-styles
+----
+
 == 使用方法
 === Better Stylesコンテンツの表示
 Better Stylesをインストールすると、txt2img と img2img のタブにある「Generate」ボタンの下に新しいボタン（ラベルの絵文字のボタン 🏷）が追加されます。このボタンをクリックするとBetter Stylesのコンテンツが表示されます。
