@@ -1,41 +1,50 @@
 name: Bug Report
 description: File a bug report
 title: "[BUG]: "
-labels: ["bug"]
+labels: [bug]
 body:
   - type: markdown
     attributes:
       value: |
-      ## Introduction
-      Please write your bug report in English. If you are not comfortable with English, we recommend using translation tools like Google Translate, DeepL, ChatGPT, etc.
+        ## Introduction
+        Please write your bug report in English. If you are not comfortable with English, we recommend using translation tools like Google Translate, DeepL, ChatGPT, etc.
 
   - type: markdown
     attributes:
       value: "## Forms"
 
-  - type: checkbox
-    id: no_duplicate
+  - type: checkboxes
+    id: searched-existing-issues
     attributes:
-      label: "I confirm that this bug report does not already exist in Issues."
+      label: Is there an existing issue for this?
+      description: Search and verify that there is no existing Issue for the bug that has occurred.
+      options:
+        - label: I have searched the existing issues
+          required: true
 
   - type: textarea
     id: bug_details
     attributes:
-      label: "Bug Description"
-      description: "Please provide a detailed description of the bug you encountered. Avoid overly simple inputs unless it is a simple bug."
+      label: Bug Description
+      description: Please provide a detailed description of the bug you encountered. Avoid overly simple inputs unless it is a simple bug.
+    validations:
+      required: true
 
   - type: textarea
     id: reproduction_steps
     attributes:
-      label: "Steps to Reproduce"
-      description: "Please provide detailed steps to reproduce the bug you encountered."
+      label: Steps to Reproduce
+      description: Please provide detailed steps to reproduce the bug you encountered.
+    validations:
+      required: true
 
   - type: textarea
     id: screenshot
     attributes:
-      label: "Screenshot (optional)"
-      description: "You can optionally screenshots can be attached. See "[Attaching files - GitHub](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/attaching-files)" for more information about attachable files."
+      label: Screenshot (optional)
+      description: |
+        You can optionally screenshots can be attached. See "[Attaching files - GitHub](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/attaching-files)" for more information about attachable files.
 
   - type: markdown
     attributes:
-      value: "Thank you for your help in improving Better Styles!"
+      value: Thank you for your help in improving Better Styles!

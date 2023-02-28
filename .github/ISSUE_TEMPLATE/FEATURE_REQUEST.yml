@@ -1,41 +1,50 @@
 name: Feature Request
 description: Suggest an idea or enhancement for the project.
 title: "[FEATURE]: "
-labels: ["enhancement"]
+labels: [enhancement]
 body:
   - type: markdown
     attributes:
       value: |
-      ## Introduction
-      Please write your bug report in English. If you are not comfortable with English, we recommend using translation tools like Google Translate, DeepL, ChatGPT, etc.
+        ## Introduction
+        Please write your bug report in English. If you are not comfortable with English, we recommend using translation tools like Google Translate, DeepL, ChatGPT, etc.
 
   - type: markdown
     attributes:
       value: "## Forms"
 
-  - type: checkbox
-    id: no_duplicate
+  - type: checkboxes
+    id: searched-existing-issues
     attributes:
-      label: "I have verified that the same request does not exist in Issues."
+      label: Is there an existing issue for this?
+      description: Search and confirm that there is no issue with the same or similar content as this request.
+      options:
+        - label: I have searched the existing issues
+          required: true
 
   - type: textarea
     id: feature_needed
     attributes:
-      label: "What feature is needed?"
-      description: "Please describe the feature you would like to see added to the project."
+      label: What feature is needed?
+      description: Please describe the feature you would like to see added to the project.
+    validations:
+      required: true
 
   - type: textarea
     id: feature_use
     attributes:
-      label: "Why is the feature needed and how it will be used?"
-      description: "Please describe why the feature is needed and how it will be used."
+      label: Why is the feature needed and how it will be used?
+      description: Please describe why the feature is needed and how it will be used.
+    validations:
+      required: true
 
   - type: textarea
     id: screenshot
     attributes:
-      label: "Screenshot (optional)"
-      description: "You can optionally screenshots can be attached. See "[Attaching files - GitHub](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/attaching-files)" for more information about attachable files."
+      label: Screenshot (optional)
+      description: |
+        You can optionally screenshots can be attached. See "[Attaching files - GitHub](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/attaching-files)" for more information about attachable files.
 
   - type: markdown
     attributes:
-      value: "Thank you for your help in improving Better Styles!"
+      value: Thank you for your help in improving Better Styles!
