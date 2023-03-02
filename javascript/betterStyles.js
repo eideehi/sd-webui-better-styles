@@ -1109,7 +1109,7 @@ function createCardComponent(style) {
   card.appendChild(labelContainer);
 
   const replacePreview = document.createElement("a");
-  replacePreview.classList.add("mt-1", "mb-3", "ml-1", "!hidden", "hover:text-red");
+  replacePreview.classList.add("mt-1", "mb-3", "ml-1", "!hidden", "hover:text-red", "text-sm");
   replacePreview.href = "#";
   replacePreview.text = _("replace thumbnail");
   replacePreview.addEventListener("click", (event) => {
