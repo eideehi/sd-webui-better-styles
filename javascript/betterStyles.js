@@ -954,6 +954,9 @@ function createGroupButton(group) {
   button.textContent = _(group);
   button.classList.add("gr-box-sm", "gr-button-lg", "m-[0.3rem]");
   button.dataset.group = group;
+  if (group === currentGroup) {
+    button.disabled = true;
+  }
   button.addEventListener("click", (event) => {
     currentGroup = group;
 
