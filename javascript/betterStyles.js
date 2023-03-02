@@ -1,41 +1,7 @@
 //@ts-check
+/// <reference path="global.d.ts" />
+/// <reference path="types.d.ts" />
 (() => {
-/**
- * @typedef {{
- *   name: string,
- *   image?: string,
- *   checkpoint?: string,
- *   prompt?: string,
- *   negativePrompt?: string,
- *   samplingMethod?: string,
- *   cfgScale?: number
- * }} Style
- */
-/**
- * @typedef {{
- *   name: string,
- *   styles: Style[]
- * }} StyleGroup
- */
-/**
- * @typedef {"txt2img" | "img2img"} StylesAvailableTab
- */
-/**
- * @typedef {StylesAvailableTab | "other"} Tab
- */
-/**
- * @template T
- * @typedef {{ get: () => T }} ValueGetter
- */
-/**
- * @template T
- * @typedef {{ set: (value: T) => void }} ValueSetter
- */
-/**
- * @template T
- * @typedef {ValueGetter<T> & ValueSetter<T>} ValueAccessor
- */
-
 /**
  * A regular expression to match a trailing comma followed by optional whitespace.
  * @type {RegExp}
@@ -87,22 +53,12 @@ let updateTimestamp = "";
 let currentGroup = "default";
 
 /**
- * @returns {Document | ShadowRoot}
- */
-const getApp = () => {
-  /** @type {() => Document | ShadowRoot} */
-  const gradioApp = window["gradioApp"] || (() => document);
-  return gradioApp();
-};
-
-/**
  * Gets the value of the specified option and applies the provided callback function to it if it exists.
  * @param {string} optionName - The name of the option to retrieve from the opts object.
  * @param {function} callback - The function to apply to the retrieved value, if it exists.
  */
 const withOption = (optionName, callback) => {
-  const options = window["opts"] || {};
-  const value = options[optionName];
+  const value = opts[optionName];
   if (value) {
     callback(value);
   }
@@ -114,7 +70,7 @@ const withOption = (optionName, callback) => {
  * @returns {HTMLElement | null} - The matched element, or null if no matches were found.
  */
 const getElement = (selector) => {
-  return getApp().querySelector(selector);
+  return gradioApp().querySelector(selector);
 }
 
 /**
@@ -123,7 +79,7 @@ const getElement = (selector) => {
  * @returns {HTMLElement[]} - The array-like object of matched elements.
  */
 const getElementAll = (selector) => {
-  return Array.from(getApp().querySelectorAll(selector));
+  return Array.from(gradioApp().querySelectorAll(selector));
 }
 
 /**
@@ -163,11 +119,10 @@ const removeAllChild = (parentElement) => {
 
 /**
  * Returns the name of the currently active tab.
- * @returns {Tab}
+ * @returns {WebUiTab}
  */
 function getCurrentTabName() {
-  const getUiCurrentTab = window["get_uiCurrentTab"] || (() => null);
-  const tab = getUiCurrentTab();
+  const tab = get_uiCurrentTab();
   if (tab && tab.textContent) {
     switch (tab.textContent.trim()) {
       case _("txt2img"):
@@ -186,8 +141,6 @@ function getCurrentTabName() {
  * @returns {string} The translated string, if available, or the original text if not.
  */
 function _(text, ...args) {
-  /** @type {(text: string) => string | undefined} */
-  const getTranslation = window["getTranslation"] || ((text) => undefined);
   const translation = getTranslation(text) || text;
   return args ? formatText(translation, ...args) : translation;
 }
@@ -212,11 +165,6 @@ function getSelectedImagePath() {
  */
 const dispatchEvent = (element, type) => {
   if (type === "input") {
-    /** @type {(element: HTMLElement) => void} */
-    const updateInput = (element) => {
-      const func = window["updateInput"] || ((element) => void(0));
-      func(element);
-    };
     updateInput(element);
   } else if (type === "change") {
     const event = new Event(type);
@@ -527,7 +475,7 @@ function getOrCreateModal() {
       betterStylesModal?.classList.add("!hidden");
     }
   });
-  getApp().appendChild(betterStylesModal);
+  gradioApp().appendChild(betterStylesModal);
 
   // Switch the modal theme to match the app.
   applyClasses(betterStylesModal, !!getElement(".gradio-container.dark"), "dark");
@@ -582,7 +530,7 @@ function getOrCreateToast() {
     closeToast();
   });
 
-  getApp().appendChild(betterStylesToast);
+  gradioApp().appendChild(betterStylesToast);
   return betterStylesToast;
 }
 
@@ -591,7 +539,7 @@ function getOrCreateToast() {
  */
 function closeToast() {
   if (betterStylesToast) {
-    getApp().removeChild(betterStylesToast);
+    gradioApp().removeChild(betterStylesToast);
     betterStylesToast = null;
   }
 }
@@ -1278,7 +1226,6 @@ onUiLoaded(async () => {
   fetchLocalization = fetch(`/better-style-api/v1/get-localization?ts=${timestamp}`)
     .then((response) => response.json())
     .then((json) => {
-      const localization = window["localization"] || {};
       Object.assign(localization, json);
       return Promise.resolve();
     });
