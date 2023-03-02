@@ -469,7 +469,7 @@ function getOrCreateModal() {
   betterStylesModal = document.createElement("div");
   betterStylesModal.id = "better-styles-modal";
   betterStylesModal.classList.add("better-styles", "fixed", "w-full", "h-full", "inset-0", "bg-black/50", "flex", "items-center", "justify-center", "!hidden", "z-1000");
-  betterStylesModal.addEventListener("click", (event) => {
+  betterStylesModal.addEventListener("mousedown", (event) => {
     if (event.target === betterStylesModal) {
       event.preventDefault();
       betterStylesModal?.classList.add("!hidden");
