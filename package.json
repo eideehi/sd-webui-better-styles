@@ -1,0 +1,38 @@
+{
+  "private": true,
+  "name": "sd-webui-better-styles",
+  "version": "1.1.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "prepare": "husky install",
+    "build:js": "vite build",
+    "build:css": "postcss ./client-src/styles/main.css -o ./javascript/style.css --env production",
+    "build": "pnpm run build:js && pnpm run build:css",
+    "build:watch:js": "vite build --watch",
+    "build:watch:css": "postcss ./client-src/styles/main.css -o ./style.css --watch",
+    "lint": "prettier --plugin-search-dir . --check ./client-src && eslint ./client-src",
+    "format": "prettier --plugin-search-dir . --write ./client-src"
+  },
+  "keywords": [],
+  "author": "EideeHi",
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
+    "autoprefixer": "^10.4.13",
+    "cssnano": "^5.1.15",
+    "eslint": "^8.35.0",
+    "eslint-config-prettier": "^8.6.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.2",
+    "postcss": "^8.4.21",
+    "postcss-cli": "^10.1.0",
+    "prettier": "^2.8.4",
+    "prettier-plugin-tailwindcss": "^0.2.4",
+    "tailwindcss": "^3.2.7",
+    "typescript": "^4.9.5",
+    "vite": "^4.1.4"
+  }
+}
