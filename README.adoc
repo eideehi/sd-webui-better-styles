@@ -40,17 +40,14 @@ Enter the prompt you want to save as a style. The default value is the value cur
 Negative prompt::
 Enter the negative prompt you want to save as a style. The default value is the value currently entered in the negative prompt area. You can leave this field blank if you don't want to include a negative prompt for the style.
 
+Save these parameters as style::
+Save the parameters that have been checked as a style.
+
 Make this style exclusive to the current checkpoint::
 Choose whether to make this style exclusive to the currently loaded model. If you make it an exclusive style, it will not be displayed in the list if another model is loaded.
 
 Use the current image as a thumbnail::
 Choose whether to use the currently selected image as the thumbnail for this style. This item will be disabled if no image is selected.
-
-Include the 'Sampling method' as a style::
-Choose whether to save the sampling method as a style.
-
-Include the 'CFG Scale' as a style::
-Choose whether to save the CFG scale as a style.
 
 === Applying styles
 You can apply a style by selecting it from the list of styles and clicking the "Apply style" button. You can select multiple styles, but you cannot select styles from different groups at the same time.
