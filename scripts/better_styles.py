@@ -19,7 +19,18 @@ class Style:
   prompt: Optional[str] = field(default = None)
   negativePrompt: Optional[str] = field(default = None)
   samplingMethod: Optional[str] = field(default = None)
+  samplingSteps: Optional[int] = field(default = None)
   cfgScale: Optional[float] = field(default = None)
+  seed: Optional[int] = field(default = None)
+  restoreFaces: Optional[bool] = field(default = None)
+  tiling: Optional[bool] = field(default = None)
+  hiresFix: Optional[bool] = field(default = None)
+  upscaler: Optional[str] = field(default = None)
+  hiresSteps: Optional[int] = field(default = None)
+  denoisingStrength: Optional[float] = field(default = None)
+  upscaleBy: Optional[float] = field(default = None)
+  clipSkip: Optional[int] = field(default = None)
+  etaNoiseSeedDelta: Optional[int] = field(default = None)
 
 @dataclass
 class StyleGroup:

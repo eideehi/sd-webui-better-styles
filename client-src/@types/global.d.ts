@@ -11,5 +11,6 @@ declare function onUiTabChange(callback: () => void): void;
 declare function getTranslation(text: string): string | undefined;
 
 // javascript/ui.js
-declare let opts: Record<string, string | number | boolean>;
+declare type OptionValue = string | number | boolean;
+declare let opts: Record<string, OptionValue>;
 declare function updateInput(target: HTMLElement): void;

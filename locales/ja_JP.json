@@ -16,7 +16,7 @@
   "Group": "グループ",
   "Make this style exclusive to the current checkpoint": "このスタイルを現在のモデル専用にする",
   "Use the current image as a thumbnail": "現在選択されている画像をサムネイルにする",
-  "Include the \"{}\" as a style": "\"{}\" をスタイルに含める",
+  "Save these parameters as style": "これらのパラメーターをスタイルに含める",
   "Save with this content": "この内容で保存する",
   "Close without saving": "保存しないで閉じる",
   "replace thumbnail": "サムネイルを変更する",

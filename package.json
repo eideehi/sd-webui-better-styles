@@ -8,7 +8,7 @@
   "scripts": {
     "prepare": "husky install",
     "build:js": "vite build",
-    "build:css": "postcss ./client-src/styles/main.css -o ./javascript/style.css --env production",
+    "build:css": "postcss ./client-src/styles/main.css -o ./style.css --env production",
     "build": "pnpm run build:js && pnpm run build:css",
     "build:watch:js": "vite build --watch",
     "build:watch:css": "postcss ./client-src/styles/main.css -o ./style.css --watch",
