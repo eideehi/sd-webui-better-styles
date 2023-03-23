@@ -2,7 +2,7 @@ import { _, getElementAll } from "./utils";
 import { currentGroup, styleGroups } from "./variables";
 import { closeModal, showModal } from "./modal";
 import { showToast } from "./toast";
-import { onRecieveStyleGroup } from "./betterStyles";
+import { onReceiveStyleGroup } from "./betterStyles";
 import { deleteStyles } from "./webui";
 
 export function showStylesDeleteDialog(tabName: StylesAvailableTab) {
@@ -49,7 +49,7 @@ export function showStylesDeleteDialog(tabName: StylesAvailableTab) {
       (json) => {
         closeModal(frame);
         styleGroups.set(json);
-        onRecieveStyleGroup();
+        onReceiveStyleGroup();
         showToast(_("Styles deleted"), "success");
       }
     );

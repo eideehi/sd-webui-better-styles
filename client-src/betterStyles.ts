@@ -15,7 +15,7 @@ import { showStyleSaveDialog } from "./styleSaveDialog";
 import { showStylesDeleteDialog } from "./stylesDeleteDialog";
 import { showStyleDetailDialog } from "./styleDetailDialog";
 
-export function onRecieveStyleGroup() {
+export function onReceiveStyleGroup() {
   const tabName = getCurrentTabName();
   if (tabName !== "other") {
     updateTimestamp.set(`?ts=${new Date().getTime()}`);
@@ -410,7 +410,7 @@ function createCardComponent(style: Style) {
       },
       (data) => {
         styleGroups.set(data);
-        onRecieveStyleGroup();
+        onReceiveStyleGroup();
       }
     );
   });

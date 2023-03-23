@@ -3,7 +3,7 @@ import { getCurrentTabName, registerStyle } from "./webui";
 import { currentGroup, styleGroups } from "./variables";
 import { closeModal, showModal } from "./modal";
 import { showToast } from "./toast";
-import { onRecieveStyleGroup } from "./betterStyles";
+import { onReceiveStyleGroup } from "./betterStyles";
 import {
   cfgScale,
   checkpoint,
@@ -219,7 +219,7 @@ export function showStyleSaveDialog() {
       (data) => {
         closeModal(frame);
         styleGroups.set(data);
-        onRecieveStyleGroup();
+        onReceiveStyleGroup();
         showToast(_("Style registered"), "success");
       }
     );

@@ -45,7 +45,7 @@ onUiTabChange(() => {
  * @param tabName Name of the tab on which Better Styles will be initialized.
  */
 function initializeBetterStyles(tabName: StylesAvailableTab) {
-  hiddenOrigianlStylesComponents(tabName);
+  hiddenOriginalStylesComponents(tabName);
 
   Promise.all([fetchLocalization]).then(() => {
     createBetterStylesComponents(tabName);
@@ -60,7 +60,7 @@ function initializeBetterStyles(tabName: StylesAvailableTab) {
  * Hides original style components in the specified tab.
  * @param tabName - The name of the tab to hide original style components from.
  */
-function hiddenOrigianlStylesComponents(tabName: StylesAvailableTab) {
+function hiddenOriginalStylesComponents(tabName: StylesAvailableTab) {
   withBooleanOption("better_styles_hide_original_styles", (value) => {
     if (value) {
       hidden(getElement(`#${tabName}_style_apply`), true);
