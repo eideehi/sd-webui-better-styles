@@ -1,42 +1,5 @@
-.better-styles.modal {
-  z-index: 1000;
-}
-
-.better-styles.toast {
-  position: fixed;
-  bottom: -10rem;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 1rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: bold;
-  color: #fff;
-  opacity: 0;
-  transition-property: opacity, bottom, background-color;
-  transition-duration: 0.3s;
-  transition-timing-function: ease-in-out;
-  z-index: 1100;
-}
-.better-styles.toast.show {
-  opacity: 1;
-  bottom: 1.5rem;
-}
-.better-styles.toast.fade-out {
-  opacity: 0;
-  bottom: 1.5rem;
-}
-.better-styles.toast.toast-info {
-  background-color: #0064b2;
-}
-.better-styles.toast.toast-success {
-  background-color: #00ce8d;
-}
-.better-styles.toast.toast-warning {
-  background-color: #ce6400;
-}
-.better-styles.toast.toast-error {
-  background-color: #ce0027;
-}
+@import "modal.css";
+@import "toast.css";
 
 .better-styles .h-12 {
   height: 3rem;

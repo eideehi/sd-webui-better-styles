@@ -1,3 +1,4 @@
+import "./styles/main.css";
 import { _, getElement, hidden, withBooleanOption } from "./utils";
 import { getCurrentTabName } from "./webui";
 import { imagesDir, styleGroups } from "./variables";

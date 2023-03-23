@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   build: {
-    outDir: resolve(__dirname, "javascript"),
+    outDir: resolve(__dirname, "dist"),
     lib: {
       entry: resolve(__dirname, "client-src/index.ts"),
       name: "BetterStyles",
