@@ -429,6 +429,7 @@ function createCardComponent(style: Style) {
     replacePreview.classList.add("!hidden");
   });
   card.addEventListener("click", () => {
+    showBoxShadow(!card.classList.contains("selected"));
     toggleClasses(
       card,
       "selected",
@@ -437,7 +438,6 @@ function createCardComponent(style: Style) {
       "outline-offset-2",
       "outline-[#ff7c00]"
     );
-    showBoxShadow(!card.classList.contains("selected"));
   });
 
   return card;
