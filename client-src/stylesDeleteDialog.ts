@@ -35,7 +35,7 @@ export function showStylesDeleteDialog(tabName: StylesAvailableTab) {
   const submit = document.createElement("button");
   submit.classList.add("gr-button", "gr-button-lg", "gr-button-primary");
   submit.textContent = _("Execute the deletion");
-  submit.addEventListener("click", (event) => {
+  submit.addEventListener("click", () => {
     const selectedStyleCards = getElementAll(`#better-styles-${tabName}-style-container .selected`);
     deleteStyles(
       {
@@ -59,7 +59,7 @@ export function showStylesDeleteDialog(tabName: StylesAvailableTab) {
   const cancel = document.createElement("button");
   cancel.classList.add("gr-button", "gr-button-lg");
   cancel.textContent = _("Close without deleting");
-  cancel.addEventListener("click", (event) => {
+  cancel.addEventListener("click", () => {
     closeModal(frame);
   });
   buttons.appendChild(cancel);

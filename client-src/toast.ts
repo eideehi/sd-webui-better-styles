@@ -14,7 +14,7 @@ function getOrCreateToast(): HTMLElement {
 
   betterStylesToast = document.createElement("div");
   betterStylesToast.classList.add("better-styles", "toast");
-  betterStylesToast.addEventListener("click", (event) => {
+  betterStylesToast.addEventListener("click", () => {
     closeToast();
   });
 

@@ -143,7 +143,7 @@ function createToolsComponent(tabName: StylesAvailableTab) {
   applyButton.id = `better-styles-${tabName}-apply`;
   applyButton.classList.add("gr-button", "gr-button-lg", "gr-button-secondary", "m-[0.3rem]");
   applyButton.textContent = _("Apply style");
-  applyButton.addEventListener("click", (event) => {
+  applyButton.addEventListener("click", () => {
     const selectedStyles = [
       ...getElementAll(`#better-styles-${tabName}-style-container .selected`),
     ];
@@ -174,7 +174,7 @@ function createToolsComponent(tabName: StylesAvailableTab) {
   saveButton.id = `better-styles-${tabName}-save`;
   saveButton.classList.add("gr-button", "gr-button-lg", "gr-button-secondary", "m-[0.3rem]");
   saveButton.textContent = _("Save style");
-  saveButton.addEventListener("click", (event) => {
+  saveButton.addEventListener("click", () => {
     showStyleSaveDialog();
   });
   applyButton.after(saveButton);
@@ -183,7 +183,7 @@ function createToolsComponent(tabName: StylesAvailableTab) {
   deleteButton.id = `better-styles-${tabName}-delete`;
   deleteButton.classList.add("gr-button", "gr-button-lg", "gr-button-secondary", "m-[0.3rem]");
   deleteButton.textContent = _("Delete style");
-  deleteButton.addEventListener("click", (event) => {
+  deleteButton.addEventListener("click", () => {
     const selectedStyles = [
       ...getElementAll(`#better-styles-${tabName}-style-container .selected`),
     ];
@@ -215,7 +215,7 @@ function createGroupButton(group: string): HTMLButtonElement {
   if (group === currentGroup.get()) {
     button.disabled = true;
   }
-  button.addEventListener("click", (event) => {
+  button.addEventListener("click", () => {
     currentGroup.set(group);
 
     const activeTab = getCurrentTabName();
@@ -244,7 +244,7 @@ function createStyleEmptyContent(): HTMLDivElement {
   const emptyMessage = document.createElement("p");
   emptyMessage.classList.add("text-2xl", "dark:text-white");
   emptyMessage.textContent = _(
-    `Style not yet registered. \"Save style\" button for register a new style.`
+    'Style not yet registered. "Save style" button for register a new style.'
   );
   emptyContent.appendChild(emptyMessage);
 
@@ -340,10 +340,10 @@ function createCardComponent(style: Style) {
     }
   };
 
-  card.addEventListener("mouseenter", (event) => {
+  card.addEventListener("mouseenter", () => {
     showBoxShadow(!card.classList.contains("selected"));
   });
-  card.addEventListener("mouseleave", (event) => {
+  card.addEventListener("mouseleave", () => {
     showBoxShadow(false);
   });
 
@@ -422,13 +422,13 @@ function createCardComponent(style: Style) {
   label.title = style.name;
   labelContainer.appendChild(label);
 
-  label.addEventListener("mouseenter", (event) => {
+  label.addEventListener("mouseenter", () => {
     replacePreview.classList.remove("!hidden");
   });
-  labelContainer.addEventListener("mouseleave", (event) => {
+  labelContainer.addEventListener("mouseleave", () => {
     replacePreview.classList.add("!hidden");
   });
-  card.addEventListener("click", (event) => {
+  card.addEventListener("click", () => {
     toggleClasses(
       card,
       "selected",

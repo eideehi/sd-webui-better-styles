@@ -24,14 +24,14 @@ export const showStyleDetailDialog = (style: Style) => {
 
   const fields = [
     { label: _("Style name"), value: _(style.name) },
-    { label: _("Exclusive"), value: !!style.checkpoint ? _("Yes") : _("No") },
+    { label: _("Exclusive"), value: !style.checkpoint ? _("No") : _("Yes") },
     { label: _("Prompt"), value: style.prompt },
     { label: _("Negative prompt"), value: style.negativePrompt },
     { label: _("Sampling method"), value: style.samplingMethod },
     { label: _("Sampling steps"), value: style.samplingSteps?.toString() },
     { label: _("CFG Scale"), value: style.cfgScale?.toString() },
     { label: _("Seed"), value: style.seed?.toString() },
-    { label: _("Restore faces"), value: !!style.restoreFaces ? _("Enabled") : undefined },
+    { label: _("Restore faces"), value: style.restoreFaces ? _("Enabled") : undefined },
     { label: _("Tiling"), value: style.tiling ? _("Enabled") : undefined },
     { label: _("Hires. fix"), value: style.hiresFix ? _("Enabled") : undefined },
     { label: _("Upscaler"), value: style.upscaler },

@@ -50,7 +50,6 @@ export function getCurrentTabName(): WebUiTab {
 
 /**
  * Creates a default value accessor with get and set methods that operate on a value of type T.
- * @param defaultValue - The default value for the accessor.
  * @returns An object with get and set methods for the default value.
  */
 export function createEmptyAccessor<T>(): ValueAccessor<T> {

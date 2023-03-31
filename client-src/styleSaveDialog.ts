@@ -204,7 +204,7 @@ export function showStyleSaveDialog() {
   const submit = document.createElement("button");
   submit.classList.add("gr-button", "gr-button-lg", "grow");
   submit.textContent = _("Save with this content");
-  submit.addEventListener("click", (event) => {
+  submit.addEventListener("click", () => {
     // If the user is using a language other than English, the word "default" may have been translated, so let's revert it here.
     const getGroupValue = (value: string) => (value === _("default") ? "default" : value);
 
@@ -229,7 +229,7 @@ export function showStyleSaveDialog() {
   const cancel = document.createElement("button");
   cancel.classList.add("gr-button", "gr-button-lg");
   cancel.textContent = _("Close without saving");
-  cancel.addEventListener("click", (event) => {
+  cancel.addEventListener("click", () => {
     closeModal(frame);
   });
   buttons.appendChild(cancel);
@@ -248,10 +248,10 @@ export function showStyleSaveDialog() {
 
   onUpdateRequireField();
 
-  styleName.input.addEventListener("input", (event) => {
+  styleName.input.addEventListener("input", () => {
     onUpdateRequireField();
   });
-  group.input.addEventListener("input", (event) => {
+  group.input.addEventListener("input", () => {
     onUpdateRequireField();
   });
 
@@ -328,7 +328,7 @@ const createParameterCheckbox = (labelText: string) => {
   const input = document.createElement("input");
   input.type = "checkbox";
   input.classList.add("gr-check-radio", "gr-checkbox");
-  input.addEventListener("change", (event) => {
+  input.addEventListener("change", () => {
     container.dataset.checked = String(input.checked);
   });
 
@@ -360,7 +360,7 @@ const createCheckbox = (labelText: string) => {
   const input = document.createElement("input");
   input.type = "checkbox";
   input.classList.add("gr-check-radio", "gr-checkbox");
-  input.addEventListener("change", (event) => {
+  input.addEventListener("change", () => {
     container.dataset.checked = String(input.checked);
   });
 
