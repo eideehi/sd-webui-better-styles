@@ -2,94 +2,92 @@
 @import "toast.css";
 
 .better-styles .h-12 {
-  height: 3rem;
+  @apply tw-h-12;
 }
 .better-styles .max-w-\[16rem\] {
-  max-width: 16rem;
+  @apply tw-max-w-[16rem];
 }
 .better-styles .m-\[0\.3rem\] {
-  margin: 0.3rem;
+  @apply tw-m-[0.3rem];
 }
 .better-styles .\!border-x-2 {
-  border-left-width: 2px !important;
-  border-right-width: 2px !important;
+  @apply !tw-border-x-2;
 }
 .better-styles .\!border-b-2 {
-  border-bottom-width: 2px !important;
+  @apply !tw-border-b-2;
 }
 .better-styles .w-64 {
-  width: 16rem;
+  @apply tw-w-64;
 }
 .better-styles .h-64 {
-  height: 16rem;
+  @apply tw-h-64;
 }
 .better-styles .inset-x-0 {
-  left: 0;
-  right: 0;
+  @apply tw-inset-x-0;
 }
 .better-styles .bg-center {
-  background-position: center;
+  @apply tw-bg-center;
 }
 .better-styles .bg-cover {
-  background-size: cover;
+  @apply tw-bg-cover;
 }
 .better-styles .hover\:text-red:hover {
   color: red;
 }
 .better-styles .\!overflow-hidden {
-  overflow: hidden !important;
+  @apply !tw-overflow-hidden;
 }
 .better-styles .dark .dark\:text-white {
   color: white;
 }
 .better-styles .blur-sm {
-  filter: blur(4px);
+  @apply tw-blur-sm;
 }
 .better-styles .\!m-auto {
-  margin: auto !important;
+  @apply !tw-m-auto;
 }
 .better-styles .grow {
-  flex-grow: 1;
+  @apply tw-grow;
 }
 .better-styles .gap-x-2 {
-  column-gap: 0.5rem;
+  @apply tw-gap-x-2;
 }
 .better-styles .gap-y-6 {
-  row-gap: 1.5rem;
+  @apply tw-gap-y-6;
 }
 .better-styles .outline-2 {
-  outline-width: 2px;
+  @apply tw-outline-2;
 }
 .better-styles .outline-offset-2 {
-  outline-offset: 2px;
+  @apply tw-outline-offset-2;
 }
 .better-styles .outline-\[\#ff7c00\] {
-  outline-color: #ff7c00;
+  @apply tw-outline-[#ff7c00];
 }
 .better-styles .hover\:scale-105:hover {
-  transform: scale(1.05);
+  @apply tw-scale-105;
 }
 .better-styles .pb-0 {
-  padding-bottom: 0;
+  @apply tw-pb-0;
 }
 .better-styles .pt-3 {
-  padding-top: 0.75rem;
+  @apply tw-pt-3;
 }
 .better-styles .pt-4 {
-  padding-top: 1rem;
+  @apply tw-pt-4;
 }
 .better-styles .pr-2 {
-  padding-right: 0.5rem;
+  @apply tw-pr-2;
 }
 .better-styles .contents {
-  display: contents;
+  @apply tw-contents;
 }
 .better-styles .grid-cols-\[max-content_1fr\] {
-  grid-template-columns: max-content 1fr;
+  @apply tw-grid-cols-[max-content_1fr];
 }
 .better-styles .\!overflow-y-scroll {
-  overflow-y: scroll !important;
+  @apply !tw-overflow-y-scroll;
 }
 .better-styles .resize-none {
-  resize: none;
+  @apply tw-resize-none;
 }
