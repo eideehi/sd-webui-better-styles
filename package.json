@@ -8,7 +8,8 @@
   "scripts": {
     "prepare": "husky install",
     "build": "vite build",
-    "build:watch": "vite build --watch",
+    "deploy": "cpy --flat ./dist/style.css ./ && cpy --flat ./dist/betterStyles.js ./javascript/",
+    "build:dev": "pnpm run build && pnpm run deploy",
     "lint": "prettier --plugin-search-dir . --check ./client-src && eslint ./client-src",
     "format": "prettier --plugin-search-dir . --write ./client-src"
   },
@@ -19,6 +20,7 @@
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
     "autoprefixer": "^10.4.13",
+    "cpy-cli": "^4.2.0",
     "eslint": "^8.35.0",
     "eslint-config-prettier": "^8.6.0",
     "husky": "^8.0.3",
