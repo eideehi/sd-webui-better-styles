@@ -15,6 +15,8 @@ import { showStyleSaveDialog } from "./styleSaveDialog";
 import { showStylesDeleteDialog } from "./stylesDeleteDialog";
 import { showStyleDetailDialog } from "./styleDetailDialog";
 
+let checkpointObserverRunning = false;
+
 export function onReceiveStyleGroup() {
   const tabName = getCurrentTabName();
   if (tabName !== "other") {
@@ -28,28 +30,30 @@ export function createBetterStylesComponents(tabName: StylesAvailableTab) {
     return;
   }
 
-  const component = document.createElement("div");
-  component.id = `better-styles-${tabName}-styles`;
-  component.classList.add(
-    "better-styles",
-    "flex",
-    "flex-col",
-    "w-full",
-    "gap-4",
-    "gr-compact",
-    "!hidden"
-  );
-  getElement(`div#${tabName}_extra_networks`)?.after(component);
+  const components = document.createElement("div");
+  components.id = `better-styles-${tabName}-styles`;
+  hidden(components, true);
+  components.classList.add("better-styles", "form");
+  getElement(`div#${tabName}_extra_networks`)?.parentElement?.after(components);
+
+  const container = document.createElement("div");
+  container.classList.add("compact", "gradio-row");
+  components.appendChild(container);
+
+  const main = document.createElement("div");
+  main.classList.add("tabs", "gradio-tabs", "extra-networks");
+  container.appendChild(main);
 
   const tools = createToolsComponent(tabName);
-  component.appendChild(tools);
+  main.appendChild(tools);
 
   const view = document.createElement("div");
-  component.appendChild(view);
+  view.classList.add("tab-item");
+  main.appendChild(view);
 
   const groups = document.createElement("div");
   groups.id = `better-styles-${tabName}-group-container`;
-  groups.classList.add("!border-x-2", "border-gray-200", "flex", "px-2", "pb-0", "pt-4");
+  groups.classList.add("group-container");
   view.appendChild(groups);
 
   groups.appendChild(createGroupButton("default"));
@@ -57,78 +61,59 @@ export function createBetterStylesComponents(tabName: StylesAvailableTab) {
 
   const styles = document.createElement("div");
   styles.id = `better-styles-${tabName}-style-container`;
-  styles.classList.add(
-    "tabitem",
-    "p-2",
-    "!border-x-2",
-    "!border-b-2",
-    "border-gray-200",
-    "relative",
-    "flex",
-    "flex-wrap",
-    "gap-x-2",
-    "block"
-  );
-  groups.after(styles);
+  styles.classList.add("styles-cards");
+  view.appendChild(styles);
 
   styles.appendChild(createStyleEmptyContent());
-  getElement("#setting_sd_model_checkpoint select")?.addEventListener("change", () => {
-    const currentCheckpoint = checkpoint().get();
-    const interval = setInterval(() => {
-      if (checkpoint().get() !== currentCheckpoint) {
-        updateBetterStyleComponents(tabName);
-        clearInterval(interval);
-      }
-    }, 250);
-  });
 
-  const toggleButton = document.createElement("button");
-  toggleButton.id = `better-styles-${tabName}-toggle`;
-  toggleButton.textContent = "🏷";
-  toggleButton.classList.add("gr-button", "gr-button-lg", "gr-button-tool");
-  toggleButton.title = _("Show Better Styles");
-  toggleButton.addEventListener("click", () => {
-    hidden(component);
-  });
-  getElement(`#${tabName}_tools`)?.appendChild(toggleButton);
+  if (!checkpointObserverRunning) {
+    checkpointObserverRunning = true;
+
+    let currentCheckpoint = checkpoint().get();
+    const checkForUpdate = () => {
+      const tabName = getCurrentTabName();
+      if (tabName !== "other") {
+        const newCheckpoint = checkpoint().get();
+        if (newCheckpoint !== currentCheckpoint) {
+          currentCheckpoint = newCheckpoint;
+          updateBetterStyleComponents(tabName);
+        }
+      }
+      setTimeout(checkForUpdate, 500);
+    };
+    setTimeout(checkForUpdate, 500);
+  }
+
+  appendToolButton(tabName, components);
+}
+
+function appendToolButton(tabName: StylesAvailableTab, components: HTMLElement): void {
+  const base = getElement(`#${tabName}_style_apply`);
+  if (base) {
+    const toggleButton = document.createElement("button");
+    toggleButton.id = `better-styles-${tabName}-toggle`;
+    toggleButton.textContent = "🔖";
+    toggleButton.classList.add(...Array.from(base.classList));
+    hidden(toggleButton, false);
+    toggleButton.title = _("Show Better Styles");
+    toggleButton.addEventListener("click", () => {
+      hidden(components);
+    });
+    base.parentElement?.appendChild(toggleButton);
+  }
 }
 
 function createToolsComponent(tabName: StylesAvailableTab) {
   const tools = document.createElement("div");
-  tools.classList.add("flex", "!border-b-2", "flex-wrap", "dark:border-gray-700");
+  tools.classList.add("tab-nav", "scroll-hide");
 
   const label = document.createElement("p");
-  label.classList.add(
-    "bg-white",
-    "px-4",
-    "pb-2",
-    "pt-1.5",
-    "rounded-t-lg",
-    "border-gray-200",
-    "-mb-[2px]",
-    "border-2",
-    "border-b-0",
-    "flex",
-    "items-center"
-  );
+  label.classList.add("label");
   label.textContent = _("Better Styles");
   tools.appendChild(label);
 
   const searchBar = document.createElement("textarea");
-  searchBar.classList.add(
-    "scroll-hide",
-    "inline-block",
-    "gr-box",
-    "gr-input",
-    "w-full",
-    "gr-text-input",
-    "search",
-    "overflow-y-scroll",
-    "max-w-[16rem]",
-    "m-[0.3rem]",
-    "self-center",
-    "resize-none"
-  );
+  searchBar.classList.add("text-input", "scroll-hide", "search");
   searchBar.placeholder = _("Search styles...");
   searchBar.rows = 1;
   searchBar.addEventListener("input", () => {
@@ -141,7 +126,7 @@ function createToolsComponent(tabName: StylesAvailableTab) {
 
   const applyButton = document.createElement("button");
   applyButton.id = `better-styles-${tabName}-apply`;
-  applyButton.classList.add("gr-button", "gr-button-lg", "gr-button-secondary", "m-[0.3rem]");
+  applyButton.classList.add("button", "lg", "secondary");
   applyButton.textContent = _("Apply style");
   applyButton.addEventListener("click", () => {
     const selectedStyles = [
@@ -172,7 +157,7 @@ function createToolsComponent(tabName: StylesAvailableTab) {
 
   const saveButton = document.createElement("button");
   saveButton.id = `better-styles-${tabName}-save`;
-  saveButton.classList.add("gr-button", "gr-button-lg", "gr-button-secondary", "m-[0.3rem]");
+  saveButton.classList.add("button", "lg", "secondary");
   saveButton.textContent = _("Save style");
   saveButton.addEventListener("click", () => {
     showStyleSaveDialog();
@@ -181,7 +166,7 @@ function createToolsComponent(tabName: StylesAvailableTab) {
 
   const deleteButton = document.createElement("button");
   deleteButton.id = `better-styles-${tabName}-delete`;
-  deleteButton.classList.add("gr-button", "gr-button-lg", "gr-button-secondary", "m-[0.3rem]");
+  deleteButton.classList.add("button", "lg", "secondary");
   deleteButton.textContent = _("Delete style");
   deleteButton.addEventListener("click", () => {
     const selectedStyles = [
@@ -197,7 +182,7 @@ function createToolsComponent(tabName: StylesAvailableTab) {
 
   const closeButton = document.createElement("button");
   closeButton.id = `better-styles-${tabName}-close`;
-  closeButton.classList.add("gr-button", "gr-button-lg", "gr-button-secondary", "m-[0.3rem]");
+  closeButton.classList.add("button", "lg", "secondary");
   closeButton.textContent = _("Close Better Styles");
   closeButton.addEventListener("click", () => {
     hidden(getElement(`#better-styles-${tabName}-styles`), true);
@@ -209,8 +194,8 @@ function createToolsComponent(tabName: StylesAvailableTab) {
 
 function createGroupButton(group: string): HTMLButtonElement {
   const button = document.createElement("button");
+  button.classList.add("button", "lg", "secondary", "custom-button");
   button.textContent = _(group);
-  button.classList.add("gr-box-sm", "gr-button-lg", "m-[0.3rem]");
   button.dataset.group = group;
   if (group === currentGroup.get()) {
     button.disabled = true;
@@ -239,10 +224,9 @@ function updateGroup(tabName: StylesAvailableTab): void {
 
 function createStyleEmptyContent(): HTMLDivElement {
   const emptyContent = document.createElement("div");
-  emptyContent.classList.add("m-2", "mt-5");
+  emptyContent.classList.add("no-cards");
 
   const emptyMessage = document.createElement("p");
-  emptyMessage.classList.add("text-2xl", "dark:text-white");
   emptyMessage.textContent = _(
     'Style not yet registered. "Save style" button for register a new style.'
   );
@@ -316,73 +300,34 @@ function getVisibleStyles(checkpoint: string) {
 function createCardComponent(style: Style) {
   const card = document.createElement("div");
   card.dataset.style = style.name;
-  card.classList.add(
-    "inline-block",
-    "m-2",
-    "w-64",
-    "h-64",
-    "rounded",
-    "!overflow-hidden",
-    "cursor-pointer",
-    "relative",
-    "select-none"
-  );
-  card.addEventListener("contextmenu", (event) => {
+  card.classList.add("card");
+
+  const showDetailButton = document.createElement("button");
+  showDetailButton.classList.add("show-detail-button");
+  showDetailButton.title = _("Show styles detail");
+  showDetailButton.addEventListener("click", (event) => {
     event.preventDefault();
+    event.stopPropagation();
     showStyleDetailDialog(style);
   });
-
-  const showBoxShadow = (show: boolean) => {
-    if (show) {
-      card.style.boxShadow = "0 0 2px 0.3em rgb(0 128 255 / 35%)";
-    } else {
-      card.style.boxShadow = "";
-    }
-  };
-
-  card.addEventListener("mouseenter", () => {
-    showBoxShadow(!card.classList.contains("selected"));
-  });
-  card.addEventListener("mouseleave", () => {
-    showBoxShadow(false);
-  });
+  card.appendChild(showDetailButton);
 
   const image = document.createElement("img");
+  image.classList.add("image");
+  image.setAttribute("draggable", "false");
   if (style.image) {
     image.src = `file=${imagesDir.get()}/${style.image}${updateTimestamp.get()}`;
   } else {
     image.src = "file=html/card-no-preview.png";
   }
-  image.classList.add(
-    "absolute",
-    "object-cover",
-    "w-full",
-    "h-full",
-    "transition-transform",
-    "ease-out",
-    "duration-500",
-    "hover:scale-105"
-  );
-  image.setAttribute("draggable", "false");
   card.appendChild(image);
 
   const labelContainer = document.createElement("div");
-  labelContainer.classList.add(
-    "absolute",
-    "bottom-0",
-    "inset-x-0",
-    "p-2",
-    "flex",
-    "flex-col",
-    "text-white",
-    "bg-black/50"
-  );
-  labelContainer.style.boxShadow = "0 0 0.25em 0.25em rgb(0 0 0 / 50%)";
-  labelContainer.style.textShadow = "0 0 0.2em black";
+  labelContainer.classList.add("actions");
   card.appendChild(labelContainer);
 
   const replacePreview = document.createElement("a");
-  replacePreview.classList.add("mt-1", "mb-3", "ml-1", "!hidden", "hover:text-red", "text-sm");
+  replacePreview.classList.add("replace-preview");
   replacePreview.href = "#";
   replacePreview.text = _("replace thumbnail");
   replacePreview.addEventListener("click", (event) => {
@@ -417,27 +362,13 @@ function createCardComponent(style: Style) {
   labelContainer.appendChild(replacePreview);
 
   const label = document.createElement("span");
-  label.classList.add("text-xl", "truncate");
+  label.classList.add("label");
   label.textContent = style.name;
   label.title = style.name;
   labelContainer.appendChild(label);
 
-  label.addEventListener("mouseenter", () => {
-    replacePreview.classList.remove("!hidden");
-  });
-  labelContainer.addEventListener("mouseleave", () => {
-    replacePreview.classList.add("!hidden");
-  });
   card.addEventListener("click", () => {
-    showBoxShadow(!card.classList.contains("selected"));
-    toggleClasses(
-      card,
-      "selected",
-      "outline",
-      "outline-2",
-      "outline-offset-2",
-      "outline-[#ff7c00]"
-    );
+    toggleClasses(card, "selected");
   });
 
   return card;

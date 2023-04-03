@@ -1,35 +1,29 @@
 .better-styles.toast {
-    position: fixed;
-    bottom: -10rem;
-    left: 50%;
+    @apply tw-fixed -tw-bottom-[10rem] tw-left-1/2 tw-py-4 tw-px-6 tw-rounded-md tw-font-bold tw-text-white tw-opacity-0 tw-z-[1100] tw-ease-in-out tw-duration-300;
     transform: translateX(-50%);
-    padding: 1rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: bold;
-    color: #fff;
-    opacity: 0;
     transition-property: opacity, bottom, background-color;
-    transition-duration: 0.3s;
-    transition-timing-function: ease-in-out;
-    z-index: 1100;
 }
+
 .better-styles.toast.show {
-    opacity: 1;
-    bottom: 1.5rem;
+    @apply tw-opacity-100 tw-bottom-6;
 }
+
 .better-styles.toast.fade-out {
-    opacity: 0;
-    bottom: 1.5rem;
+    @apply tw-opacity-0 tw-bottom-6;
 }
+
 .better-styles.toast.toast-info {
-    background-color: #0064b2;
+    @apply tw-bg-[#0064b2];
 }
+
 .better-styles.toast.toast-success {
-    background-color: #00ce8d;
+    @apply tw-bg-[#00ce8d];
 }
+
 .better-styles.toast.toast-warning {
-    background-color: #ce6400;
+    @apply tw-bg-[#ce6400];
 }
+
 .better-styles.toast.toast-error {
-    background-color: #ce0027;
+    @apply tw-bg-[#ce0027];
 }

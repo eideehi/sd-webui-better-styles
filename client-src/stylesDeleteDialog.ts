@@ -6,34 +6,24 @@ import { onReceiveStyleGroup } from "./betterStyles";
 import { deleteStyles } from "./webui";
 
 export function showStylesDeleteDialog(tabName: StylesAvailableTab) {
-  const frame = document.createElement("div");
-  frame.classList.add(
-    "gr-compact",
-    "gr-block",
-    "gr-box",
-    "!m-auto",
-    "flex",
-    "flex-col",
-    "py-6",
-    "px-4",
-    "gap-y-6"
-  );
-  frame.style.width = "clamp(20rem, 70vw, 42.5rem)";
-  frame.style.boxShadow = "0px 0px 4px 0.25rem rgb(8 8 8 / 50%)";
+  const content = document.createElement("div");
+  content.classList.add("save-style", "modal-content"  );
+  content.style.width = "clamp(20rem, 70vw, 42.5rem)";
+  content.style.boxShadow = "0px 0px 4px 0.25rem rgb(8 8 8 / 50%)";
 
   const message = document.createElement("p");
-  message.classList.add("text-xl");
+  message.classList.add("text");
   message.textContent = _(
     "Delete all selected styles. This action cannot be undone. Are you sure?"
   );
-  frame.appendChild(message);
+  content.appendChild(message);
 
   const buttons = document.createElement("div");
-  buttons.classList.add("flex", "justify-end", "gap-x-2");
-  frame.appendChild(buttons);
+  buttons.classList.add("button-container");
+  content.appendChild(buttons);
 
   const submit = document.createElement("button");
-  submit.classList.add("gr-button", "gr-button-lg", "gr-button-primary");
+  submit.classList.add("button", "lg", "primary");
   submit.textContent = _("Execute the deletion");
   submit.addEventListener("click", () => {
     const selectedStyleCards = getElementAll(`#better-styles-${tabName}-style-container .selected`);
@@ -47,7 +37,7 @@ export function showStylesDeleteDialog(tabName: StylesAvailableTab) {
         ],
       },
       (json) => {
-        closeModal(frame);
+        closeModal(content);
         styleGroups.set(json);
         onReceiveStyleGroup();
         showToast(_("Styles deleted"), "success");
@@ -57,12 +47,12 @@ export function showStylesDeleteDialog(tabName: StylesAvailableTab) {
   buttons.appendChild(submit);
 
   const cancel = document.createElement("button");
-  cancel.classList.add("gr-button", "gr-button-lg");
+  cancel.classList.add("button", "lg", "secondary");
   cancel.textContent = _("Close without deleting");
   cancel.addEventListener("click", () => {
-    closeModal(frame);
+    closeModal(content);
   });
   buttons.appendChild(cancel);
 
-  showModal(frame);
+  showModal(content);
 }

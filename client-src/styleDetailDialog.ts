@@ -3,23 +3,10 @@ import { closeModal, showModal } from "./modal";
 
 export const showStyleDetailDialog = (style: Style) => {
   const frame = document.createElement("div");
-  frame.classList.add(
-    "gr-compact",
-    "gr-block",
-    "gr-box",
-    "!m-auto",
-    "flex",
-    "flex-col",
-    "py-6",
-    "px-4",
-    "gap-y-6"
-  );
-  frame.style.width = "clamp(20rem, 70vw, 42.5rem)";
-  frame.style.boxShadow = "0px 0px 4px 0.25rem rgb(8 8 8 / 50%)";
-  frame.classList.add("relative");
+  frame.classList.add("styles-detail", "modal-content");
 
   const list = document.createElement("div");
-  list.classList.add("grid", "grid-cols-[max-content_1fr]", "gap-2");
+  list.classList.add("field-container");
   frame.appendChild(list);
 
   const fields = [
@@ -49,7 +36,7 @@ export const showStyleDetailDialog = (style: Style) => {
   });
 
   const close = document.createElement("button");
-  close.classList.add("gr-box", "gr-button", "gr-button-lg");
+  close.classList.add("button", "lg", "secondary");
   close.textContent = _("Close style detail");
   close.addEventListener("click", () => {
     closeModal(frame);
@@ -61,18 +48,16 @@ export const showStyleDetailDialog = (style: Style) => {
 
 const createField = (label: string, value: string) => {
   const container = document.createElement("div");
-  container.classList.add("contents");
+  container.classList.add("field");
 
   const labelElement = document.createElement("span");
   labelElement.textContent = label;
-  labelElement.classList.add("text-right", "pt-3");
-  labelElement.style.overflowWrap = "anywhere";
+  labelElement.classList.add("label");
   container.appendChild(labelElement);
 
   const valueElement = document.createElement("p");
   valueElement.textContent = value;
-  valueElement.classList.add("gr-box", "gr-padded", "border-gray-200");
-  valueElement.style.overflowWrap = "anywhere";
+  valueElement.classList.add("value");
   container.appendChild(valueElement);
   return container;
 };

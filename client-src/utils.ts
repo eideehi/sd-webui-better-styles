@@ -88,7 +88,7 @@ export function toggleClasses(element: HTMLElement, ...classes: string[]) {
  *   is specified, it will toggle between being displayed and hidden.
  */
 export function hidden(element: HTMLElement | null, force?: boolean) {
-  element?.classList.toggle("!hidden", force);
+  element?.classList.toggle("better-styles-force-hidden", force);
 }
 
 /**

@@ -1,4 +1,4 @@
-import { _ } from "./utils";
+import { _, hidden } from "./utils";
 import { getCurrentTabName, registerStyle } from "./webui";
 import { currentGroup, styleGroups } from "./variables";
 import { closeModal, showModal } from "./modal";
@@ -32,118 +32,109 @@ export function showStyleSaveDialog() {
 
   const values = captureStyleValues(tabName);
 
-  const frame = document.createElement("div");
-  frame.classList.add(
-    "gr-compact",
-    "gr-block",
-    "gr-box",
-    "!m-auto",
-    "flex",
-    "flex-col",
-    "py-6",
-    "px-4",
-    "gap-y-6",
-    "select-none"
-  );
-  frame.style.width = "clamp(20rem, 70vw, 42.5rem)";
-  frame.style.boxShadow = "0px 0px 4px 0.25rem rgb(8 8 8 / 50%)";
+  const content = document.createElement("div");
+  content.classList.add("save-style", "modal-content");
+
+  const inputFields = document.createElement("div");
+  inputFields.classList.add("input-fields");
+  content.appendChild(inputFields);
 
   const styleName = createTextInput(_("Style name"), "");
-  frame.appendChild(styleName.element);
+  inputFields.appendChild(styleName.element);
 
   const group = createTextInput(_("Group"), _(currentGroup.getOrDefault("default")));
-  frame.appendChild(group.element);
+  inputFields.appendChild(group.element);
 
   const prompt = createTextarea(_("Prompt"), values.prompt || "");
-  frame.appendChild(prompt.element);
+  inputFields.appendChild(prompt.element);
 
   const negativePrompt = createTextarea(_("Negative prompt"), values.negativePrompt || "");
-  frame.appendChild(negativePrompt.element);
+  inputFields.appendChild(negativePrompt.element);
 
-  const paramaters = document.createElement("div");
-  paramaters.classList.add("flex", "flex-wrap", "gap-2", "pt-4", "relative");
-  frame.appendChild(paramaters);
+  const parameters = document.createElement("div");
+  parameters.classList.add("parameters");
+  content.appendChild(parameters);
 
-  const paramatersLabel = document.createElement("span");
-  paramatersLabel.classList.add(
-    "text-gray-500",
-    "text-[0.855rem]",
-    "mb-2",
-    "block",
-    "dark:text-gray-200",
-    "!border-0"
-  );
-  paramatersLabel.textContent = _("Save these parameters as style");
-  paramaters.appendChild(paramatersLabel);
+  const parametersLabel = document.createElement("span");
+  parametersLabel.classList.add("label");
+  parametersLabel.textContent = _("Save these parameters as style");
+  parameters.appendChild(parametersLabel);
 
-  const samplingMethod = createParameterCheckbox(_("Sampling method"));
-  paramaters.appendChild(samplingMethod.element);
+  const parametersFields = document.createElement("ul");
+  parametersFields.classList.add("parameter-fields");
+  parameters.appendChild(parametersFields);
 
-  const samplingSteps = createParameterCheckbox(_("Sampling steps"));
-  paramaters.appendChild(samplingSteps.element);
+  const samplingMethod = createCheckbox(_("Sampling method"));
+  parametersFields.appendChild(samplingMethod.element);
 
-  const cfgScale = createParameterCheckbox(_("CFG Scale"));
-  paramaters.appendChild(cfgScale.element);
+  const samplingSteps = createCheckbox(_("Sampling steps"));
+  parametersFields.appendChild(samplingSteps.element);
 
-  const seed = createParameterCheckbox(_("Seed"));
-  paramaters.appendChild(seed.element);
+  const cfgScale = createCheckbox(_("CFG Scale"));
+  parametersFields.appendChild(cfgScale.element);
 
-  const restoreFaces = createParameterCheckbox(_("Restore faces"));
-  paramaters.appendChild(restoreFaces.element);
+  const seed = createCheckbox(_("Seed"));
+  parametersFields.appendChild(seed.element);
 
-  const tiling = createParameterCheckbox(_("Tiling"));
-  paramaters.appendChild(tiling.element);
+  const restoreFaces = createCheckbox(_("Restore faces"));
+  parametersFields.appendChild(restoreFaces.element);
 
-  const hiresFix = createParameterCheckbox(_("Hires. fix"));
-  paramaters.appendChild(hiresFix.element);
+  const tiling = createCheckbox(_("Tiling"));
+  parametersFields.appendChild(tiling.element);
 
-  const upscaler = createParameterCheckbox(_("Upscaler"));
-  paramaters.appendChild(upscaler.element);
+  const hiresFix = createCheckbox(_("Hires. fix"));
+  parametersFields.appendChild(hiresFix.element);
 
-  const hiresSteps = createParameterCheckbox(_("Hires steps"));
-  paramaters.appendChild(hiresSteps.element);
+  const upscaler = createCheckbox(_("Upscaler"));
+  parametersFields.appendChild(upscaler.element);
 
-  const denoisingStrength = createParameterCheckbox(_("Denoising strength"));
-  paramaters.appendChild(denoisingStrength.element);
+  const hiresSteps = createCheckbox(_("Hires steps"));
+  parametersFields.appendChild(hiresSteps.element);
 
-  const upscaleBy = createParameterCheckbox(_("Upscale by"));
-  paramaters.appendChild(upscaleBy.element);
+  const denoisingStrength = createCheckbox(_("Denoising strength"));
+  parametersFields.appendChild(denoisingStrength.element);
+
+  const upscaleBy = createCheckbox(_("Upscale by"));
+  parametersFields.appendChild(upscaleBy.element);
 
   if (!values.hiresFix) {
-    upscaler.element.classList.add("!hidden");
-    hiresSteps.element.classList.add("!hidden");
-    denoisingStrength.element.classList.add("!hidden");
-    upscaleBy.element.classList.add("!hidden");
+    hidden(upscaler.element, true);
+    hidden(hiresSteps.element, true);
+    hidden(denoisingStrength.element, true);
+    hidden(upscaleBy.element, true);
   }
 
-  const clipSkip = createParameterCheckbox(_("Clip skip"));
-  paramaters.appendChild(clipSkip.element);
+  const clipSkip = createCheckbox(_("Clip skip"));
+  parametersFields.appendChild(clipSkip.element);
 
-  const etaNoiseSeedDelta = createParameterCheckbox(_("Eta noise seed delta"));
-  paramaters.appendChild(etaNoiseSeedDelta.element);
+  const etaNoiseSeedDelta = createCheckbox(_("Eta noise seed delta"));
+  parametersFields.appendChild(etaNoiseSeedDelta.element);
 
   if (values.clipSkip == null) {
-    clipSkip.element.classList.add("!hidden");
+    hidden(clipSkip.element, true);
   }
 
   if (values.etaNoiseSeedDelta == null) {
-    etaNoiseSeedDelta.element.classList.add("!hidden");
+    hidden(etaNoiseSeedDelta.element, true);
   }
 
+  const otherOptions = document.createElement("div");
+  otherOptions.classList.add("other-options");
+  content.appendChild(otherOptions);
+
   const exclusive = createCheckbox(_("Make this style exclusive to the current checkpoint"));
-  frame.appendChild(exclusive.element);
+  otherOptions.appendChild(exclusive.element);
 
   const image = createCheckbox(_("Use the current image as a thumbnail"));
   if (!values.image) {
-    image.element.classList.remove("text-gray-700", "cursor-pointer");
-    image.element.classList.add("text-gray-400");
+    image.element.classList.add("disabled");
     image.input.disabled = true;
   }
-  frame.appendChild(image.element);
+  otherOptions.appendChild(image.element);
 
   const buttons = document.createElement("div");
-  buttons.classList.add("flex", "gap-x-2");
-  frame.appendChild(buttons);
+  buttons.classList.add("buttons");
+  content.appendChild(buttons);
 
   const createStyle = () => {
     const style: Omit<Style, "name"> = {};
@@ -202,7 +193,7 @@ export function showStyleSaveDialog() {
   };
 
   const submit = document.createElement("button");
-  submit.classList.add("gr-button", "gr-button-lg", "grow");
+  submit.classList.add("save-button", "button", "lg", "primary");
   submit.textContent = _("Save with this content");
   submit.addEventListener("click", () => {
     // If the user is using a language other than English, the word "default" may have been translated, so let's revert it here.
@@ -217,7 +208,7 @@ export function showStyleSaveDialog() {
         },
       },
       (data) => {
-        closeModal(frame);
+        closeModal(content);
         styleGroups.set(data);
         onReceiveStyleGroup();
         showToast(_("Style registered"), "success");
@@ -227,10 +218,10 @@ export function showStyleSaveDialog() {
   buttons.appendChild(submit);
 
   const cancel = document.createElement("button");
-  cancel.classList.add("gr-button", "gr-button-lg");
+  cancel.classList.add("button", "lg", "secondary");
   cancel.textContent = _("Close without saving");
   cancel.addEventListener("click", () => {
-    closeModal(frame);
+    closeModal(content);
   });
   buttons.appendChild(cancel);
 
@@ -255,19 +246,20 @@ export function showStyleSaveDialog() {
     onUpdateRequireField();
   });
 
-  showModal(frame);
+  showModal(content);
 }
 
 const createTextInput = (labelText: string, defaultValue: string) => {
   const container = document.createElement("label");
-  container.classList.add("inline-flex", "flex-col", "relative");
+  container.classList.add("input-field");
 
   const label = document.createElement("span");
-  label.classList.add("text-gray-500", "text-[0.855rem]", "mb-2", "block", "dark:text-gray-200");
+  label.classList.add("label");
   label.textContent = labelText;
 
-  const input = document.createElement("input");
-  input.classList.add("gr-box", "gr-input", "gr-text-input");
+  const input = document.createElement("textarea");
+  input.classList.add("text-input", "scroll-hide");
+  input.rows = 1;
   input.value = defaultValue;
 
   container.appendChild(label);
@@ -280,21 +272,14 @@ const createTextInput = (labelText: string, defaultValue: string) => {
 
 const createTextarea = (labelText: string, defaultValue: string) => {
   const container = document.createElement("label");
-  container.classList.add("inline-flex", "flex-col", "relative");
+  container.classList.add("input-field");
 
   const label = document.createElement("span");
-  label.classList.add("text-gray-500", "text-[0.855rem]", "mb-2", "block", "dark:text-gray-200");
+  label.classList.add("label");
   label.textContent = labelText;
 
   const textarea = document.createElement("textarea");
-  textarea.classList.add(
-    "gr-box",
-    "gr-input",
-    "gr-text-input",
-    "scroll-hide",
-    "!overflow-y-scroll",
-    "resize-none"
-  );
+  textarea.classList.add("text-input", "scroll-hide");
   textarea.rows = 3;
   textarea.value = defaultValue;
 
@@ -306,66 +291,18 @@ const createTextarea = (labelText: string, defaultValue: string) => {
   };
 };
 
-const createParameterCheckbox = (labelText: string) => {
-  const container = document.createElement("label");
-  container.classList.add(
-    "gr-input-label",
-    "flex",
-    "items-center",
-    "text-gray-700",
-    "text-sm",
-    "space-x-2",
-    "border",
-    "py-1.5",
-    "px-3",
-    "rounded-lg",
-    "cursor-pointer",
-    "bg-white",
-    "shadow-sm",
-    "checked:shadow-inner"
-  );
-
-  const input = document.createElement("input");
-  input.type = "checkbox";
-  input.classList.add("gr-check-radio", "gr-checkbox");
-  input.addEventListener("change", () => {
-    container.dataset.checked = String(input.checked);
-  });
-
-  const label = document.createElement("span");
-  label.classList.add("ml-2");
-  label.textContent = labelText;
-
-  container.appendChild(input);
-  input.after(label);
-  return {
-    element: container,
-    input,
-  };
-};
-
 const createCheckbox = (labelText: string) => {
   const container = document.createElement("label");
-  container.classList.add(
-    "flex",
-    "items-center",
-    "text-gray-700",
-    "text-sm",
-    "space-x-2",
-    "rounded-lg",
-    "cursor-pointer",
-    "dark:bg-transparent"
-  );
+  container.classList.add("checkbox-wrapper");
 
   const input = document.createElement("input");
   input.type = "checkbox";
-  input.classList.add("gr-check-radio", "gr-checkbox");
   input.addEventListener("change", () => {
     container.dataset.checked = String(input.checked);
   });
 
   const label = document.createElement("span");
-  label.classList.add("ml-2");
+  label.classList.add("label");
   label.textContent = labelText;
 
   container.appendChild(input);
@@ -379,23 +316,23 @@ const createCheckbox = (labelText: string) => {
 function captureStyleValues(tabName: StylesAvailableTab) {
   const style: Omit<Style, "name"> = {};
 
-  selectedImage(tabName).with((value) => style["image"] = value);
-  checkpoint().with((value) => style["checkpoint"] = value);
-  prompt(tabName).with((value) => style["prompt"] = value);
-  negativePrompt(tabName).with((value) => style["negativePrompt"] = value);
-  samplingMethod(tabName).value.with((value) => style["samplingMethod"] = value);
-  samplingSteps(tabName).with((value) => style["samplingSteps"] = value);
-  cfgScale(tabName).with((value) => style["cfgScale"] = value);
-  seed(tabName).with((value) => style["seed"] = value);
-  restoreFaces(tabName).with((value) => style["restoreFaces"] = value);
-  tiling(tabName).with((value) => style["tiling"] = value);
-  hiresFix(tabName).with((value) => style["hiresFix"] = value);
-  upscaler(tabName).value.with((value) => style["upscaler"] = value);
-  hiresSteps(tabName).with((value) => style["hiresSteps"] = value);
-  denoisingStrength(tabName).with((value) => style["denoisingStrength"] = value);
-  upscaleBy(tabName).with((value) => style["upscaleBy"] = value);
-  clipSkip().with((value) => style["clipSkip"] = value);
-  etaNoiseSeedDelta().with((value) => style["etaNoiseSeedDelta"] = value);
+  selectedImage(tabName).with((value) => (style["image"] = value));
+  checkpoint().with((value) => (style["checkpoint"] = value));
+  prompt(tabName).with((value) => (style["prompt"] = value));
+  negativePrompt(tabName).with((value) => (style["negativePrompt"] = value));
+  samplingMethod(tabName).value.with((value) => (style["samplingMethod"] = value));
+  samplingSteps(tabName).with((value) => (style["samplingSteps"] = value));
+  cfgScale(tabName).with((value) => (style["cfgScale"] = value));
+  seed(tabName).with((value) => (style["seed"] = value));
+  restoreFaces(tabName).with((value) => (style["restoreFaces"] = value));
+  tiling(tabName).with((value) => (style["tiling"] = value));
+  hiresFix(tabName).with((value) => (style["hiresFix"] = value));
+  upscaler(tabName).value.with((value) => (style["upscaler"] = value));
+  hiresSteps(tabName).with((value) => (style["hiresSteps"] = value));
+  denoisingStrength(tabName).with((value) => (style["denoisingStrength"] = value));
+  upscaleBy(tabName).with((value) => (style["upscaleBy"] = value));
+  clipSkip().with((value) => (style["clipSkip"] = value));
+  etaNoiseSeedDelta().with((value) => (style["etaNoiseSeedDelta"] = value));
 
   return style;
 }

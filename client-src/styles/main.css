@@ -1,93 +1,238 @@
 @import "modal.css";
 @import "toast.css";
 
-.better-styles .h-12 {
-  @apply tw-h-12;
+deepl-inline-translate {
+    @apply tw-contents;
 }
-.better-styles .max-w-\[16rem\] {
-  @apply tw-max-w-[16rem];
+
+.better-styles-force-hidden,
+.better-styles .\!hidden {
+    @apply !tw-hidden;
 }
-.better-styles .m-\[0\.3rem\] {
-  @apply tw-m-[0.3rem];
+
+.better-styles .button {
+    @apply tw-inline-flex tw-justify-center tw-items-center tw-px-[var(--size-2)] tw-py-[var(--size-0-5)] tw-text-center tw-cursor-pointer;
+    transition: var(--button-transition);
+    box-shadow: var(--button-shadow);
 }
-.better-styles .\!border-x-2 {
-  @apply !tw-border-x-2;
+
+.better-styles .button[disabled] {
+    @apply tw-cursor-default;
 }
-.better-styles .\!border-b-2 {
-  @apply !tw-border-b-2;
+
+.better-styles .button.lg {
+    @apply tw-rounded-[var(--button-large-radius)] tw-p-[var(--button-large-padding)] tw-font-[var(--button-large-text-weight)] tw-text-[length:var(--button-large-text-size)];
 }
-.better-styles .w-64 {
-  @apply tw-w-64;
+
+.better-styles .button.primary {
+    @apply tw-border-solid tw-border-[var(--button-primary-border-color)] tw-border-[length:var(--button-border-width)] tw-text-[var(--button-primary-text-color)];
+    background: var(--button-primary-background-fill);
 }
-.better-styles .h-64 {
-  @apply tw-h-64;
+
+.better-styles .button.primary:hover {
+    @apply tw-border-[var(--button-primary-border-color-hover)] tw-text-[var(--button-primary-text-color-hover)];
+    background: var(--button-primary-background-fill-hover);
 }
-.better-styles .inset-x-0 {
-  @apply tw-inset-x-0;
+
+.better-styles .button.secondary {
+    @apply tw-border-solid tw-border-[var(--button-secondary-border-color)] tw-border-[length:var(--button-border-width)] tw-text-[var(--button-secondary-text-color)];
+    background: var(--button-secondary-background-fill);
 }
-.better-styles .bg-center {
-  @apply tw-bg-center;
+
+.better-styles .button.secondary:hover {
+    @apply tw-border-[var(--button-secondary-border-color-hover)] tw-text-[var(--button-secondary-text-color-hover)];
+    background: var(--button-secondary-background-fill-hover);
 }
-.better-styles .bg-cover {
-  @apply tw-bg-cover;
+
+.better-styles .text-input {
+    @apply tw-block tw-relative !tw-outline-none tw-border-[var(--input-border-color)] tw-border-solid tw-border-[length:var(--input-border-width)] tw-rounded-[var(--input-radius)] tw-p-[var(--input-padding)] tw-w-full tw-text-[var(--body-text-color)] tw-font-[var(--input-text-weight)] tw-text-[length:var(--input-text-size)] tw-resize-none tw-leading-[var(--line-sm)];
+    background: var(--input-background-fill);
+    box-shadow: var(--input-shadow);
 }
-.better-styles .hover\:text-red:hover {
-  color: red;
+
+.better-styles .text-input.search {
+    @apply tw-overflow-y-scroll tw-h-[42px] tw-ml-[0.6rem];
 }
-.better-styles .\!overflow-hidden {
-  @apply !tw-overflow-hidden;
+
+.better-styles .checkbox-wrapper {
+    @apply tw-cursor-pointer;
 }
-.better-styles .dark .dark\:text-white {
-  color: white;
+
+.better-styles .checkbox-wrapper.disabled {
+    @apply tw-opacity-50 tw-cursor-default;
 }
-.better-styles .blur-sm {
-  @apply tw-blur-sm;
+
+.better-styles .checkbox-wrapper > .label {
+    @apply tw-ml-2;
 }
-.better-styles .\!m-auto {
-  @apply !tw-m-auto;
+
+.better-styles .checkbox-wrapper > [type="checkbox"] {
+    @apply tw-inline-block tw-flex-shrink-0 tw-align-middle tw-appearance-none tw-border-solid tw-border tw-border-[var(--checkbox-border-color)] tw-bg-origin-border tw-bg-[var(--checkbox-background-color)] tw-p-0 tw-w-4 tw-h-4 tw-text-[#2563eb] tw-select-none tw-relative tw-rounded-[var(--checkbox-border-radius)] tw-leading-[var(--line-sm)];
+    --ring-color: transparent;
+    color-adjust: exact;
+    box-shadow: var(--input-shadow);
 }
-.better-styles .grow {
-  @apply tw-grow;
+
+.better-styles .checkbox-wrapper > [type="checkbox"]:checked {
+    @apply tw-border-[var(--checkbox-border-color-selected)] tw-bg-[var(--checkbox-background-color-selected)] tw-bg-[image:var(--checkbox-check)];
 }
-.better-styles .gap-x-2 {
-  @apply tw-gap-x-2;
+
+.better-styles .checkbox-wrapper:not(.disabled) > [type="checkbox"]:not(:checked):hover {
+    @apply tw-border-[var(--checkbox-border-color-hover)] tw-bg-[var(--checkbox-background-color-hover)];
 }
-.better-styles .gap-y-6 {
-  @apply tw-gap-y-6;
+
+.better-styles .tab-nav {
+    @apply tw-flex tw-relative tw-flex-wrap tw-whitespace-nowrap tw-border-solid tw-border-b tw-border-[var(--border-color-primary)];
 }
-.better-styles .outline-2 {
-  @apply tw-outline-2;
+
+.better-styles .tab-nav > .label {
+    @apply -tw-mb-[1px] tw-border tw-border-solid tw-border-b-0 tw-rounded-t-[var(--container-radius)] tw-py-[var(--size-1)] tw-px-[var(--size-4)] tw-font-[var(--section-header-text-weight)] tw-text-[length:var(--section-header-text-size)] tw-border-[var(--border-color-primary)] tw-text-[var(--body-text-color)] tw-flex tw-items-center;
+    background: var(--background-fill-primary);
 }
-.better-styles .outline-offset-2 {
-  @apply tw-outline-offset-2;
+
+.better-styles .tab-nav > .button {
+    @apply tw-m-[0.3rem];
 }
-.better-styles .outline-\[\#ff7c00\] {
-  @apply tw-outline-[#ff7c00];
+
+.better-styles .tab-item {
+    @apply tw-flex tw-flex-col tw-gap-3 tw-relative tw-border tw-border-[var(--border-color-primary)] tw-border-t-0 tw-rounded-b-[var(--container-radius)] tw-p-[var(--block-padding)];
 }
-.better-styles .hover\:scale-105:hover {
-  @apply tw-scale-105;
+
+.better-styles .group-container > .custom-button {
+    @apply tw-m-[0.3rem];
 }
-.better-styles .pb-0 {
-  @apply tw-pb-0;
+
+.better-styles .group-container > .custom-button[disabled] {
+    @apply tw-border-[var(--button-primary-border-color)];
+    background: none;
 }
-.better-styles .pt-3 {
-  @apply tw-pt-3;
+
+.better-styles .styles-cards > .no-cards {
+    @apply tw-mx-2;
 }
-.better-styles .pt-4 {
-  @apply tw-pt-4;
+
+.better-styles .no-cards > p {
+    @apply tw-text-2xl tw-mb-4;
 }
-.better-styles .pr-2 {
-  @apply tw-pr-2;
+
+.better-styles .styles-cards > .card {
+    @apply tw-inline-block tw-m-2 tw-w-64 tw-h-64 tw-select-none tw-cursor-pointer tw-overflow-hidden tw-rounded tw-relative;
+    box-shadow: 0 0 5px rgba(128, 128, 128, 0.5);
 }
-.better-styles .contents {
-  @apply tw-contents;
+
+.better-styles .styles-cards > .card:not(.selected):hover {
+    box-shadow: 0 0 2px 0.3em rgba(0, 128, 255, 0.35);
 }
-.better-styles .grid-cols-\[max-content_1fr\] {
-  @apply tw-grid-cols-[max-content_1fr];
+
+.better-styles .styles-cards > .card.selected {
+    @apply tw-outline tw-outline-2 tw-outline-offset-2 tw-outline-[#ff7c00];
 }
-.better-styles .\!overflow-y-scroll {
-  @apply !tw-overflow-y-scroll;
+
+.better-styles .card > .show-detail-button {
+    @apply tw-absolute tw-hidden tw-right-4 tw-text-white tw-p-1 tw-text-[22pt] tw-w-6 tw-z-10;
+    text-shadow: 2px 2px 3px black;
 }
-.better-styles .resize-none {
-  @apply tw-resize-none;
+
+.better-styles .card:hover > .show-detail-button {
+    @apply tw-inline-block;
+}
+
+.better-styles .card:hover > .show-detail-button::before {
+    @apply tw-content-["🛈"];
+}
+
+.better-styles .card > .image {
+    @apply tw-absolute tw-object-cover tw-w-full tw-h-full tw-transition-transform tw-ease-out tw-duration-500;
+}
+
+.better-styles .card:hover > .image {
+    transform: scale(1.05);
+}
+
+.better-styles .card > .actions {
+    @apply tw-absolute tw-bottom-0 tw-inset-x-0 tw-p-2 tw-flex tw-flex-col tw-text-white tw-bg-black/50;
+    box-shadow: 0 0 0.25em 0.25em rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 0.2em black;
+}
+
+.better-styles .actions > .replace-preview {
+    @apply tw-mt-1 tw-mb-3 tw-ml-1 tw-text-sm tw-hidden;
+}
+
+.better-styles .actions > .replace-preview:hover {
+    color: red;
+}
+
+.better-styles .actions:hover > .replace-preview {
+    display: inherit;
+}
+
+.better-styles .actions > .label {
+    @apply tw-text-xl tw-truncate;
+}
+
+.better-styles .styles-detail {
+    @apply tw-flex tw-flex-col tw-p-4 tw-gap-y-6;
+}
+
+.better-styles .styles-detail > .field-container {
+    @apply tw-grid tw-grid-cols-[max-content_1fr] tw-gap-4 tw-items-baseline;
+}
+
+.better-styles .field-container > .field {
+    @apply tw-contents;
+}
+
+.better-styles .field > .label {
+    @apply tw-text-right;
+    overflow-wrap: anywhere;
+}
+
+.better-styles .field > .value {
+    @apply tw-border-solid tw-border tw-border-[var(--input-border-color)] tw-rounded tw-m-0 tw-px-3 tw-py-1;
+    overflow-wrap: anywhere;
+}
+
+.better-styles .save-style {
+    @apply tw-flex tw-flex-col tw-p-4 tw-gap-y-6;
+}
+
+.better-styles .save-style > .text {
+    @apply tw-text-xl;
+}
+
+.better-styles .save-style > .button-container {
+    @apply tw-flex tw-justify-end tw-gap-x-2;
+}
+
+.better-styles .save-style > .input-fields {
+    @apply tw-grid tw-grid-cols-[max-content_1fr] tw-gap-2 tw-items-baseline;
+}
+
+.better-styles .input-fields > .input-field {
+    @apply tw-contents;
+}
+
+.better-styles .input-field > .label {
+    @apply tw-text-end;
+}
+
+.better-styles .input-field > .text-input {
+    @apply tw-w-auto;
+}
+
+.better-styles .parameters > .parameter-fields {
+    @apply tw-m-0 tw-p-0 tw-pt-1 tw-flex tw-flex-wrap tw-gap-x-3 tw-gap-y-1 tw-select-none;
+}
+
+.better-styles .save-style > .other-options {
+    @apply tw-flex tw-flex-col tw-gap-2 tw-select-none;
+}
+
+.better-styles .save-style > .buttons {
+    @apply tw-flex tw-gap-2;
+}
+
+.better-styles .buttons > .save-button {
+    @apply tw-flex-grow;
 }
