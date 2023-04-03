@@ -22,7 +22,7 @@ git clone https://github.com/eideehi/sd-webui-better-styles.git extensions/sd-we
 
 == 使用方法
 === Better Stylesコンテンツの表示
-Better Stylesをインストールすると、txt2img と img2img のタブにある「Generate」ボタンの下に新しいボタン（ラベルの絵文字のボタン 🏷）が追加されます。このボタンをクリックするとBetter Stylesのコンテンツが表示されます。
+Better Stylesをインストールすると、txt2img と img2img のタブにある「Generate」ボタンの下に新しいボタン（栞の絵文字のボタン 🔖）が追加されます。このボタンをクリックするとBetter Stylesのコンテンツが表示されます。
 
 === スタイルの保存
 「Save style」ボタンをクリックすると、スタイルを保存するためのダイアログが表示されます。以下に各項目について説明します。

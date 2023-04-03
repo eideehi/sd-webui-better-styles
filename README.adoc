@@ -22,7 +22,7 @@ git clone https://github.com/eideehi/sd-webui-better-styles.git extensions/sd-we
 
 == Usage
 === Displaying Better Styles content
-When you install Better Styles, a new button (an emoji of a label 🏷) will be added under the "Generate" button in the txt2img and img2img tabs. Clicking this button will display the content of Better Styles.
+When you install Better Styles, a new button (an emoji of a bookmark 🔖) will be added under the "Generate" button in the txt2img and img2img tabs. Clicking this button will display the content of Better Styles.
 
 === Saving styles
 When you click the "Save style" button, a dialog box will appear for saving the style. Here's an explanation of each item:
