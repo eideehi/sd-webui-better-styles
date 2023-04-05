@@ -36,13 +36,17 @@ export function dispatchEvent(element: HTMLElement, type: "input" | "change"): v
  * Returns the name of the currently active tab.
  */
 export function getCurrentTabName(): WebUiTab {
-  const tab = get_uiCurrentTab();
-  if (tab && tab.textContent) {
-    switch (tab.textContent.trim()) {
-      case _("txt2img"):
-        return "txt2img";
-      case _("img2img"):
-        return "img2img";
+  const content = get_uiCurrentTabContent();
+  if (content == null) {
+    return "other";
+  }
+  const { id } = content;
+  if (id.startsWith("tab_")) {
+    const tabName = id.slice(4);
+    switch (tabName) {
+      case "txt2img":
+      case "img2img":
+        return tabName;
     }
   }
   return "other";

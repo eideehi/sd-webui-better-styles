@@ -34,7 +34,7 @@ export function createBetterStylesComponents(tabName: StylesAvailableTab) {
   components.id = `better-styles-${tabName}-styles`;
   hidden(components, true);
   components.classList.add("better-styles", "form");
-  getElement(`div#${tabName}_extra_networks`)?.parentElement?.after(components);
+  getElement(`div#${tabName}_settings`)?.parentElement?.before(components);
 
   const container = document.createElement("div");
   container.classList.add("compact", "gradio-row");
