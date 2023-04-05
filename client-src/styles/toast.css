@@ -1,29 +1,29 @@
 .better-styles.toast {
-    @apply tw-fixed -tw-bottom-[10rem] tw-left-1/2 tw-py-4 tw-px-6 tw-rounded-md tw-font-bold tw-text-white tw-opacity-0 tw-z-[1100] tw-ease-in-out tw-duration-300;
-    transform: translateX(-50%);
-    transition-property: opacity, bottom, background-color;
+  @apply tw-fixed -tw-bottom-[10rem] tw-left-1/2 tw-z-[1100] tw-rounded-md tw-py-4 tw-px-6 tw-font-bold tw-text-white tw-opacity-0 tw-duration-300 tw-ease-in-out;
+  transform: translateX(-50%);
+  transition-property: opacity, bottom, background-color;
 }
 
 .better-styles.toast.show {
-    @apply tw-opacity-100 tw-bottom-6;
+  @apply tw-bottom-6 tw-opacity-100;
 }
 
 .better-styles.toast.fade-out {
-    @apply tw-opacity-0 tw-bottom-6;
+  @apply tw-bottom-6 tw-opacity-0;
 }
 
 .better-styles.toast.toast-info {
-    @apply tw-bg-[#0064b2];
+  @apply tw-bg-[#0064b2];
 }
 
 .better-styles.toast.toast-success {
-    @apply tw-bg-[#00ce8d];
+  @apply tw-bg-[#00ce8d];
 }
 
 .better-styles.toast.toast-warning {
-    @apply tw-bg-[#ce6400];
+  @apply tw-bg-[#ce6400];
 }
 
 .better-styles.toast.toast-error {
-    @apply tw-bg-[#ce0027];
+  @apply tw-bg-[#ce0027];
 }
