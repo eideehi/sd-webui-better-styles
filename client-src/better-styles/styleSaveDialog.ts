@@ -1,8 +1,8 @@
-import { _, hidden } from "./utils";
-import { getCurrentTabName, registerStyle } from "./webui";
+import { _, hidden } from "../libs/utils";
+import { getCurrentTabName, registerStyle } from "../libs/webui";
 import { currentGroup, styleGroups } from "./variables";
-import { closeModal, showModal } from "./modal";
-import { showToast } from "./toast";
+import { closeModal, showModal } from "../libs/modal";
+import { showToast } from "../libs/toast";
 import { onReceiveStyleGroup } from "./betterStyles";
 import {
   cfgScale,

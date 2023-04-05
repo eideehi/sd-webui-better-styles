@@ -6,9 +6,9 @@ import {
   hidden,
   removeAllChild,
   toggleClasses,
-} from "./utils";
-import { applyStyle, getCurrentTabName, registerStyle } from "./webui";
-import { showToast } from "./toast";
+} from "../libs/utils";
+import { applyStyle, getCurrentTabName, registerStyle } from "../libs/webui";
+import { showToast } from "../libs/toast";
 import { currentGroup, imagesDir, styleGroups, updateTimestamp } from "./variables";
 import { checkpoint, selectedImage } from "./styleValues";
 import { showStyleSaveDialog } from "./styleSaveDialog";

@@ -1,8 +1,12 @@
 import "./styles/index.css";
-import { getElement, hidden, withBooleanOption } from "./utils";
-import { getCurrentTabName } from "./webui";
-import { imagesDir, styleGroups } from "./variables";
-import { createBetterStylesComponents, updateBetterStyleComponents } from "./betterStyles";
+import { getElement, hidden, withBooleanOption } from "./libs/utils";
+import { getCurrentTabName } from "./libs/webui";
+import {
+  createBetterStylesComponents,
+  updateBetterStyleComponents,
+  imagesDir,
+  styleGroups,
+} from "./better-styles";
 
 let fetchLocalization: Promise<void> | null = null;
 let fetchStylesPromise: Promise<void> | null = null;

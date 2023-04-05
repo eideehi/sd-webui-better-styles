@@ -1,9 +1,9 @@
-import { _, getElementAll } from "./utils";
+import { _, getElementAll } from "../libs/utils";
 import { currentGroup, styleGroups } from "./variables";
-import { closeModal, showModal } from "./modal";
-import { showToast } from "./toast";
+import { closeModal, showModal } from "../libs/modal";
+import { showToast } from "../libs/toast";
 import { onReceiveStyleGroup } from "./betterStyles";
-import { deleteStyles } from "./webui";
+import { deleteStyles } from "../libs/webui";
 
 export function showStylesDeleteDialog(tabName: StylesAvailableTab) {
   const content = document.createElement("div");

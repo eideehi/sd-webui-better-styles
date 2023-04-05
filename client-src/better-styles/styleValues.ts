@@ -1,4 +1,4 @@
-import { getElement } from "./utils";
+import { getElement } from "../libs/utils";
 import {
   createEmptyAccessor,
   createTextAreaAccessor,
@@ -6,7 +6,7 @@ import {
   createNumberInputAccessor,
   createCheckboxAccessor,
   SelectAccessor,
-} from "./webui";
+} from "../libs/webui";
 
 export function selectedImage(tabName: StylesAvailableTab): ValueGetter<string> {
   const element = getElement(`#${tabName}_gallery > div > img`);

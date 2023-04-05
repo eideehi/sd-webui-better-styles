@@ -1,4 +1,4 @@
-import { createValueAccessor } from "./webui";
+import { createValueAccessor } from "../libs/webui";
 
 /**
  * A collection of all style groups saved by the user, obtained via API from the server.

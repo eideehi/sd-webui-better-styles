@@ -1,5 +1,5 @@
-import { _ } from "./utils";
-import { closeModal, showModal } from "./modal";
+import { _ } from "../libs/utils";
+import { closeModal, showModal } from "../libs/modal";
 
 export const showStyleDetailDialog = (style: Style) => {
   const frame = document.createElement("div");

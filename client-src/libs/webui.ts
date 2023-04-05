@@ -15,7 +15,7 @@ import {
   tiling,
   upscaleBy,
   upscaler,
-} from "./styleValues";
+} from "../better-styles/styleValues";
 
 /**
  * Dispatches an event of the specified type on the specified element.
