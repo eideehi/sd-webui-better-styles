@@ -20,6 +20,37 @@ You can also install it by running the following command in the directory where 
 git clone https://github.com/eideehi/sd-webui-better-styles.git extensions/sd-webui-better-styles
 ----
 
+=== Using a different version
+By following the above steps, the latest version will be installed. However, it may not work with the version of your WebUI that you are using. If Better Styles is not working properly, you may be able to solve the problem by using a different version.
+
+To change the version of Better Styles, you need to use git. In the **directory where you installed Better Styles** in the **extensions** directory of the Stable Diffusion web UI, run the following command.
+[source,shell]
+----
+git checkout x.y.z
+----
+
+NOTE: Replace "x.y.z" above with the version you want to use. The available versions are as follows.
+
+|===
+| Version | WebUI Version (minimum) | WebUI Version (maximum)
+| 1.0.0 (700616f) | b2073781 (2023-02-16) | a9eab236 (2023-03-24)
+| 1.0.1 (444b242) | b2073781 (2023-02-16) | a9eab236 (2023-03-24)
+| 1.1.0 (e473734) | 9e1afa9e (2023-03-25) | ~
+| 1.1.1 (04c77e6) | 9e1afa9e (2023-03-25) | ~
+| 1.1.2 (9c3e1ad) | 9e1afa9e (2023-03-25) | ~
+|===
+
+Please note that the minimum and maximum WebUI versions where Better Styles works are based on the developer's testing, and the version may vary.
+
+=== Reverting to the latest version
+Now that you have switched to a different version, clicking the "Check for updates" button will not fetch updates for Better Styles, and it will always display "Latest". To update Better Styles by reverting to the latest version, use the following git command.
+[source,shell]
+----
+git checkout main
+----
+
+With this command, you can update Better Styles using the "Check for updates" button.
+
 == Usage
 === Displaying Better Styles content
 When you install Better Styles, a new button (an emoji of a bookmark 🔖) will be added under the "Generate" button in the txt2img and img2img tabs. Clicking this button will display the content of Better Styles.

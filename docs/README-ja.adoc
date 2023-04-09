@@ -20,6 +20,37 @@ Stable Diffusion web UIをインストールしたディレクトリで以下の
 git clone https://github.com/eideehi/sd-webui-better-styles.git extensions/sd-webui-better-styles
 ----
 
+=== 別のバージョンを使用する
+上記の方法でインストールを行うと、最新のバージョンがインストールされます。しかし、それではあなたの使用しているWebUIのバージョンでは動作しないかもしれません。Better Stylesが正常に動作しない場合、別のバージョンを使用することで解決できるかもしれません。
+
+Better Stylesのバージョンを変更するにはgitを使用する必要があります。Stable Diffusion web UIの **extensions** ディレクトリ内部の**Better Stylesをインストールしたディレクトリ**で以下のコマンドを実行します。
+[source,shell]
+----
+git checkout x.y.z
+----
+
+NOTE: 上記の "x.y.z" を使用したいバージョンに置き換えてください。現在利用可能なバージョンは次のとおりです。
+
+|===
+| Version | WebUI Version (minimum) | WebUI Version (maximum)
+| 1.0.0 (700616f) | b2073781 (2023-02-16) | a9eab236 (2023-03-24)
+| 1.0.1 (444b242) | b2073781 (2023-02-16) | a9eab236 (2023-03-24)
+| 1.1.0 (e473734) | 9e1afa9e (2023-03-25) | ~
+| 1.1.1 (04c77e6) | 9e1afa9e (2023-03-25) | ~
+| 1.1.2 (9c3e1ad) | 9e1afa9e (2023-03-25) | ~
+|===
+
+Better Stylesが動作するWebUIの最小と最大のバージョンは開発者が動作を確認したものであり、正確にはバージョンが前後することもあることをご了承下さい。
+
+=== バージョンを最新版に戻す
+さて、別のバージョンに切り替えられたのはいいですが、この状態ではCheck for updatesのボタンを押してもBetter Stylesのアップデートは取得されず、常にLatestと表示されてしまいます。アップデートを行うために最新のバージョンに戻すには次のgitコマンドを使用します。
+[source,shell]
+----
+git checkout main
+----
+
+これでCheck for updatesのボタンでBetter Stylesをアップデートできるようになりました。
+
 == 使用方法
 === Better Stylesコンテンツの表示
 Better Stylesをインストールすると、txt2img と img2img のタブにある「Generate」ボタンの下に新しいボタン（栞の絵文字のボタン 🔖）が追加されます。このボタンをクリックするとBetter Stylesのコンテンツが表示されます。
