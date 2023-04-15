@@ -82,7 +82,7 @@ def load_id_map() -> None:
 def refresh_available_localization() -> None:
   if LOCALIZATION_DIR.is_dir():
     global available_localization
-    available_localization = [""] + [f.stem for f in LOCALIZATION_DIR.glob("*.json") if f.is_file()]
+    available_localization = [" "] + [f.stem for f in LOCALIZATION_DIR.glob("*.json") if f.is_file()]
 
 def load_localization() -> None:
   localization = shared.opts.better_styles_localization
