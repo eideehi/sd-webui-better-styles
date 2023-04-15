@@ -85,7 +85,11 @@ def refresh_available_localization() -> None:
     available_localization = [" "] + [f.stem for f in LOCALIZATION_DIR.glob("*.json") if f.is_file()]
 
 def load_localization() -> None:
-  localization = shared.opts.better_styles_localization
+  try:
+    localization = shared.opts.better_styles_localization
+  except:
+    return
+
   if localization in available_localization:
     file_path = LOCALIZATION_DIR.joinpath("{}.json".format(localization))
     if file_path.is_file():
