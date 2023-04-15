@@ -21,7 +21,7 @@ git clone https://github.com/eideehi/sd-webui-better-styles.git extensions/sd-we
 ----
 
 === Using a different version
-By following the above steps, the latest version will be installed. However, it may not work with the version of your WebUI that you are using. If Better Styles is not working properly, you may be able to solve the problem by using a different version.
+By following the above steps, the latest version will be installed. However, it may not work with the version of your Web UI that you are using. If Better Styles is not working properly, you may be able to solve the problem by using a different version.
 
 To change the version of Better Styles, you need to use git. In the **directory where you installed Better Styles** in the **extensions** directory of the Stable Diffusion web UI, run the following command.
 [source,shell]
@@ -32,15 +32,15 @@ git checkout x.y.z
 NOTE: Replace "x.y.z" above with the version you want to use. The available versions are as follows.
 
 |===
-| Version | WebUI Version (minimum) | WebUI Version (maximum)
-| 1.0.0 (700616f) | b2073781 (2023-02-16) | a9eab236 (2023-03-24)
-| 1.0.1 (444b242) | b2073781 (2023-02-16) | a9eab236 (2023-03-24)
-| 1.1.0 (e473734) | 9e1afa9e (2023-03-25) | ~
-| 1.1.1 (04c77e6) | 9e1afa9e (2023-03-25) | ~
-| 1.1.2 (9c3e1ad) | 9e1afa9e (2023-03-25) | ~
+| Version         | Web UI Version (minimum) | Web UI Version (maximum)
+| 1.0.0 (700616f) | b2073781 (2023-02-16)    | a9eab236 (2023-03-24)
+| 1.0.1 (444b242) | b2073781 (2023-02-16)    | a9eab236 (2023-03-24)
+| 1.1.0 (e473734) | 9e1afa9e (2023-03-25)    | ~
+| 1.1.1 (04c77e6) | 9e1afa9e (2023-03-25)    | ~
+| 1.1.2 (9c3e1ad) | 9e1afa9e (2023-03-25)    | ~
 |===
 
-Please note that the minimum and maximum WebUI versions where Better Styles works are based on the developer's testing, and the version may vary.
+Please note that the minimum and maximum Web UI versions where Better Styles works are based on the developer's testing, and the version may vary.
 
 === Reverting to the latest version
 Now that you have switched to a different version, clicking the "Check for updates" button will not fetch updates for Better Styles, and it will always display "Latest". To update Better Styles by reverting to the latest version, use the following git command.
@@ -59,25 +59,25 @@ When you install Better Styles, a new button (an emoji of a bookmark 🔖) will 
 When you click the "Save style" button, a dialog box will appear for saving the style. Here's an explanation of each item:
 image:docs/images/save-dialog.png[Image - Save dialog]
 
-Style name (required)::
+==== Style name (required)
 Enter a name for the style you want to save. Be careful not to give it a long name, as it may be abbreviated in the list. If you enter a name that is the same as an existing style, you can overwrite that style.
 
-Group (required)::
+==== Group (required)
 Enter the group to which the style belongs. The default value is the currently selected group.
 
-Prompt::
+==== Prompt
 Enter the prompt you want to save as a style. The default value is the value currently entered in the prompt area. You can leave this field blank if you don't want to include a prompt for the style.
 
-Negative prompt::
+==== Negative prompt
 Enter the negative prompt you want to save as a style. The default value is the value currently entered in the negative prompt area. You can leave this field blank if you don't want to include a negative prompt for the style.
 
-Save these parameters as style::
+==== Save these parameters as style
 Save the parameters that have been checked as a style.
 
-Make this style exclusive to the current checkpoint::
+==== Make this style exclusive to the current checkpoint
 Choose whether to make this style exclusive to the currently loaded model. If you make it an exclusive style, it will not be displayed in the list if another model is loaded.
 
-Use the current image as a thumbnail::
+==== Use the current image as a thumbnail
 Choose whether to use the currently selected image as the thumbnail for this style. This item will be disabled if no image is selected.
 
 === Applying styles
@@ -86,14 +86,14 @@ You can apply a style by selecting it from the list of styles and clicking the "
 === Deleting styles
 You can delete a style by selecting it from the list of styles and clicking the "Delete style" button.
 
-=== Config
+== Config
 Better Styles creates its own config section in the Settings tab. Here's an explanation of each item:
 image:docs/images/settings.png[Image - Settings]
 
-Hide the original Styles::
+=== Hide the original Styles
 Choose whether to hide the original Styles dropdown and associated button.
 
-Language of Better Styles::
+=== Language of Better Styles
 Specify the language to use for the Better Styles component. The default value is blank (English). Currently, ja_JP language is available.
 
 == License

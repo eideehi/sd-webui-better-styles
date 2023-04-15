@@ -21,7 +21,7 @@ git clone https://github.com/eideehi/sd-webui-better-styles.git extensions/sd-we
 ----
 
 === 別のバージョンを使用する
-上記の方法でインストールを行うと、最新のバージョンがインストールされます。しかし、それではあなたの使用しているWebUIのバージョンでは動作しないかもしれません。Better Stylesが正常に動作しない場合、別のバージョンを使用することで解決できるかもしれません。
+上記の方法でインストールを行うと、最新のバージョンがインストールされます。しかし、それではあなたの使用しているWeb UIのバージョンでは動作しないかもしれません。Better Stylesが正常に動作しない場合、別のバージョンを使用することで解決できるかもしれません。
 
 Better Stylesのバージョンを変更するにはgitを使用する必要があります。Stable Diffusion web UIの **extensions** ディレクトリ内部の**Better Stylesをインストールしたディレクトリ**で以下のコマンドを実行します。
 [source,shell]
@@ -32,15 +32,15 @@ git checkout x.y.z
 NOTE: 上記の "x.y.z" を使用したいバージョンに置き換えてください。現在利用可能なバージョンは次のとおりです。
 
 |===
-| Version | WebUI Version (minimum) | WebUI Version (maximum)
-| 1.0.0 (700616f) | b2073781 (2023-02-16) | a9eab236 (2023-03-24)
-| 1.0.1 (444b242) | b2073781 (2023-02-16) | a9eab236 (2023-03-24)
-| 1.1.0 (e473734) | 9e1afa9e (2023-03-25) | ~
-| 1.1.1 (04c77e6) | 9e1afa9e (2023-03-25) | ~
-| 1.1.2 (9c3e1ad) | 9e1afa9e (2023-03-25) | ~
+| バージョン      | Web UIのバージョン (最小) | Web UIのバージョン (最大)
+| 1.0.0 (700616f) | b2073781 (2023-02-16)     | a9eab236 (2023-03-24)
+| 1.0.1 (444b242) | b2073781 (2023-02-16)     | a9eab236 (2023-03-24)
+| 1.1.0 (e473734) | 9e1afa9e (2023-03-25)     | ~
+| 1.1.1 (04c77e6) | 9e1afa9e (2023-03-25)     | ~
+| 1.1.2 (9c3e1ad) | 9e1afa9e (2023-03-25)     | ~
 |===
 
-Better Stylesが動作するWebUIの最小と最大のバージョンは開発者が動作を確認したものであり、正確にはバージョンが前後することもあることをご了承下さい。
+Better Stylesが動作するWeb UIの最小と最大のバージョンは開発者が動作を確認したものであり、正確にはバージョンが前後することもあることをご了承下さい。
 
 === バージョンを最新版に戻す
 さて、別のバージョンに切り替えられたのはいいですが、この状態ではCheck for updatesのボタンを押してもBetter Stylesのアップデートは取得されず、常にLatestと表示されてしまいます。アップデートを行うために最新のバージョンに戻すには次のgitコマンドを使用します。
@@ -59,25 +59,25 @@ Better Stylesをインストールすると、txt2img と img2img のタブに�
 「Save style」ボタンをクリックすると、スタイルを保存するためのダイアログが表示されます。以下に各項目について説明します。
 image:images/save-dialog.png[Image - Save dialog]
 
-Style name (必須)::
+==== Style name (必須)
 保存するスタイルの名前を入力します。長い名前を付けると一覧で省略表示されてしまうので、注意してください。既存のスタイルと同じ名前を入力すると、そのスタイルを上書きできます。
 
-Group (必須)::
+==== Group (必須)
 スタイルが所属するグループを入力します。デフォルト値は現在選択されているグループです。
 
-Prompt::
+==== Prompt
 スタイルとして保存するプロンプトを入力します。デフォルト値は現在プロンプトエリアに入力されている値です。プロンプトをスタイルに含めない場合、この項目を空白にしてください。
 
-Negative prompt::
+==== Negative prompt
 スタイルとして保存するネガティブプロンプトを入力します。デフォルト値は現在ネガティブプロンプトエリアに入力されている値です。ネガティブプロンプトをスタイルに含めない場合、この項目を空白にしてください。
 
-Save these parameters as style::
+==== Save these parameters as style
 チェックを入れたパラメータをスタイルとして保存します。
 
-Make this style exclusive to the current checkpoint::
+==== Make this style exclusive to the current checkpoint
 このスタイルを現在ロードされているモデル専用のスタイルにするかどうかを選択します。専用のスタイルにすると、別のモデルがロードされている場合、このスタイルは一覧に表示されなくなります。
 
-Use the current image as a thumbnail::
+==== Use the current image as a thumbnail
 現在選択されている画像を、このスタイルのサムネイルにするかどうかを選択します。画像が選択されていない場合、この項目は無効になります。
 
 === スタイルの適用
@@ -86,14 +86,14 @@ Use the current image as a thumbnail::
 === スタイルの削除
 スタイルの一覧から、削除したいスタイルを選択し、"Delete style"ボタンを押すことでスタイルを削除できます。
 
-=== コンフィグ
+== コンフィグ
 Better Stylesは、Settingsタブに独自のコンフィグセクションを作成します。以下に、それぞれの項目について説明します。
 image:images/settings.png[Image - Settings]
 
-Hide the original Styles::
+=== Hide the original Styles
 オリジナルのStylesドロップダウンと関連するボタンを非表示にするかどうかを選択します。
 
-Language of Better Styles::
+=== Language of Better Styles
 Better Stylesコンポーネントの使用言語を指定します。デフォルト値は空白（英語）です。現在、ja_JP の言語が利用可能です。
 
 == ライセンス
