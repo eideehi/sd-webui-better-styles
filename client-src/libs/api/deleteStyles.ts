@@ -6,7 +6,7 @@ export type StylesDeletionRequest = {
 };
 
 export function deleteStyles(request: StylesDeletionRequest): Promise<StyleGroup[]> {
-  return fetch("/better-style-api/v1/delete-styles", {
+  return fetch("/better-styles-api/v1/delete-styles", {
     method: "POST",
     headers: {
       Accept: "application/json",

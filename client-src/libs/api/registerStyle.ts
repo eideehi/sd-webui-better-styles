@@ -6,7 +6,7 @@ export type RegisterStyleRequest = {
 };
 
 export function registerStyle(request: RegisterStyleRequest): Promise<StyleGroup[]> {
-  return fetch("/better-style-api/v1/register-style", {
+  return fetch("/better-styles-api/v1/register-style", {
     method: "POST",
     headers: {
       Accept: "application/json",

@@ -1,5 +1,5 @@
 export function getLocalization(): Promise<Record<string, string>> {
-  return fetch(`/better-style-api/v1/get-localization?ts=${new Date().getTime()}`)
+  return fetch(`/better-styles-api/v1/get-localization?ts=${new Date().getTime()}`)
     .then((response) => response.json())
     .then(parseLocalization);
 }

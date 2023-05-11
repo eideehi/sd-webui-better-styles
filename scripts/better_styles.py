@@ -324,29 +324,29 @@ def find_disused_images(styles1: List[Style], styles2: List[Style]) -> List[Styl
 
 
 def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
-    @app.get("/better-style-api/v1/check-for-updates")
+    @app.get("/better-styles-api/v1/check-for-updates")
     async def check_for_updates(request: Request):
         version = subprocess.check_output([git, "log", '--pretty=%(describe:tags)', "-n", "1"], cwd=EXTENSION_ROOT,
                                           shell=True).decode("utf-8")
         version = version.strip().split("-")[0]
         return JSONResponse(content=do_check_for_updates(version))
 
-    @app.get("/better-style-api/v1/get-localization")
+    @app.get("/better-styles-api/v1/get-localization")
     async def get_localization(request: Request):
         return JSONResponse(content=localization_dict)
 
-    @app.get("/better-style-api/v1/images-dir")
+    @app.get("/better-styles-api/v1/images-dir")
     async def images_dir(request: Request):
         return JSONResponse(content={"imagesDir": IMAGES_DIR.relative_to(PARENT_ROOT).as_posix()})
 
-    @app.get("/better-style-api/v1/all-style")
+    @app.get("/better-styles-api/v1/all-style")
     async def all_style(request: Request):
         if STYLES_JSON.is_file():
             return FileResponse(path=STYLES_JSON, media_type="application/json")
         else:
             return JSONResponse(content=[])
 
-    @app.post("/better-style-api/v1/register-style")
+    @app.post("/better-styles-api/v1/register-style")
     async def register_style(request: Request):
         request_data = RegisterStyleRequestDecoder().decode(await request.body())
         style = request_data.style
@@ -375,7 +375,7 @@ def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
         STYLES_JSON.write_text(json_data, encoding="UTF-8")
         return JSONResponse(content=json.loads(json_data))
 
-    @app.post("/better-style-api/v1/delete-styles")
+    @app.post("/better-styles-api/v1/delete-styles")
     async def delete_styles(request: Request):
         target_names = json.loads(await request.body())
         file_data = load_styles_json()

@@ -4,7 +4,7 @@ export type CheckForUpdatesResponse = {
 };
 
 export function checkForUpdates(): Promise<CheckForUpdatesResponse> {
-  const promise = fetch(`/better-style-api/v1/check-for-updates?ts=${new Date().getTime()}`);
+  const promise = fetch(`/better-styles-api/v1/check-for-updates?ts=${new Date().getTime()}`);
   return promise.then((response) => response.json()).then(parseResponse);
 }
 

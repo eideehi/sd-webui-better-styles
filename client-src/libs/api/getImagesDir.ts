@@ -1,5 +1,5 @@
 export function getImagesDir(): Promise<string> {
-  return fetch(`/better-style-api/v1/images-dir?ts=${new Date().getTime()}`)
+  return fetch(`/better-styles-api/v1/images-dir?ts=${new Date().getTime()}`)
     .then((response) => response.json())
     .then(parseImagesDir);
 }
