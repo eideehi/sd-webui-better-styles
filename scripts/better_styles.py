@@ -16,6 +16,7 @@ from gradio import Blocks
 from modules import scripts, script_callbacks, shared
 
 
+# noinspection DuplicatedCode
 @dataclass
 class UpdateInfo:
     timestamp: datetime
@@ -85,8 +86,8 @@ class RegisterStyleRequest:
 
 
 class RegisterStyleRequestDecoder(json.JSONDecoder):
-    def decode(self, json_str: str, *args: Any, **kwargs: Any) -> RegisterStyleRequest:
-        data = json.loads(json_str, *args, **kwargs)
+    def decode(self, json_bytes: bytes, *args: Any, **kwargs: Any) -> RegisterStyleRequest:
+        data = json.loads(json_bytes, *args, **kwargs)
         style_data = data["style"]
         style = Style(**style_data)
         return RegisterStyleRequest(group=data["group"], style=style)
@@ -111,6 +112,7 @@ available_localization = []
 localization_dict = {}
 
 
+# noinspection DuplicatedCode
 def get_git_command() -> None:
     global git
     try:
@@ -173,6 +175,7 @@ def find_newer_version(target_version: str) -> str:
 
 
 def do_check_for_updates(target_version: str) -> Dict[str, Any]:
+    update_info = UpdateInfo(datetime.now(), "")
     if UPDATE_INFO_JSON.exists():
         update_info = UpdateInfo.from_json(UPDATE_INFO_JSON)
         delta = datetime.now() - update_info.timestamp
@@ -198,6 +201,7 @@ def load_id_map() -> None:
         id_map = json.loads(ID_MAPPING_JSON.read_text(encoding="UTF-8"))
 
 
+# noinspection DuplicatedCode
 def refresh_available_localization() -> None:
     if LOCALIZATION_DIR.is_dir():
         global available_localization
@@ -207,7 +211,7 @@ def refresh_available_localization() -> None:
 def load_localization() -> None:
     try:
         localization = shared.opts.better_styles_localization
-    except:
+    except AttributeError:
         return
 
     if localization in available_localization:
@@ -217,6 +221,7 @@ def load_localization() -> None:
             localization_dict = json.loads(file_path.read_text(encoding="UTF-8"))
 
 
+# noinspection DuplicatedCode
 def _(text: str) -> str:
     if text in localization_dict:
         return localization_dict[text]
@@ -277,7 +282,7 @@ def get_image_path(group: str, style_name: str) -> str:
 
 
 def get_or_create_id(category: str, key: str) -> str:
-    if not category in id_map:
+    if category not in id_map:
         data = {"max": 1, key: 1}
         id_map[category] = data
         ID_MAPPING_JSON.write_text(json.dumps(id_map), encoding="UTF-8")
@@ -287,11 +292,11 @@ def get_or_create_id(category: str, key: str) -> str:
     if key in data:
         return str(data[key])
 
-    max = data["max"] + 1
-    data[key] = max
-    data["max"] = max
+    max_id = data["max"] + 1
+    data[key] = max_id
+    data["max"] = max_id
     ID_MAPPING_JSON.write_text(json.dumps(id_map), encoding="UTF-8")
-    return str(max)
+    return str(max_id)
 
 
 def save_image(input_file: str, output_file: str):
