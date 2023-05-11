@@ -95,11 +95,11 @@ class RegisterStyleRequestDecoder(json.JSONDecoder):
 
 GIT = os.environ.get('GIT', "git")
 SETTINGS_SECTION = ("better_styles", "Better Styles")
+WEBUI_ROOT = Path().absolute()
 EXTENSION_ROOT = scripts.basedir()
-PARENT_ROOT = Path().absolute()
-BASE_DIR = Path(scripts.basedir())
-LOCALIZATION_DIR = BASE_DIR.joinpath("locales")
-USER_DATA_DIR = BASE_DIR.joinpath("user-data")
+EXTENSION_DIR = Path(EXTENSION_ROOT)
+LOCALIZATION_DIR = EXTENSION_DIR.joinpath("locales")
+USER_DATA_DIR = EXTENSION_DIR.joinpath("user-data")
 UPDATE_INFO_JSON = USER_DATA_DIR.joinpath("update-info.json")
 ID_MAPPING_JSON = USER_DATA_DIR.joinpath("id-mapping.json")
 STYLES_JSON = USER_DATA_DIR.joinpath("styles.json")
@@ -342,7 +342,7 @@ def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
 
     @app.get("/better-styles-api/v1/images-dir")
     async def images_dir(request: Request):
-        return JSONResponse(content={"imagesDir": IMAGES_DIR.relative_to(PARENT_ROOT).as_posix()})
+        return JSONResponse(content={"imagesDir": IMAGES_DIR.relative_to(WEBUI_ROOT).as_posix()})
 
     @app.get("/better-styles-api/v1/all-style")
     async def all_style(request: Request):
