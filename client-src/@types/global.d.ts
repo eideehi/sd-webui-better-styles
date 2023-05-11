@@ -1,16 +1,46 @@
-// injected-script
-declare let localization: Record<string, string>;
+type Nullable<T> = T | null | undefined;
 
-// script.js
-declare function gradioApp(): Document | ShadowRoot;
-declare function get_uiCurrentTabContent(): Element | null;
-declare function onUiLoaded(callback: () => void): void;
-declare function onUiTabChange(callback: () => void): void;
+type Callback = () => unknown;
+type Callback1<T> = (arg: T) => unknown;
 
-// javascript/localization.js
-declare function getTranslation(text: string): string | undefined;
+type Style = {
+  name: string;
+  image?: string;
+  checkpoint?: string;
+  prompt?: string;
+  negativePrompt?: string;
+  samplingMethod?: string;
+  samplingSteps?: number;
+  cfgScale?: number;
+  seed?: number;
+  restoreFaces?: boolean;
+  tiling?: boolean;
+  hiresFix?: boolean;
+  upscaler?: string;
+  hiresSteps?: number;
+  denoisingStrength?: number;
+  upscaleBy?: number;
+  clipSkip?: number;
+  etaNoiseSeedDelta?: number;
+};
 
-// javascript/ui.js
-declare type OptionValue = string | number | boolean;
-declare let opts: Record<string, OptionValue>;
-declare function updateInput(target: HTMLElement): void;
+type StyleGroup = {
+  name: string;
+  styles: Style[];
+};
+
+type StylesAvailableTab = "txt2img" | "img2img";
+
+type WebUiTab = StylesAvailableTab | "other";
+
+type ValueGetter<T> = {
+  get(): Nullable<T>;
+  getOrDefault(defaultValue: T): T;
+  with(callback: Callback1<T>): void;
+};
+
+type ValueSetter<T> = {
+  set(value: T): boolean;
+};
+
+type ValueAccessor<T> = ValueGetter<T> & ValueSetter<T>;

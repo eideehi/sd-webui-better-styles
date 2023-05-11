@@ -13,7 +13,16 @@
      */
     "allowJs": true,
     "checkJs": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "client-src/*"
+      ],
+      "#/*": [
+        "client-src/components/*"
+      ]
+    }
   },
   "include": ["client-src/**/*.d.ts", "client-src/**/*.ts", "client-src/**/*.js", "client-src/**/*.svelte"],
   "references": [{ "path": "./tsconfig.node.json" }]
