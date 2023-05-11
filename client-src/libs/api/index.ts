@@ -1,3 +1,4 @@
+export { checkForUpdates } from "./checkForUpdates";
 export { deleteStyles } from "./deleteStyles";
 export { getAllStyles } from "./getAllStyles";
 export { getImagesDir } from "./getImagesDir";

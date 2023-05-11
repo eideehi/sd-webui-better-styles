@@ -1,11 +1,13 @@
 import "@/assets/styles/global.css";
-import { getAllStyles, getImagesDir, getLocalization } from "@/libs/api";
+import { checkForUpdates, getAllStyles, getImagesDir, getLocalization } from "@/libs/api";
 import { imagesDir, styleGroups, stylesUpdate } from "@/libs/store";
-import { getCurrentTabName, getElement, hidden, withBooleanOption } from "@/libs/util";
+import { _, getCurrentTabName, getElement, hidden, withBooleanOption } from "@/libs/util";
+import { showToast } from "@/libs/util/toast";
 import BetterStyles from "#/better-styles/BetterStyles.svelte";
 import Toast from "#/toast/Toast.svelte";
 
 let fetchLocalization: Nullable<Promise<void>> = null;
+let checkedUpdate = false;
 
 onUiLoaded(() => {
   styleGroups.subscribe(() => {
@@ -43,6 +45,7 @@ async function initializeBetterStyles(tabName: StylesAvailableTab): Promise<void
 
   await Promise.all([fetchLocalization]).then(() => {
     createBetterStylesComponents(tabName);
+    checkExtensionUpdates();
   });
 }
 
@@ -68,6 +71,23 @@ function createBetterStylesComponents(tabName: StylesAvailableTab) {
   const anchor = getElement(`div#${tabName}_settings`);
   if (anchor == null || anchor.parentElement == null) return;
   new BetterStyles({ target: anchor.parentElement, anchor, props: { tabName } });
+}
+
+function checkExtensionUpdates(): void {
+  if (checkedUpdate) return;
+  checkedUpdate = true;
+
+  withBooleanOption("better_styles_update_notify_enabled", async (value) => {
+    if (!value) return;
+    await checkForUpdates().then((result) => {
+      if (!result.update) return;
+      showToast({
+        type: "info",
+        text: _("Better Styles version {0} is available", result.version),
+        duration: 10000,
+      });
+    });
+  });
 }
 
 export default {};

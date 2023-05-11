@@ -1,7 +1,11 @@
 import json
+import os
+import re
+import subprocess
 from dataclasses import asdict, dataclass, field
+from datetime import datetime
 from pathlib import Path
-from typing import Callable, Optional, Tuple, List, Any
+from typing import Callable, Optional, Tuple, List, Any, Dict
 
 import gradio as gr
 from PIL import Image
@@ -10,6 +14,27 @@ from fastapi.responses import FileResponse, JSONResponse
 from gradio import Blocks
 
 from modules import scripts, script_callbacks, shared
+
+
+@dataclass
+class UpdateInfo:
+    timestamp: datetime
+    version: str
+
+    @classmethod
+    def from_json(cls, file_path: Path) -> "UpdateInfo":
+        if file_path.is_file():
+            data = json.loads(file_path.read_text(encoding="UTF-8"))
+            timestamp = datetime.strptime(data['timestamp'], '%Y-%m-%d %H:%M:%S')
+            version = data["version"]
+            return cls(timestamp, version)
+        return cls(datetime.now(), "")
+
+    def to_json(self, file_path: Path):
+        if not file_path.exists():
+            file_path.parent.mkdir(parents=True, exist_ok=True)
+        data = {"timestamp": self.timestamp.strftime('%Y-%m-%d %H:%M:%S'), "version": self.version}
+        file_path.write_text(json.dumps(data), encoding="UTF-8")
 
 
 @dataclass
@@ -67,18 +92,104 @@ class RegisterStyleRequestDecoder(json.JSONDecoder):
         return RegisterStyleRequest(group=data["group"], style=style)
 
 
+GIT = os.environ.get('GIT', "git")
 SETTINGS_SECTION = ("better_styles", "Better Styles")
+EXTENSION_ROOT = scripts.basedir()
 PARENT_ROOT = Path().absolute()
 BASE_DIR = Path(scripts.basedir())
 LOCALIZATION_DIR = BASE_DIR.joinpath("locales")
 USER_DATA_DIR = BASE_DIR.joinpath("user-data")
+UPDATE_INFO_JSON = USER_DATA_DIR.joinpath("update-info.json")
 ID_MAPPING_JSON = USER_DATA_DIR.joinpath("id-mapping.json")
 STYLES_JSON = USER_DATA_DIR.joinpath("styles.json")
 IMAGES_DIR = USER_DATA_DIR.joinpath("images")
 
+git = "git"
+available_versions: List[str] = []
 id_map = {}
 available_localization = []
 localization_dict = {}
+
+
+def get_git_command() -> None:
+    global git
+    try:
+        subprocess.run([git, "-v"], cwd=EXTENSION_ROOT, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                       check=True)
+    except subprocess.CalledProcessError:
+        git = GIT
+        subprocess.run([git, "-v"], cwd=EXTENSION_ROOT, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                       check=True)
+
+
+def print_version() -> None:
+    result = subprocess.check_output([git, "log", '--pretty=v%(describe:tags)', "-n", "1"], cwd=EXTENSION_ROOT,
+                                     shell=True).decode("utf-8")
+    print(f"Better Styles version is {result.strip()}")
+
+
+def refresh_available_version() -> None:
+    versions = subprocess.check_output([git, "tag"], cwd=EXTENSION_ROOT, shell=True).decode("utf-8").splitlines()
+
+    regex = r'(?<=\-\>)\s*(\d+\.\d+\.\d+)'
+    fetch_result = subprocess.run([git, "fetch", "--dry-run", "--tags"], cwd=EXTENSION_ROOT, shell=True,
+                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    for line in fetch_result.stdout.decode("utf-8").splitlines():
+        match = re.search(regex, line)
+        if match:
+            versions.append(match.group(1))
+
+    global available_versions
+    available_versions = [" "] + sorted(versions, key=lambda v: tuple(map(int, v.split("."))), reverse=True)
+
+
+def change_version() -> None:
+    before = subprocess.check_output([git, "log", '--pretty=v%(describe:tags)', "-n", "1"], cwd=EXTENSION_ROOT,
+                                     shell=True).decode("utf-8")
+    subprocess.run([git, "fetch", "-q"], cwd=EXTENSION_ROOT, shell=True)
+    if shared.opts.better_styles_version and (not shared.opts.better_styles_version.isspace()):
+        subprocess.run([git, "reset", "--hard", "-q", shared.opts.better_styles_version], cwd=EXTENSION_ROOT,
+                       shell=True)
+    else:
+        subprocess.run([git, "reset", "--hard", "-q", "origin"], cwd=EXTENSION_ROOT, shell=True)
+    after = subprocess.check_output([git, "log", '--pretty=v%(describe:tags)', "-n", "1"], cwd=EXTENSION_ROOT,
+                                    shell=True).decode("utf-8")
+    print(f"Better Styles version changed: {before.strip()} -> {after.strip()}")
+
+
+def find_newer_version(target_version: str) -> str:
+    target_parts = list(map(int, target_version.split(".")))
+    for version in available_versions:
+        if not version.strip():
+            continue
+        version_parts = list(map(int, version.split(".")))
+        if len(version_parts) < len(target_parts):
+            version_parts.extend([0] * (len(target_parts) - len(version_parts)))
+        elif len(version_parts) > len(target_parts):
+            target_parts.extend([0] * (len(version_parts) - len(target_parts)))
+        if version_parts > target_parts:
+            return version
+    return ""
+
+
+def do_check_for_updates(target_version: str) -> Dict[str, Any]:
+    if UPDATE_INFO_JSON.exists():
+        update_info = UpdateInfo.from_json(UPDATE_INFO_JSON)
+        delta = datetime.now() - update_info.timestamp
+        if delta.days < shared.opts.better_styles_update_notify_inverval:
+            return {"update": False}
+
+    newer_version = find_newer_version(target_version)
+    if not newer_version:
+        return {"update": False}
+
+    if shared.opts.better_styles_update_notify_only_once_per_version and newer_version == update_info.version:
+        return {"update": False}
+
+    update_info = UpdateInfo(datetime.now(), newer_version)
+    update_info.to_json(UPDATE_INFO_JSON)
+
+    return {"update": True, "version": newer_version}
 
 
 def load_id_map() -> None:
@@ -213,6 +324,13 @@ def find_disused_images(styles1: List[Style], styles2: List[Style]) -> List[Styl
 
 
 def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
+    @app.get("/better-style-api/v1/check-for-updates")
+    async def check_for_updates(request: Request):
+        version = subprocess.check_output([git, "log", '--pretty=%(describe:tags)', "-n", "1"], cwd=EXTENSION_ROOT,
+                                          shell=True).decode("utf-8")
+        version = version.strip().split("-")[0]
+        return JSONResponse(content=do_check_for_updates(version))
+
     @app.get("/better-style-api/v1/get-localization")
     async def get_localization(request: Request):
         return JSONResponse(content=localization_dict)
@@ -277,6 +395,19 @@ script_callbacks.on_app_started(on_app_started)
 
 
 def on_ui_settings():
+    shared.opts.add_option("better_styles_version",
+                           shared.OptionInfo("", _("Version of Better Styles (requires restart Web UI)"), gr.Dropdown,
+                                             lambda: {"choices": available_versions}, refresh=refresh_available_version,
+                                             onchange=change_version, section=SETTINGS_SECTION)),
+    shared.opts.add_option("better_styles_update_notify_enabled",
+                           shared.OptionInfo(True, _("Display update notifications"), section=SETTINGS_SECTION))
+    shared.opts.add_option("better_styles_update_notify_only_once_per_version",
+                           shared.OptionInfo(False, _("Notify of updates only once per version"),
+                                             section=SETTINGS_SECTION))
+    shared.opts.add_option("better_styles_update_notify_inverval",
+                           shared.OptionInfo(1, _("Interval at which to display update notifications (Unit: days)"),
+                                             gr.Slider, {"minimum": 1, "maximum": 31, "step": 1},
+                                             section=SETTINGS_SECTION))
     shared.opts.add_option("better_styles_hide_original_styles",
                            shared.OptionInfo(False, _("Hide the original Styles"), section=SETTINGS_SECTION))
     shared.opts.add_option("better_styles_localization",
@@ -289,6 +420,9 @@ script_callbacks.on_ui_settings(on_ui_settings)
 
 
 def initialize() -> None:
+    get_git_command()
+    print_version()
+    refresh_available_version()
     load_id_map()
     refresh_available_localization()
     load_localization()
