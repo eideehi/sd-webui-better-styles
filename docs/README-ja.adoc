@@ -6,12 +6,14 @@ link:../README.adoc[English] | 日本語
 
 == 概要
 Better Stylesは Extra networks のギャラリーに似たUIをもつスタイル管理用GUIです。オリジナルのStyles機能ではプロンプトとネガティブプロンプトしか保存できませんが、Better StylesはサンプリングメソッドやCFGスケールなどのパラメータもスタイルとして保存することができます。さらに、Extra networks のUIと同じように、スタイルに対してサムネイルを設定することで、直感的にスタイルを扱うことができます。
-image:images/overview.png[Image - Better Styles UI]
+
+image::images/overview.png[Image - Better Styles UI]
 
 == インストール
 === ブラウザからインストール (推奨)
 Extensions タブの Install from URL からインストールすることができます。"URL for extension's git repository" の項目に https://github.com/eideehi/sd-webui-better-styles.git を入力して「Install」ボタンを押すだけです。
-image:images/install.png[Image - Install]
+
+image::images/install.png[Image - Install]
 
 === Gitを使用してインストール
 Stable Diffusion web UIをインストールしたディレクトリで以下のコマンドを実行してもインストールすることが可能です。
@@ -32,12 +34,10 @@ git checkout x.y.z
 NOTE: 上記の "x.y.z" を使用したいバージョンに置き換えてください。現在利用可能なバージョンは次のとおりです。
 
 |===
-| バージョン      | Web UIのバージョン (最小) | Web UIのバージョン (最大)
-| 1.0.0 (700616f) | b2073781 (2023-02-16)     | a9eab236 (2023-03-24)
-| 1.0.1 (444b242) | b2073781 (2023-02-16)     | a9eab236 (2023-03-24)
-| 1.1.0 (e473734) | 9e1afa9e (2023-03-25)     | ~
-| 1.1.1 (04c77e6) | 9e1afa9e (2023-03-25)     | ~
-| 1.1.2 (9c3e1ad) | 9e1afa9e (2023-03-25)     | ~
+| バージョン    | Web UIのバージョン (最小) | Web UIのバージョン (最大)
+| 1.0.0 - 1.0.1 | b2073781 (2023-02-16)     | a9eab236 (2023-03-24)
+| 1.1.0 - 1.1.3 | 9e1afa9e (2023-03-25)     | 1.1.0までのどこか
+| 1.2.0         | 1.1.0                     | ~
 |===
 
 Better Stylesが動作するWeb UIの最小と最大のバージョンは開発者が動作を確認したものであり、正確にはバージョンが前後することもあることをご了承下さい。
@@ -51,13 +51,16 @@ git checkout main
 
 これでCheck for updatesのボタンでBetter Stylesをアップデートできるようになりました。
 
+NOTE: バージョン1.2.0以降、Settings タブからバージョンを変更することができるようになりました。詳しくは <<version_change>> を参照してください。
+
 == 使用方法
 === Better Stylesコンテンツの表示
 Better Stylesをインストールすると、txt2img と img2img のタブにある「Generate」ボタンの下に新しいボタン（栞の絵文字のボタン 🔖）が追加されます。このボタンをクリックするとBetter Stylesのコンテンツが表示されます。
 
 === スタイルの保存
 「Save style」ボタンをクリックすると、スタイルを保存するためのダイアログが表示されます。以下に各項目について説明します。
-image:images/save-dialog.png[Image - Save dialog]
+
+image::images/save-dialog.png[Image - Save dialog]
 
 ==== Style name (必須)
 保存するスタイルの名前を入力します。長い名前を付けると一覧で省略表示されてしまうので、注意してください。既存のスタイルと同じ名前を入力すると、そのスタイルを上書きできます。
@@ -88,7 +91,22 @@ image:images/save-dialog.png[Image - Save dialog]
 
 == コンフィグ
 Better Stylesは、Settingsタブに独自のコンフィグセクションを作成します。以下に、それぞれの項目について説明します。
-image:images/settings.png[Image - Settings]
+
+image::images/settings.png[Image - Settings]
+
+=== Version of Better Styles [[version_change]]
+Better Stylesのバージョンを変更することが出来ます。空白を選択するとその時点での最新バージョンに変更されます。設定を変更した場合、Web UIの再起動が必要です。(リロードではありません)
+
+TIP: Better Stylesの現在のバージョンはWeb UIのコンソールに表示されます。
+
+=== Display update notifications
+チェックが入っていると、利用可能なアップデートが存在する場合に通知を表示します。
+
+=== Notify of updates only once per version
+チェックが入っていると、各バージョンごとに一度しかアップデートの通知を行いません。
+
+=== Interval at which to display update notifications
+アップデートの通知を行う間隔を指定します。単位は 日 で、デフォルト値は1日です。
 
 === Hide the original Styles
 オリジナルのStylesドロップダウンと関連するボタンを非表示にするかどうかを選択します。

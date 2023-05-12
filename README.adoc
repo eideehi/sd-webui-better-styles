@@ -6,12 +6,14 @@ English | link:docs/README-ja.adoc[日本語]
 
 == Overview
 Better Styles is a GUI for managing styles that has a UI similar to Extra networks' gallery. While the original Styles feature can only save prompts and negative prompts, Better Styles can save parameters such as "Sampling method" and "CFG Scale" as styles. Additionally, by setting a thumbnail for each style like in Extra networks' UI, you can handle styles intuitively.
-image:docs/images/overview.png[Image - Better Styles UI]
+
+image::docs/images/overview.png[Image - Better Styles UI]
 
 == Installation
 === Installing from the Browser (Recommended)
 You can install it from the Install from URL in the Extensions tab. Just enter https://github.com/eideehi/sd-webui-better-styles.git in the "URL for extension's git repository" field and press the "Install" button.
-image:docs/images/install.png[Image - Install]
+
+image::docs/images/install.png[Image - Install]
 
 === Installing using Git
 You can also install it by running the following command in the directory where you installed Stable Diffusion web UI:
@@ -32,12 +34,10 @@ git checkout x.y.z
 NOTE: Replace "x.y.z" above with the version you want to use. The available versions are as follows.
 
 |===
-| Version         | Web UI Version (minimum) | Web UI Version (maximum)
-| 1.0.0 (700616f) | b2073781 (2023-02-16)    | a9eab236 (2023-03-24)
-| 1.0.1 (444b242) | b2073781 (2023-02-16)    | a9eab236 (2023-03-24)
-| 1.1.0 (e473734) | 9e1afa9e (2023-03-25)    | ~
-| 1.1.1 (04c77e6) | 9e1afa9e (2023-03-25)    | ~
-| 1.1.2 (9c3e1ad) | 9e1afa9e (2023-03-25)    | ~
+| Version       | Web UI Version (minimum) | Web UI Version (maximum)
+| 1.0.0 - 1.0.1 | b2073781 (2023-02-16)    | a9eab236 (2023-03-24)
+| 1.1.0 - 1.1.3 | 9e1afa9e (2023-03-25)    | Somewhere up to 1.1.0
+| 1.2.0         | 1.1.0                    | ~
 |===
 
 Please note that the minimum and maximum Web UI versions where Better Styles works are based on the developer's testing, and the version may vary.
@@ -51,13 +51,16 @@ git checkout main
 
 With this command, you can update Better Styles using the "Check for updates" button.
 
+NOTE: Since version 1.2.0, you can change the version from the Settings tab. For details, please refer to <<version_change>>.
+
 == Usage
 === Displaying Better Styles content
 When you install Better Styles, a new button (an emoji of a bookmark 🔖) will be added under the "Generate" button in the txt2img and img2img tabs. Clicking this button will display the content of Better Styles.
 
 === Saving styles
 When you click the "Save style" button, a dialog box will appear for saving the style. Here's an explanation of each item:
-image:docs/images/save-dialog.png[Image - Save dialog]
+
+image::docs/images/save-dialog.png[Image - Save dialog]
 
 ==== Style name (required)
 Enter a name for the style you want to save. Be careful not to give it a long name, as it may be abbreviated in the list. If you enter a name that is the same as an existing style, you can overwrite that style.
@@ -86,9 +89,24 @@ You can apply a style by selecting it from the list of styles and clicking the "
 === Deleting styles
 You can delete a style by selecting it from the list of styles and clicking the "Delete style" button.
 
-== Config
+== Configuration
 Better Styles creates its own config section in the Settings tab. Here's an explanation of each item:
-image:docs/images/settings.png[Image - Settings]
+
+image::docs/images/settings.png[Image - Settings]
+
+=== Version of Better Styles [[version_change]]
+You can change the version of Better Styles. Selecting a blank space will change it to the latest version at that point. If you change the settings, it is necessary to restart the Web UI. (not just reload)
+
+TIP: The current version of Better Styles is displayed in the console of the Web UI.
+
+=== Display update notifications
+If checked, it will display notifications when updates are available.
+
+=== Notify of updates only once per version
+If checked, it will only notify once for each version when updates are available.
+
+=== Interval at which to display update notifications
+Specify the interval for displaying update notifications. The unit is "days", and the default value is 1 day.
 
 === Hide the original Styles
 Choose whether to hide the original Styles dropdown and associated button.
