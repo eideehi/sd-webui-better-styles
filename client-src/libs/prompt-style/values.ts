@@ -1,3 +1,4 @@
+import { tick } from "svelte";
 import { getElement } from "@/libs/util/dom";
 import { dispatchEvent } from "@/libs/util/webui";
 
@@ -36,7 +37,7 @@ export function negativePrompt(tabName: StylesAvailableTab): ValueAccessor<strin
 }
 
 export function samplingMethod(tabName: StylesAvailableTab): ValueAccessor<string> {
-  return createDropdownAccessor(`#${tabName}_sampling input`);
+  return createDropdownAccessor(`#${tabName}_sampling`);
 }
 
 export function samplingSteps(tabName: StylesAvailableTab): ValueAccessor<number> {
@@ -64,7 +65,7 @@ export function hiresFix(tabName: StylesAvailableTab): ValueAccessor<boolean> {
 }
 
 export function upscaler(tabName: StylesAvailableTab): ValueAccessor<string> {
-  return createDropdownAccessor(`#${tabName}_hr_upscaler input`);
+  return createDropdownAccessor(`#${tabName}_hr_upscaler`);
 }
 
 export function hiresSteps(tabName: StylesAvailableTab): ValueAccessor<number> {
@@ -111,15 +112,28 @@ function createValueAccessor<T>(obj: {
   };
 }
 
-function createDropdownAccessor(selector: string): ValueAccessor<string> {
-  const element = getElement(selector);
-  if (!(element instanceof HTMLInputElement)) {
+let dropdownSetValueQueue: Promise<void> = Promise.resolve();
+function createDropdownAccessor(baseSelector: string): ValueAccessor<string> {
+  const input = getElement(`${baseSelector} input`);
+  if (!(input instanceof HTMLInputElement)) {
     return createEmptyAccessor();
   }
   return createValueAccessor({
-    get: () => element.value,
-    set: () => {
-      //TODO: Find a way to change the value of the dropdown.
+    get: () => input.value,
+    set: (value) => {
+      const setValue = async () => {
+        input.dispatchEvent(new Event("focus"));
+        await tick();
+        const options = getElement(`${baseSelector} ul > li[data-value="${value}"]`);
+        if (options != null) {
+          options.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+        }
+      };
+
+      dropdownSetValueQueue = (async () => {
+        await dropdownSetValueQueue;
+        return setValue();
+      })();
       return true;
     },
   });
