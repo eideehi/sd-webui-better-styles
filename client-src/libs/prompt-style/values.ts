@@ -119,7 +119,13 @@ function createDropdownAccessor(baseSelector: string): ValueAccessor<string> {
     return createEmptyAccessor();
   }
   return createValueAccessor({
-    get: () => input.value,
+    get: () => {
+      let data = getElement(`${baseSelector} .single-select`);
+      if (data == null) {
+        data = getElement(`${baseSelector} [data-testid="block-info"]`);
+      }
+      return data != null ? data.textContent : "";
+    },
     set: (value) => {
       const setValue = async () => {
         input.dispatchEvent(new Event("focus"));
