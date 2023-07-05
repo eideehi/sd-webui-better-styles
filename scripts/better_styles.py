@@ -149,7 +149,7 @@ def filter_none_fields(obj: Any) -> Any:
 
 
 def style_data_encoder(data: List[StyleGroup]) -> str:
-    return json.dumps([filter_none_fields(asdict(d)) for d in data])
+    return json.dumps([filter_none_fields(asdict(d)) for d in data], ensure_ascii=False)
 
 
 def load_styles_json() -> List[StyleGroup]:
@@ -196,7 +196,7 @@ def get_or_create_id(category: str, key: str) -> str:
     if category not in id_map:
         data = {"max": 1, key: 1}
         id_map[category] = data
-        ID_MAPPING_JSON.write_text(json.dumps(id_map), encoding="UTF-8")
+        ID_MAPPING_JSON.write_text(json.dumps(id_map, ensure_ascii=False), encoding="UTF-8")
         return "1"
 
     data = id_map[category]
@@ -206,7 +206,7 @@ def get_or_create_id(category: str, key: str) -> str:
     max_id = data["max"] + 1
     data[key] = max_id
     data["max"] = max_id
-    ID_MAPPING_JSON.write_text(json.dumps(id_map), encoding="UTF-8")
+    ID_MAPPING_JSON.write_text(json.dumps(id_map, ensure_ascii=False), encoding="UTF-8")
     return str(max_id)
 
 
