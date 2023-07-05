@@ -304,12 +304,12 @@ script_callbacks.on_app_started(on_app_started)
 
 
 def on_ui_settings():
-    shared.opts.add_option("better_styles_hide_original_styles",
-                           shared.OptionInfo(False, _("Hide the original Styles"), section=SETTINGS_SECTION))
     shared.opts.add_option("better_styles_localization",
                            shared.OptionInfo("", _("Language of Better Styles (requires reload UI)"), gr.Dropdown,
                                              lambda: {"choices": available_localization},
                                              refresh=refresh_available_localization, section=SETTINGS_SECTION)),
+    shared.opts.add_option("better_styles_hide_original_styles",
+                           shared.OptionInfo(False, _("Hide the original Styles"), section=SETTINGS_SECTION))
 
 
 script_callbacks.on_ui_settings(on_ui_settings)
