@@ -69,7 +69,6 @@ class RegisterStyleRequestDecoder(json.JSONDecoder):
         return RegisterStyleRequest(group=data["group"], style=style)
 
 
-GIT = os.environ.get('GIT', "git")
 SETTINGS_SECTION = ("better_styles", "Better Styles")
 WEBUI_ROOT = Path().absolute()
 EXTENSION_ROOT = scripts.basedir()
@@ -81,28 +80,30 @@ ID_MAPPING_JSON = USER_DATA_DIR.joinpath("id-mapping.json")
 STYLES_JSON = USER_DATA_DIR.joinpath("styles.json")
 IMAGES_DIR = USER_DATA_DIR.joinpath("images")
 
-git = "git"
 id_map = {}
 available_localization = []
 localization_dict = {}
 
 
 # noinspection DuplicatedCode
-def get_git_command() -> None:
-    global git
-    try:
-        subprocess.run([git, "-v"], cwd=EXTENSION_ROOT, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                       check=True)
-    except subprocess.CalledProcessError:
-        git = GIT
-        subprocess.run([git, "-v"], cwd=EXTENSION_ROOT, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                       check=True)
-
-
 def print_version() -> None:
-    result = subprocess.check_output([git, "log", '--pretty=v%(describe:tags)', "-n", "1"], cwd=EXTENSION_ROOT,
-                                     shell=True).decode("utf-8")
-    print(f"Better Styles version is {result.strip()}")
+    git = os.environ.get('GIT', "git")
+    try:
+        result = subprocess.check_output([git, "log", '--pretty=v%(describe:tags)', "-n", "1"], cwd=EXTENSION_ROOT,
+                                         shell=True).decode("utf-8")
+    except subprocess.CalledProcessError:
+        git = "git"
+        try:
+            result = subprocess.check_output([git, "log", '--pretty=v%(describe:tags)', "-n", "1"], cwd=EXTENSION_ROOT,
+                                             shell=True).decode("utf-8")
+        except subprocess.CalledProcessError:
+            result = None
+
+    if result:
+        version = result.strip()
+        print(f"[Better Styles] Version {version}")
+    else:
+        print(f"[Better Styles] Version 1.2.0")
 
 
 def load_id_map() -> None:
@@ -315,7 +316,6 @@ script_callbacks.on_ui_settings(on_ui_settings)
 
 
 def initialize() -> None:
-    get_git_command()
     print_version()
     load_id_map()
     refresh_available_localization()
