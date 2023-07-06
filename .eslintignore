@@ -13,3 +13,5 @@ yarn.lock
 # Config files
 vite.config.ts
 svelte.config.js
+.eslintrc.cjs
+*.config.cjs
