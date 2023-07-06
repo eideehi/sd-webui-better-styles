@@ -31,7 +31,8 @@
   };
 
   async function doSave(): Promise<void> {
-    await registerStyle(cleanSaveData(saveData)).then((groups) => {
+    const data = cleanSaveData(saveData);
+    await registerStyle(data.group, data.style).then((groups) => {
       getModal(id)?.close();
       styleGroups.set(groups);
       showToast({ type: "success", text: _("Style registered") });

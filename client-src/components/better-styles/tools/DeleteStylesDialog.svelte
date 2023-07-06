@@ -12,7 +12,10 @@
   export let styles: Style[];
 
   async function doDelete(): Promise<void> {
-    await deleteStyles({ group, styles: styles.map((style) => style.name) }).then((groups) => {
+    await deleteStyles(
+      group,
+      styles.map((style) => style.name)
+    ).then((groups) => {
       getModal(id)?.close();
       styleGroups.set(groups);
       showToast({ type: "success", text: _("Styles deleted") });

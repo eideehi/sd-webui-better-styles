@@ -49,7 +49,7 @@
       return;
     }
 
-    await registerStyle({ group: $activeGroup, style: { ...style, image } }).then(styleGroups.set);
+    await registerStyle($activeGroup, { ...style, image }).then(styleGroups.set);
   }
 </script>
 

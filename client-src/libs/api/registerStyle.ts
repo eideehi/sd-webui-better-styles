@@ -1,18 +1,13 @@
 import { parseStyleGroups } from "./internal/parseStyleGroups";
 
-export type RegisterStyleRequest = {
-  group: string;
-  style: Partial<Style>;
-};
-
-export function registerStyle(request: RegisterStyleRequest): Promise<StyleGroup[]> {
-  return fetch("/better-styles-api/v1/register-style", {
+export function registerStyle(group: string, style: Partial<Style>): Promise<StyleGroup[]> {
+  return fetch(`/better-styles-api/v1/register-style/${group}`, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(request),
+    body: JSON.stringify(style),
   })
     .then((response) => response.json())
     .then(parseStyleGroups);

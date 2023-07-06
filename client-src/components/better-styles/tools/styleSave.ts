@@ -1,4 +1,3 @@
-import type { RegisterStyleRequest } from "@/libs/api/registerStyle";
 import { _ } from "@/libs/util";
 
 export type StyleSaveData = {
@@ -7,7 +6,7 @@ export type StyleSaveData = {
 };
 
 export function createDefaultSaveData(
-  defaultValues: Partial<RegisterStyleRequest> = {}
+  defaultValues: Partial<{ group: string; style: Partial<Style> }> = {}
 ): StyleSaveData {
   return Object.assign(
     {
@@ -37,7 +36,7 @@ export function createDefaultSaveData(
   );
 }
 
-export function cleanSaveData(saveData: StyleSaveData): RegisterStyleRequest {
+export function cleanSaveData(saveData: StyleSaveData): { group: string; style: Partial<Style> } {
   // If the user is using a language other than English, the word "default" may have been translated, so let's revert it here.
   const decodeGroup = (value: string) => (value === _("default") ? "default" : value);
 

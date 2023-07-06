@@ -1,18 +1,13 @@
 import { parseStyleGroups } from "./internal/parseStyleGroups";
 
-export type StylesDeletionRequest = {
-  group: string;
-  styles: string[];
-};
-
-export function deleteStyles(request: StylesDeletionRequest): Promise<StyleGroup[]> {
-  return fetch("/better-styles-api/v1/delete-styles", {
+export function deleteStyles(group: string, styleNames: string[]): Promise<StyleGroup[]> {
+  return fetch(`/better-styles-api/v1/delete-styles/${group}`, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(request),
+    body: JSON.stringify(styleNames),
   })
     .then((response) => response.json())
     .then(parseStyleGroups);

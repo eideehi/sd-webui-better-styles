@@ -1,72 +1,43 @@
 import json
 import os
 import subprocess
-from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Callable, Optional, Tuple, List, Any
+from typing import Callable, Optional, Tuple, List
 
 import gradio as gr
 from PIL import Image
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, JSONResponse
 from gradio import Blocks
+from pydantic import BaseModel, parse_obj_as
 
 from modules import scripts, script_callbacks, shared
 
 
-@dataclass
-class Style:
+class Style(BaseModel):
     name: str
-    image: Optional[str] = field(default=None)
-    checkpoint: Optional[str] = field(default=None)
-    prompt: Optional[str] = field(default=None)
-    negativePrompt: Optional[str] = field(default=None)
-    samplingMethod: Optional[str] = field(default=None)
-    samplingSteps: Optional[int] = field(default=None)
-    cfgScale: Optional[float] = field(default=None)
-    seed: Optional[int] = field(default=None)
-    restoreFaces: Optional[bool] = field(default=None)
-    tiling: Optional[bool] = field(default=None)
-    hiresFix: Optional[bool] = field(default=None)
-    upscaler: Optional[str] = field(default=None)
-    hiresSteps: Optional[int] = field(default=None)
-    denoisingStrength: Optional[float] = field(default=None)
-    upscaleBy: Optional[float] = field(default=None)
-    clipSkip: Optional[int] = field(default=None)
-    etaNoiseSeedDelta: Optional[int] = field(default=None)
+    image: str | None = None
+    checkpoint: str | None = None
+    prompt: str | None = None
+    negativePrompt: str | None = None
+    samplingMethod: str | None = None
+    samplingSteps: int | None = None
+    cfgScale: float | None = None
+    seed: int | None = None
+    restoreFaces: bool | None = None
+    tiling: bool | None = None
+    hiresFix: bool | None = None
+    upscaler: str | None = None
+    hiresSteps: int | None = None
+    denoisingStrength: float | None = None
+    upscaleBy: float | None = None
+    clipSkip: int | None = None
+    etaNoiseSeedDelta: int | None = None
 
 
-@dataclass
-class StyleGroup:
+class StyleGroup(BaseModel):
     name: str
     styles: List[Style]
-
-
-class StyleGroupListDecoder(json.JSONDecoder):
-    def decode(self, json_str: str, *args: Any, **kwargs: Any) -> List[StyleGroup]:
-        data = json.loads(json_str, *args, **kwargs)
-        style_map = {}
-        for style_data in data:
-            for style_dict in style_data["styles"]:
-                style = Style(**style_dict)
-                style_map[style.name] = style
-            style_data["styles"] = list(style_map.values())
-            style_map.clear()
-        return [StyleGroup(**item) for item in data]
-
-
-@dataclass
-class RegisterStyleRequest:
-    group: str
-    style: Style
-
-
-class RegisterStyleRequestDecoder(json.JSONDecoder):
-    def decode(self, json_bytes: bytes, *args: Any, **kwargs: Any) -> RegisterStyleRequest:
-        data = json.loads(json_bytes, *args, **kwargs)
-        style_data = data["style"]
-        style = Style(**style_data)
-        return RegisterStyleRequest(group=data["group"], style=style)
 
 
 SETTINGS_SECTION = ("better_styles", "Better Styles")
@@ -139,23 +110,14 @@ def _(text: str) -> str:
     return text
 
 
-def filter_none_fields(obj: Any) -> Any:
-    if isinstance(obj, dict):
-        return {k: filter_none_fields(v) for k, v in obj.items() if v is not None}
-    elif isinstance(obj, list):
-        return [filter_none_fields(elem) for elem in obj if elem is not None]
-    else:
-        return obj
-
-
 def style_data_encoder(data: List[StyleGroup]) -> str:
-    return json.dumps([filter_none_fields(asdict(d)) for d in data], ensure_ascii=False)
+    return json.dumps([d.dict() for d in data], ensure_ascii=False)
 
 
 def load_styles_json() -> List[StyleGroup]:
     STYLES_JSON.parent.mkdir(parents=True, exist_ok=True)
     if STYLES_JSON.is_file():
-        return json.loads(STYLES_JSON.read_text(encoding="UTF-8"), cls=StyleGroupListDecoder)
+        return parse_obj_as(List[StyleGroup], json.loads(STYLES_JSON.read_text(encoding="UTF-8")))
 
     return []
 
@@ -255,12 +217,8 @@ def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
         else:
             return JSONResponse(content=[])
 
-    @app.post("/better-styles-api/v1/register-style")
-    async def register_style(request: Request):
-        request_data = RegisterStyleRequestDecoder().decode(await request.body())
-        style = request_data.style
-        group = request_data.group
-
+    @app.post("/better-styles-api/v1/register-style/{group}")
+    async def register_style(group: str, style: Style):
         if style.image:
             image_path = get_image_path(group, style.name)
             save_image(style.image, image_path)
@@ -276,22 +234,20 @@ def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
                     data.styles = updated_styles
                     delete_disused_images(find_disused_images(updated_styles, overwritten_styles))
             if is_new_group:
-                file_data.append(StyleGroup(group, [style]))
+                file_data.append(StyleGroup(name=group, styles=[style]))
         else:
-            file_data.append(StyleGroup(group, [style]))
+            file_data.append(StyleGroup(name=group, styles=[style]))
 
         json_data = style_data_encoder(file_data)
         STYLES_JSON.write_text(json_data, encoding="UTF-8")
         return JSONResponse(content=json.loads(json_data))
 
-    @app.post("/better-styles-api/v1/delete-styles")
-    async def delete_styles(request: Request):
-        target_names = json.loads(await request.body())
+    @app.post("/better-styles-api/v1/delete-styles/{group}")
+    async def delete_styles(group: str, styles: List[str]):
         file_data = load_styles_json()
         for style_data in file_data:
-            if style_data.name == target_names["group"]:
-                filtered_styles, removed_styles = filtering_styles(style_data.styles,
-                                                                   lambda x: x.name in target_names["styles"])
+            if style_data.name == group:
+                filtered_styles, removed_styles = filtering_styles(style_data.styles, lambda x: x.name in styles)
                 style_data.styles = filtered_styles
                 delete_disused_images(removed_styles)
 
