@@ -2,6 +2,7 @@ export * from "./dom";
 export {
   _,
   getCurrentTabName,
+  getBooleanOption,
   withBooleanOption,
   withNumberOption,
   withStringOption,

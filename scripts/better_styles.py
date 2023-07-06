@@ -266,6 +266,8 @@ def on_ui_settings():
                                              refresh=refresh_available_localization, section=SETTINGS_SECTION)),
     shared.opts.add_option("better_styles_hide_original_styles",
                            shared.OptionInfo(False, _("Hide the original Styles"), section=SETTINGS_SECTION))
+    shared.opts.add_option("better_styles_hide_by_default",
+                           shared.OptionInfo(False, _("Hide Better Styles by default"), section=SETTINGS_SECTION))
 
 
 script_callbacks.on_ui_settings(on_ui_settings)

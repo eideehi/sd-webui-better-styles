@@ -2,7 +2,7 @@
   import { setContext } from "svelte";
   import { writable } from "svelte/store";
   import { checkpoint, styleGroups } from "@/libs/store";
-  import { getElement } from "@/libs/util";
+  import { getBooleanOption, getElement } from "@/libs/util";
   import { hasVisibleStyles } from "@/libs/prompt-style";
   import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/context";
   import Tools from "#/better-styles/tools/Tools.svelte";
@@ -12,7 +12,7 @@
 
   export let tabName: StylesAvailableTab;
 
-  const active = writable(true);
+  const active = writable(!getBooleanOption("better_styles_hide_by_default", false));
   const activeGroup = writable("default");
 
   setContext<BetterStylesContext>(betterStylesContextKey, {

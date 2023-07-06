@@ -20,6 +20,11 @@ export function _(text: string, ...args: Array<string | number | boolean>): stri
   }, translation);
 }
 
+export function getBooleanOption(optionName: string, defaultValue: boolean): boolean {
+  const value = opts[optionName];
+  return typeof value === "boolean" ? value : defaultValue;
+}
+
 /**
  * If an option with the specified name exists and it is of string type,
  * execute the callback. If the option with the specified name does not exist

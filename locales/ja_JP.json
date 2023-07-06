@@ -11,6 +11,7 @@
   "Exclusive": "現在のモデル専用",
   "Execute the deletion": "削除を実行する",
   "Group": "グループ",
+  "Hide Better Styles by default": "Better Stylesをデフォルトで非表示にする",
   "Hide the original Styles": "オリジナルのスタイルを非表示にする",
   "Image is not selected": "画像が選択されていません",
   "Interval at which to display update notifications (Unit: days)": "アップデートの通知を表示する間隔 (単位: 日)",
