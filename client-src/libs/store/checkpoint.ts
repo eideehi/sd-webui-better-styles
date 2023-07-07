@@ -10,7 +10,7 @@ export const checkpoint = readable("", (set) => {
     return element;
   };
 
-  let current = "";
+  let current: Nullable<string> = "";
   const checkUpdate = () => {
     const hash = _getElement()?.title;
     if (hash === current) return;

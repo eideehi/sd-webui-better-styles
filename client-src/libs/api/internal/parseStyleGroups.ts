@@ -4,7 +4,7 @@ export function parseStyleGroups(json: unknown): StyleGroup[] {
 }
 
 function isStyleGroup(obj: unknown): obj is StyleGroup {
-  if (typeof obj !== "object") return false;
+  if (obj == null || typeof obj !== "object") return false;
   if (typeof obj["name"] !== "string") return false;
   return Array.isArray(obj["styles"]);
 }

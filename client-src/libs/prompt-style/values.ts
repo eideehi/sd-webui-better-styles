@@ -124,7 +124,7 @@ function createDropdownAccessor(baseSelector: string): ValueAccessor<string> {
       if (data == null) {
         data = getElement(`${baseSelector} [data-testid="block-info"]`);
       }
-      return data != null ? data.textContent : "";
+      return data?.textContent || "";
     },
     set: (value) => {
       const setValue = async () => {

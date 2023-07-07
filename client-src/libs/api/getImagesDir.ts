@@ -5,6 +5,6 @@ export function getImagesDir(): Promise<string> {
 }
 
 function parseImagesDir(json: unknown): string {
-  if (typeof json !== "object") return "";
+  if (json == null || typeof json !== "object") return "";
   return typeof json["imagesDir"] !== "string" ? "" : json["imagesDir"];
 }

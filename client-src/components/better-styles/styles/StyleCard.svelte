@@ -55,6 +55,8 @@
 
 <StyleDetailDialog {id} {style} />
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="card" class:active class:selected on:click={selectStyle}>
   <button
     class="show-detail-button"

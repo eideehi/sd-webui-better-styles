@@ -5,7 +5,7 @@ export function getLocalization(): Promise<Record<string, string>> {
 }
 
 function parseLocalization(json: unknown): Record<string, string> {
-  if (typeof json !== "object") return {};
+  if (json == null || typeof json !== "object") return {};
   return isLocalization(json) ? json : {};
 }
 

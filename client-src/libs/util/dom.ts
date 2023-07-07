@@ -4,7 +4,8 @@
  * @returns The matched element, or null if no matches were found.
  */
 export function getElement(selector: string): Nullable<HTMLElement> {
-  return gradioApp().querySelector(selector);
+  const element = gradioApp().querySelector(selector);
+  return element instanceof HTMLElement ? element : null;
 }
 
 /**

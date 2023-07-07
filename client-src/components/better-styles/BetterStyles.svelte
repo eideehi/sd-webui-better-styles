@@ -36,10 +36,12 @@
   styleGroups.subscribe((groups) => changeToAvailableCategory(groups, $checkpoint));
 
   const buttonBase = getElement(`#${tabName}_style_apply`);
-  new BetterStylesSwitcher({
-    target: buttonBase.parentElement,
-    props: { baseElement: buttonBase },
-  });
+  if (buttonBase && buttonBase.parentElement) {
+    new BetterStylesSwitcher({
+      target: buttonBase.parentElement,
+      props: { baseElement: buttonBase },
+    });
+  }
 </script>
 
 <div class="better-styles form" class:hidden={!$active} id="better-styles-{tabName}-styles">
