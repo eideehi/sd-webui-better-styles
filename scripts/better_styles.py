@@ -2,7 +2,7 @@ import json
 import os
 import subprocess
 from pathlib import Path
-from typing import Callable, Optional, Tuple, List
+from typing import Callable, Optional, Tuple, List, Dict
 
 import gradio as gr
 from PIL import Image
@@ -12,6 +12,11 @@ from gradio import Blocks
 from pydantic import BaseModel, parse_obj_as
 
 from modules import scripts, script_callbacks, shared
+
+
+class IdMap(BaseModel):
+    max_id: int
+    values: Dict[str, int]
 
 
 class Style(BaseModel):
@@ -48,10 +53,11 @@ LOCALIZATION_DIR = EXTENSION_DIR.joinpath("locales")
 USER_DATA_DIR = EXTENSION_DIR.joinpath("user-data")
 UPDATE_INFO_JSON = USER_DATA_DIR.joinpath("update-info.json")
 ID_MAPPING_JSON = USER_DATA_DIR.joinpath("id-mapping.json")
+ID_MAPS_JSON = USER_DATA_DIR.joinpath("id-maps.json")
 STYLES_JSON = USER_DATA_DIR.joinpath("styles.json")
 IMAGES_DIR = USER_DATA_DIR.joinpath("images")
 
-id_map = {}
+id_maps: Dict[str, IdMap] = {}
 available_localization = []
 localization_dict = {}
 
@@ -78,9 +84,24 @@ def print_version() -> None:
 
 
 def load_id_map() -> None:
+    global id_maps
+
+    if ID_MAPS_JSON.is_file():
+        id_maps = parse_obj_as(Dict[str, IdMap], json.loads(ID_MAPS_JSON.read_text(encoding="UTF-8")))
+        return
+
     if ID_MAPPING_JSON.is_file():
-        global id_map
+        id_maps = {}
         id_map = json.loads(ID_MAPPING_JSON.read_text(encoding="UTF-8"))
+        for key, value in id_map.items():
+            max_id = value.pop("max")
+            id_maps[key] = IdMap(max_id=max_id, values=value)
+        update_id_maps_json()
+        ID_MAPPING_JSON.unlink()
+
+
+def update_id_maps_json():
+    ID_MAPS_JSON.write_text(json.dumps({k: v.dict() for k, v in id_maps.items()}, ensure_ascii=False), encoding="UTF-8")
 
 
 # noinspection DuplicatedCode
@@ -155,21 +176,35 @@ def get_image_path(group: str, style_name: str) -> str:
 
 
 def get_or_create_id(category: str, key: str) -> str:
-    if category not in id_map:
-        data = {"max": 1, key: 1}
-        id_map[category] = data
-        ID_MAPPING_JSON.write_text(json.dumps(id_map, ensure_ascii=False), encoding="UTF-8")
+    if category not in id_maps:
+        id_map = IdMap(max_id=1, values={key: 1})
+        id_maps[category] = id_map
+        update_id_maps_json()
         return "1"
 
-    data = id_map[category]
-    if key in data:
-        return str(data[key])
+    id_map = id_maps[category]
+    if key in id_map.values:
+        return str(id_map.values[key])
 
-    max_id = data["max"] + 1
-    data[key] = max_id
-    data["max"] = max_id
-    ID_MAPPING_JSON.write_text(json.dumps(id_map, ensure_ascii=False), encoding="UTF-8")
-    return str(max_id)
+    image_id = get_available_id(id_map)
+    id_map.values[key] = image_id
+
+    if image_id > id_map.max_id:
+        id_map.max_id = image_id
+
+    update_id_maps_json()
+    return str(image_id)
+
+
+def get_available_id(id_map: IdMap) -> int:
+    min_id = 1
+    while min_id in [value for key, value in id_map.values.items() if key != "max"]:
+        min_id += 1
+
+    if min_id == id_map.max_id:
+        return id_map.max_id + 1
+
+    return min_id
 
 
 def save_image(input_file: str, output_file: str):
@@ -182,12 +217,40 @@ def save_image(input_file: str, output_file: str):
             image.save(output_path, "webp")
 
 
-def delete_disused_images(disused_styles: List[Style]) -> None:
+def delete_disused_images(group: str, disused_styles: List[Style]) -> None:
     for style in disused_styles:
         if style.image:
             path = IMAGES_DIR.joinpath(style.image)
             if path.is_file():
                 path.unlink()
+
+        category = "{}-images".format(group)
+        if category in id_maps:
+            id_map = id_maps[category]
+            if remove_id(id_map, style.name):
+                if not id_map.values:
+                    id_maps.pop(category)
+
+                if "groups" in id_maps:
+                    remove_id(id_maps["groups"], group)
+
+                update_id_maps_json()
+
+
+def remove_id(id_map: IdMap, key: str) -> bool:
+    if key not in id_map.values:
+        return False
+
+    value = id_map.values.pop(key)
+    if value == id_map.max_id:
+        max_id = 1
+        for key, value in id_map.values.items():
+            if key == "max" or not isinstance(value, int):
+                continue
+            max_id = max(max_id, value)
+        id_map.max_id = max_id
+
+    return True
 
 
 def find_disused_images(styles1: List[Style], styles2: List[Style]) -> List[Style]:
@@ -232,7 +295,7 @@ def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
                     is_new_group = False
                     updated_styles, overwritten_styles = update_styles(data.styles, style)
                     data.styles = updated_styles
-                    delete_disused_images(find_disused_images(updated_styles, overwritten_styles))
+                    delete_disused_images(group, find_disused_images(updated_styles, overwritten_styles))
             if is_new_group:
                 file_data.append(StyleGroup(name=group, styles=[style]))
         else:
@@ -249,7 +312,7 @@ def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
             if style_data.name == group:
                 filtered_styles, removed_styles = filtering_styles(style_data.styles, lambda x: x.name in styles)
                 style_data.styles = filtered_styles
-                delete_disused_images(removed_styles)
+                delete_disused_images(group, removed_styles)
 
         json_data = style_data_encoder(file_data)
         STYLES_JSON.write_text(json_data, encoding="UTF-8")
