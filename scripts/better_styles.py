@@ -1,3 +1,4 @@
+import csv
 import json
 import os
 import subprocess
@@ -317,6 +318,42 @@ def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
         json_data = style_data_encoder(file_data)
         STYLES_JSON.write_text(json_data, encoding="UTF-8")
         return JSONResponse(content=json.loads(json_data))
+
+    @app.post("/better-styles-api/v1/import-styles-csv")
+    async def import_styles_csv(group: str):
+        file_data = load_styles_json()
+
+        style_group = next((x for x in file_data if x.name == group), None)
+        if not style_group:
+            return JSONResponse(content={"status": "error", "error_code": 1})
+
+        csv_file = WEBUI_ROOT.joinpath("styles.csv")
+        if not csv_file.is_file():
+            return JSONResponse(content={"status": "error", "error_code": 2})
+
+        with csv_file.open("r", encoding="utf_8_sig") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                if len(row) < 3:
+                    continue
+
+                [name, positive, negative] = row
+                if name == "name" or name == "None":
+                    continue
+
+                style = next((x for x in style_group.styles if x.name == name), None)
+                if not style:
+                    if not positive or positive.isspace():
+                        positive = None
+
+                    if not negative or negative.isspace():
+                        negative = None
+
+                    style_group.styles.append(Style(name=name, prompt=positive, negativePrompt=negative))
+
+        json_data = style_data_encoder(file_data)
+        STYLES_JSON.write_text(json_data, encoding="UTF-8")
+        return JSONResponse(content={"status": "success", "styles": json.loads(json_data)})
 
 
 script_callbacks.on_app_started(on_app_started)
