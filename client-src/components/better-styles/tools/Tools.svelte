@@ -5,6 +5,7 @@
   import SaveButton from "#/better-styles/tools/SaveButton.svelte";
   import DeleteButton from "#/better-styles/tools/DeleteButton.svelte";
   import CloseButton from "#/better-styles/tools/CloseButton.svelte";
+  import ResetButton from "#/better-styles/tools/ResetButton.svelte";
 </script>
 
 <div class="tab-nav scroll-hide">
@@ -13,6 +14,7 @@
   <ApplyButton />
   <SaveButton />
   <DeleteButton />
+  <ResetButton />
   <CloseButton />
 </div>
 

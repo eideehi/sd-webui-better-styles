@@ -18,14 +18,22 @@ import {
 } from ".";
 import { concatPrompt } from "./internal/concatPrompt";
 
-export function applyStyle(tabName: StylesAvailableTab, style: Style): void {
+export function applyStyle(tabName: StylesAvailableTab, style: Style, overwrite = false): void {
   if (style.prompt != null) {
     const accessor = createPromptAccessor(tabName);
-    accessor.set(concatPrompt(accessor.getOrDefault(""), style.prompt));
+    if (overwrite) {
+      accessor.set(style.prompt);
+    } else {
+      accessor.set(concatPrompt(accessor.getOrDefault(""), style.prompt));
+    }
   }
   if (style.negativePrompt != null) {
     const accessor = createNegativePromptAccessor(tabName);
-    accessor.set(concatPrompt(accessor.getOrDefault(""), style.negativePrompt));
+    if (overwrite) {
+      accessor.set(style.negativePrompt);
+    } else {
+      accessor.set(concatPrompt(accessor.getOrDefault(""), style.negativePrompt));
+    }
   }
   if (style.samplingMethod != null) {
     const accessor = createSamplingMethodAccessor(tabName);

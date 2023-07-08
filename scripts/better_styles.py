@@ -355,6 +355,32 @@ def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
         STYLES_JSON.write_text(json_data, encoding="UTF-8")
         return JSONResponse(content={"status": "success", "styles": json.loads(json_data)})
 
+    @app.get("/better-styles-api/v1/get-default-style/{tab_name}")
+    async def get_default_style(tab_name: str):
+        if tab_name != "txt2img" and tab_name != "img2img":
+            return JSONResponse(content={})
+
+        config_file = Path(shared.cmd_opts.ui_config_file)
+        if not config_file.is_file():
+            return JSONResponse(content={})
+
+        config = json.loads(config_file.read_text(encoding="UTF-8"))
+        style = {"prompt": config[f"{tab_name}/Prompt/value"],
+                 "negativePrompt": config[f"{tab_name}/Negative prompt/value"],
+                 "samplingMethod": config[f"{tab_name}/Sampling method/value"],
+                 "samplingSteps": config[f"{tab_name}/Sampling steps/value"],
+                 "cfgScale": config[f"{tab_name}/CFG Scale/value"], "seed": config[f"{tab_name}/Seed/value"],
+                 "restoreFaces": config[f"{tab_name}/Restore faces/value"],
+                 "tiling": config[f"{tab_name}/Tiling/value"], "hiresFix": config[f"{tab_name}/Hires. fix/value"],
+                 "upscaler": config[f"{tab_name}/Upscaler/value"],
+                 "hiresSteps": config[f"{tab_name}/Hires steps/value"],
+                 "denoisingStrength": config[f"{tab_name}/Denoising strength/value"],
+                 "upscaleBy": config[f"{tab_name}/Upscale by/value"],
+                 "clipSkip": shared.opts.better_styles_default_clip_skip,
+                 "etaNoiseSeedDelta": shared.opts.better_styles_default_eta_noise_seed_delta}
+
+        return JSONResponse(content=style)
+
 
 script_callbacks.on_app_started(on_app_started)
 
@@ -368,6 +394,12 @@ def on_ui_settings():
                            shared.OptionInfo(False, _("Hide the original Styles"), section=SETTINGS_SECTION))
     shared.opts.add_option("better_styles_hide_by_default",
                            shared.OptionInfo(False, _("Hide Better Styles by default"), section=SETTINGS_SECTION))
+    shared.opts.add_option("better_styles_default_clip_skip",
+                           shared.OptionInfo(1, _("Default Click skip. (Used when resetting the style)"), gr.Slider,
+                                             {"minimum": 1, "maximum": 12, "step": 1}, section=SETTINGS_SECTION))
+    shared.opts.add_option("better_styles_default_eta_noise_seed_delta",
+                           shared.OptionInfo(0, _("Default Eta noise seed delta. (Used when resetting the style)"),
+                                             gr.Number, {"precision": 0}, section=SETTINGS_SECTION))
 
 
 script_callbacks.on_ui_settings(on_ui_settings)

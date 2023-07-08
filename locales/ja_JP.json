@@ -1,9 +1,13 @@
 {
   "Apply style": "スタイルを適用",
+  "Are you sure you want to return the style to its default value?": "本当に現在のスタイルを初期値に戻していいですか？",
   "Better Styles version {0} is available": "Better Stylesのバージョン {0} が利用可能になりました",
   "Close Better Styles": "Better Stylesを非表示にする",
   "Close without deleting": "削除しないで閉じる",
   "Close without saving": "保存しないで閉じる",
+  "Default Click skip. (Used when resetting the style)": "Click skipの初期値 (スタイルのリセット時に使用されます)",
+  "Default Eta noise seed delta. (Used when resetting the style)": "Eta noise seed deltaの初期値 (スタイルのリセット時に使用されます)",
+  "default": "デフォルト",
   "Delete all selected styles. This action cannot be undone. Are you sure?": "選択されたスタイルを削除します。この動作は取り消すことが出来ませんが本当に削除しますか？",
   "Delete style": "スタイルを削除",
   "Display update notifications": "アップデートの通知を表示する",
@@ -17,7 +21,10 @@
   "Interval at which to display update notifications (Unit: days)": "アップデートの通知を表示する間隔 (単位: 日)",
   "Language of Better Styles (requires reload UI)": "Better Stylesの言語 (UIのリロードが必要)",
   "Make this style exclusive to the current checkpoint": "このスタイルを現在のモデル専用にする",
+  "No, cancel the reset": "いいえ、リセットをキャンセルします",
   "Notify of updates only once per version": "バージョンごとに一度しかアップデートの通知を行わない",
+  "replace thumbnail": "サムネイルを変更する",
+  "Reset style": "スタイルをリセット",
   "Save style": "スタイルを保存",
   "Save these parameters as style": "これらのパラメーターをスタイルに含める",
   "Save with this content": "この内容で保存する",
@@ -30,6 +37,5 @@
   "Styles deleted": "スタイルが削除されました",
   "Use the current image as a thumbnail": "現在選択されている画像をサムネイルにする",
   "Version of Better Styles (requires restart Web UI)": "Better Stylesのバージョン (Web UIの再起動が必要)",
-  "default": "デフォルト",
-  "replace thumbnail": "サムネイルを変更する"
+  "Yes, reset the current style": "はい、スタイルをリセットします"
 }
