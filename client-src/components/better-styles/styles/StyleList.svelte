@@ -3,8 +3,8 @@
   import { _ } from "@/libs/util";
   import { checkpoint, styleGroups } from "@/libs/store";
   import { type Style, getVisibleStyles } from "@/libs/styles";
+  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/_logic/context";
   import StyleCard from "#/better-styles/styles/StyleCard.svelte";
-  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/context";
 
   const { activeGroup } = getContext<BetterStylesContext>(betterStylesContextKey);
 

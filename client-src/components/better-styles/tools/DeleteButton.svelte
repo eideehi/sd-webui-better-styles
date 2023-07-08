@@ -5,7 +5,7 @@
   import { showToast } from "@/libs/util/toast";
   import { generateId } from "@/libs/util/modal";
   import { getModal } from "#/modal/Modal.svelte";
-  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/context";
+  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/_logic/context";
   import Button from "#/widgets/Button.svelte";
   import DeleteStylesDialog from "#/better-styles/tools/DeleteStylesDialog.svelte";
 

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { _ } from "@/libs/util";
-  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/context";
+  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/_logic/context";
   import TextInput from "#/widgets/TextInput.svelte";
 
   const { styleSearchKeyword } = getContext<BetterStylesContext>(betterStylesContextKey);

@@ -5,7 +5,7 @@
   import { imagesDir, styleGroups, stylesUpdate } from "@/libs/store";
   import { type Style, createImageGetter } from "@/libs/styles";
   import { showToast } from "@/libs/util/toast";
-  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/context";
+  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/_logic/context";
   import { getModal } from "#/modal/Modal.svelte";
   import { generateId } from "@/libs/util/modal";
   import StyleDetailDialog from "#/better-styles/styles/StyleDetailDialog.svelte";

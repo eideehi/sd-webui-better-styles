@@ -1,16 +1,16 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { _ } from "@/libs/util";
-  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/context";
+  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/_logic/context";
 
   export let baseElement: HTMLElement;
 
   let classList = Array.from(baseElement.classList).filter((clazz) => clazz !== "force-hidden");
 
-  const { activeBetterStyles } = getContext<BetterStylesContext>(betterStylesContextKey);
+  const { isBetterStylesActive } = getContext<BetterStylesContext>(betterStylesContextKey);
 
   function toggleActive(): void {
-    activeBetterStyles.set(!$activeBetterStyles);
+    isBetterStylesActive.set(!$isBetterStylesActive);
   }
 </script>
 

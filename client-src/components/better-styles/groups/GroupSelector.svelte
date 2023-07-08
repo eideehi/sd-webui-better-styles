@@ -1,8 +1,8 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { _ } from "@/libs/util";
+  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/_logic/context";
   import Button from "#/widgets/Button.svelte";
-  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/context";
 
   export let group: string;
 

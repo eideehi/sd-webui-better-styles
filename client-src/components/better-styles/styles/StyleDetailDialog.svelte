@@ -50,7 +50,7 @@
 
 <style lang="postcss">
   .styles-detail {
-    @apply flex flex-col gap-y-6 p-4;
+    @apply flex max-h-[60vh] flex-col gap-y-6 overflow-auto p-4;
   }
 
   .field-container {

@@ -3,7 +3,7 @@
   import { _ } from "@/libs/util";
   import { applyStyle } from "@/libs/styles";
   import { showToast } from "@/libs/util/toast";
-  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/context";
+  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/_logic/context";
   import Button from "#/widgets/Button.svelte";
 
   const { tabName, selectedStyles } = getContext<BetterStylesContext>(betterStylesContextKey);

@@ -4,12 +4,10 @@
   import GroupSelector from "#/better-styles/groups/GroupSelector.svelte";
 
   let visibleGroups: string[];
-  $: {
-    visibleGroups = $styleGroups
-      .filter((group) => hasVisibleStyles(group, $checkpoint))
-      .map((group) => group.name)
-      .sort((a, b) => a.localeCompare(b));
-  }
+  $: visibleGroups = $styleGroups
+    .filter((group) => hasVisibleStyles(group, $checkpoint))
+    .map((group) => group.name)
+    .sort((a, b) => a.localeCompare(b));
 </script>
 
 <div>

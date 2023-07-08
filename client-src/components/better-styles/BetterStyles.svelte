@@ -4,7 +4,7 @@
   import { checkpoint, styleGroups } from "@/libs/store";
   import { type Style, type StyleGroup, hasVisibleStyles } from "@/libs/styles";
   import { getBooleanOption, getElement } from "@/libs/util";
-  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/context";
+  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/_logic/context";
   import Tools from "#/better-styles/tools/Tools.svelte";
   import GroupList from "#/better-styles/groups/GroupList.svelte";
   import StyleList from "#/better-styles/styles/StyleList.svelte";
@@ -17,13 +17,13 @@
 
   setContext<BetterStylesContext>(betterStylesContextKey, {
     tabName,
-    activeBetterStyles: active,
+    isBetterStylesActive: active,
     activeGroup,
     styleSearchKeyword: writable(""),
     selectedStyles: writable([] as Style[]),
   });
 
-  const changeToAvailableCategory = (groups: StyleGroup[], checkpoint: string) => {
+  const updateActiveGroup = (groups: StyleGroup[], checkpoint: string) => {
     const group = groups.find((group) => group.name === $activeGroup);
     if (group == null || hasVisibleStyles(group, checkpoint)) return;
     const newGroup = groups
@@ -32,14 +32,14 @@
     activeGroup.set(newGroup != null ? newGroup.name : "default");
   };
 
-  checkpoint.subscribe((checkpoint) => changeToAvailableCategory($styleGroups, checkpoint));
-  styleGroups.subscribe((groups) => changeToAvailableCategory(groups, $checkpoint));
+  checkpoint.subscribe((checkpoint) => updateActiveGroup($styleGroups, checkpoint));
+  styleGroups.subscribe((groups) => updateActiveGroup(groups, $checkpoint));
 
-  const buttonBase = getElement(`#${tabName}_style_apply`);
-  if (buttonBase && buttonBase.parentElement) {
+  const toggleButton = getElement(`#${tabName}_style_apply`);
+  if (toggleButton && toggleButton.parentElement) {
     new BetterStylesSwitcher({
-      target: buttonBase.parentElement,
-      props: { baseElement: buttonBase },
+      target: toggleButton.parentElement,
+      props: { baseElement: toggleButton },
     });
   }
 </script>

@@ -1,20 +1,20 @@
 <script lang="ts">
-  import type { StyleSaveData } from "./styleSave";
+  import type { StyleSaveData } from "./_logic/styleSave";
   import type { Style } from "@/libs/styles";
   import { _ } from "@/libs/util";
   import { registerStyle } from "@/libs/api";
   import { styleGroups } from "@/libs/store";
   import { showToast } from "@/libs/util/toast";
   import { getModal } from "#/modal/Modal.svelte";
-  import { cleanSaveData } from "./styleSave";
+  import { cleanSaveData } from "./_logic/styleSave";
   import TextField from "#/widgets/TextField.svelte";
   import DialogModal from "#/modal/DialogModal.svelte";
   import Button from "#/widgets/Button.svelte";
   import Checkbox from "#/widgets/Checkbox.svelte";
   import { createStyleGetter, type StyleGetter } from "@/libs/styles/accesor/createStyleGetter";
-  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/context";
+  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/_logic/context";
   import { getContext } from "svelte";
-  import { createDefaultSaveData } from "#/better-styles/tools/styleSave";
+  import { createDefaultSaveData } from "#/better-styles/tools/_logic/styleSave";
 
   export let id: string;
 
@@ -122,8 +122,8 @@
     @apply flex gap-2;
   }
 
-  .buttons > :global(:first-child) {
-    @apply flex-grow;
+  .buttons > :global(button) {
+    @apply flex-grow basis-0;
   }
 
   .parameter-fields {
