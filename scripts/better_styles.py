@@ -109,14 +109,20 @@ def update_id_maps_json():
 def refresh_available_localization() -> None:
     if LOCALIZATION_DIR.is_dir():
         global available_localization
-        available_localization = [" "] + [f.stem for f in LOCALIZATION_DIR.glob("*.json") if f.is_file()]
+        available_localization = ["Auto"] + [f.stem for f in LOCALIZATION_DIR.glob("*.json") if f.is_file()]
 
 
 def load_localization() -> None:
     try:
         localization = shared.opts.better_styles_localization
     except AttributeError:
-        return
+        localization = "Auto"
+
+    if localization == "Auto" or localization.isspace():
+        try:
+            localization = shared.opts.localization
+        except AttributeError:
+            return
 
     if localization in available_localization:
         file_path = LOCALIZATION_DIR.joinpath("{}.json".format(localization))
@@ -387,7 +393,7 @@ script_callbacks.on_app_started(on_app_started)
 
 def on_ui_settings():
     shared.opts.add_option("better_styles_localization",
-                           shared.OptionInfo("", _("Language of Better Styles (requires reload UI)"), gr.Dropdown,
+                           shared.OptionInfo("Auto", _("Language of Better Styles (requires reload UI)"), gr.Dropdown,
                                              lambda: {"choices": available_localization},
                                              refresh=refresh_available_localization, section=SETTINGS_SECTION)),
     shared.opts.add_option("better_styles_hide_original_styles",
