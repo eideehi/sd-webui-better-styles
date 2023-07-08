@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Style } from "@/libs/styles";
   import { _ } from "@/libs/util";
   import { showToast } from "@/libs/util/toast";
   import { getModal } from "#/modal/Modal.svelte";

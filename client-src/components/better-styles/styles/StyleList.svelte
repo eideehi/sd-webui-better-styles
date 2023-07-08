@@ -2,7 +2,7 @@
   import { getContext } from "svelte";
   import { _ } from "@/libs/util";
   import { checkpoint, styleGroups } from "@/libs/store";
-  import { getVisibleStyles } from "@/libs/prompt-style";
+  import { type Style, getVisibleStyles } from "@/libs/styles";
   import StyleCard from "#/better-styles/styles/StyleCard.svelte";
   import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/context";
 

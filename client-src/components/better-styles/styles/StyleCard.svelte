@@ -3,7 +3,7 @@
   import { _ } from "@/libs/util";
   import { registerStyle } from "@/libs/api";
   import { imagesDir, styleGroups, stylesUpdate } from "@/libs/store";
-  import { selectedImage } from "@/libs/prompt-style";
+  import { type Style, createImageGetter } from "@/libs/styles";
   import { showToast } from "@/libs/util/toast";
   import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/context";
   import { getModal } from "#/modal/Modal.svelte";
@@ -43,7 +43,7 @@
   }
 
   async function replaceThumbnail(): Promise<void> {
-    const image = selectedImage(tabName).getOrDefault("");
+    const image = createImageGetter(tabName).getOrDefault("");
     if (!image) {
       showToast({ type: "warning", text: _("Image is not selected") });
       return;

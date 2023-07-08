@@ -1,3 +1,4 @@
+import type { Style } from "@/libs/styles";
 import type { Writable } from "svelte/store";
 
 export type BetterStylesContext = {

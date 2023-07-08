@@ -1,3 +1,4 @@
+import type { Style } from "@/libs/styles";
 import { _ } from "@/libs/util";
 
 export type StyleSaveData = {

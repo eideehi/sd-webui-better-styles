@@ -2,8 +2,8 @@
   import { setContext } from "svelte";
   import { writable } from "svelte/store";
   import { checkpoint, styleGroups } from "@/libs/store";
+  import { type Style, type StyleGroup, hasVisibleStyles } from "@/libs/styles";
   import { getBooleanOption, getElement } from "@/libs/util";
-  import { hasVisibleStyles } from "@/libs/prompt-style";
   import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/context";
   import Tools from "#/better-styles/tools/Tools.svelte";
   import GroupList from "#/better-styles/groups/GroupList.svelte";

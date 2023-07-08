@@ -1,6 +1,6 @@
 <script lang="ts">
   import { checkpoint, styleGroups } from "@/libs/store";
-  import { hasVisibleStyles } from "@/libs/prompt-style";
+  import { hasVisibleStyles } from "@/libs/styles";
   import GroupSelector from "#/better-styles/groups/GroupSelector.svelte";
 
   let visibleGroups: string[];

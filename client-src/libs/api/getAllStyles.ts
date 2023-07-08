@@ -1,3 +1,4 @@
+import type { StyleGroup } from "../styles";
 import { parseStyleGroups } from "./internal/parseStyleGroups";
 
 export function getAllStyles(): Promise<StyleGroup[]> {

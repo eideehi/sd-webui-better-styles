@@ -1,3 +1,4 @@
+import type { Style, StyleGroup } from "../styles";
 import { parseStyleGroups } from "./internal/parseStyleGroups";
 
 export function registerStyle(group: string, style: Partial<Style>): Promise<StyleGroup[]> {

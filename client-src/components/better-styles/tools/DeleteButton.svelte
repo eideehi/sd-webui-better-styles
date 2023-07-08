@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Style } from "@/libs/styles";
   import { getContext, tick } from "svelte";
   import { _ } from "@/libs/util";
   import { showToast } from "@/libs/util/toast";

@@ -1,8 +1,8 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { _ } from "@/libs/util";
+  import { applyStyle } from "@/libs/styles";
   import { showToast } from "@/libs/util/toast";
-  import { applyStyle } from "@/libs/prompt-style";
   import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/context";
   import Button from "#/widgets/Button.svelte";
 

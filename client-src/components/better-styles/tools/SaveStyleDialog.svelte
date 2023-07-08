@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { StyleSaveData } from "./styleSave";
-  import type { CapturedStyle } from "@/libs/prompt-style/captureStyle";
+  import type { Style } from "@/libs/styles";
   import { _ } from "@/libs/util";
   import { registerStyle } from "@/libs/api";
   import { styleGroups } from "@/libs/store";
@@ -11,10 +11,23 @@
   import DialogModal from "#/modal/DialogModal.svelte";
   import Button from "#/widgets/Button.svelte";
   import Checkbox from "#/widgets/Checkbox.svelte";
+  import { createStyleGetter, type StyleGetter } from "@/libs/styles/accesor/createStyleGetter";
+  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/context";
+  import { getContext } from "svelte";
+  import { createDefaultSaveData } from "#/better-styles/tools/styleSave";
 
   export let id: string;
-  export let capturedStyle: CapturedStyle;
-  export let saveData: StyleSaveData;
+
+  const { tabName, activeGroup } = getContext<BetterStylesContext>(betterStylesContextKey);
+
+  let styleGetter: StyleGetter = createStyleGetter(tabName);
+  let saveData: StyleSaveData = createDefaultSaveData({
+    group: $activeGroup,
+    style: {
+      prompt: styleGetter.prompt.getOrDefault(""),
+      negativePrompt: styleGetter.negativePrompt.getOrDefault(""),
+    },
+  });
 
   let valid: boolean;
   $: {
@@ -22,11 +35,11 @@
     valid = valid && (saveData.style.name || "").length > 0;
   }
 
-  const setParameter = (key: keyof Style & keyof CapturedStyle) => (event: InputEvent) => {
+  const setParameter = (key: keyof Style & keyof StyleGetter) => (event: InputEvent) => {
     if (!(event.target instanceof HTMLInputElement)) return;
     saveData.style = {
       ...saveData.style,
-      [key]: event.target.checked ? capturedStyle[key] : null,
+      [key]: event.target.checked ? styleGetter[key].get() : null,
     };
   };
 
@@ -62,7 +75,7 @@
         <Checkbox label={_("Restore faces")} on:change={setParameter("restoreFaces")} />
         <Checkbox label={_("Tiling")} on:change={setParameter("tiling")} />
         <Checkbox label={_("Hires. fix")} on:change={setParameter("hiresFix")} />
-        {#if capturedStyle.hiresFix}
+        {#if styleGetter.hiresFix.getOrDefault(false)}
           <Checkbox label={_("Upscaler")} on:change={setParameter("upscaler")} />
           <Checkbox label={_("Hires steps")} on:change={setParameter("hiresSteps")} />
           <Checkbox label={_("Denoising strength")} on:change={setParameter("denoisingStrength")} />
@@ -80,7 +93,7 @@
       <Checkbox
         label={_("Use the current image as a thumbnail")}
         on:change={setParameter("image")}
-        options={{ disabled: capturedStyle.image == null }}
+        options={{ disabled: styleGetter.image.get() == null }}
       />
     </div>
     <div class="buttons">

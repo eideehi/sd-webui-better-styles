@@ -1,3 +1,5 @@
+import type { StyleGroup } from "@/libs/styles";
+
 export function parseStyleGroups(json: unknown): StyleGroup[] {
   if (!Array.isArray(json)) return [];
   return json.filter(isStyleGroup);

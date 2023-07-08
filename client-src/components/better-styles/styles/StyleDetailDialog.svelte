@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Style } from "@/libs/styles";
   import { _ } from "@/libs/util";
   import DialogModal from "#/modal/DialogModal.svelte";
 

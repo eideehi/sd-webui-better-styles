@@ -1,5 +1,5 @@
+export type { Style, StyleGroup } from "./style";
 export { applyStyle } from "./applyStyle";
-export { captureStyle } from "./captureStyle";
 export { getVisibleStyles } from "./getVisibleStyles";
 export { hasVisibleStyles } from "./hasVisibleStyles";
-export * from "./values";
+export * from "./accesor";
