@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import { getDefaultStyle } from "@/libs/api/getDefaultStyle";
+  import { getDefaultStyle } from "@/libs/api";
   import { applyStyle } from "@/libs/styles";
   import { _ } from "@/libs/util";
   import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/_logic/context";
