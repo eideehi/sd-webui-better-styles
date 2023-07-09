@@ -1,9 +1,7 @@
 <script lang="ts">
   import type { Style } from "@/libs/styles";
   import { _ } from "@/libs/util";
-  import DialogModal from "#/modal/DialogModal.svelte";
 
-  export let id: string;
   export let style: Style;
 
   type Field = { label: string; value: Nullable<string> };
@@ -35,22 +33,20 @@
   }
 </script>
 
-<DialogModal {id}>
-  <div class="styles-detail">
-    <div class="field-container">
-      {#each createFields(style) as field}
-        <div class="field">
-          <span class="label">{field.label}</span>
-          <p class="value">{field.value}</p>
-        </div>
-      {/each}
-    </div>
+<div class="styles-details">
+  <div class="field-container">
+    {#each createFields(style) as field}
+      <div class="field">
+        <span class="label">{field.label}</span>
+        <p class="value">{field.value}</p>
+      </div>
+    {/each}
   </div>
-</DialogModal>
+</div>
 
 <style lang="postcss">
-  .styles-detail {
-    @apply flex max-h-[60vh] flex-col gap-y-6 overflow-auto p-4;
+  .styles-details {
+    @apply flex max-h-[60vh] max-w-[800px] flex-col gap-y-6 overflow-auto p-4;
   }
 
   .field-container {

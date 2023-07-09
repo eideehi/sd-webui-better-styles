@@ -6,16 +6,15 @@
   import { type Style, createImageGetter } from "@/libs/styles";
   import { showToast } from "@/libs/util/toast";
   import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/_logic/context";
-  import { getModal } from "#/modal/Modal.svelte";
-  import { generateId } from "@/libs/util/modal";
-  import StyleDetailDialog from "#/better-styles/styles/StyleDetailDialog.svelte";
+  import StyleDetails from "#/better-styles/styles/StyleDetails.svelte";
+  import ModalDialog from "#/widgets/ModalDialog.svelte";
 
   export let style: Style;
 
-  const id = generateId();
-
   const { tabName, activeGroup, styleSearchKeyword, selectedStyles } =
     getContext<BetterStylesContext>(betterStylesContextKey);
+
+  let showModal = false;
 
   let thumbnail: string;
   $: if (style.image != null) {
@@ -38,10 +37,6 @@
     }
   }
 
-  function showStylesDetail(): void {
-    getModal(id)?.open();
-  }
-
   async function replaceThumbnail(): Promise<void> {
     const image = createImageGetter(tabName).getOrDefault("");
     if (!image) {
@@ -53,15 +48,13 @@
   }
 </script>
 
-<StyleDetailDialog {id} {style} />
-
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="card" class:active class:selected on:click={selectStyle}>
   <button
     class="show-detail-button"
-    on:click|stopPropagation={showStylesDetail}
-    title={_("Show styles detail")}
+    on:click|stopPropagation={() => (showModal = true)}
+    title={_("Show style details")}
   />
   <img alt="{style.name} - Thumbnail" class="image" draggable="false" src={thumbnail} />
   <div class="actions">
@@ -73,6 +66,10 @@
     </span>
   </div>
 </div>
+
+<ModalDialog bind:show={showModal}>
+  <StyleDetails {style} />
+</ModalDialog>
 
 <style lang="postcss">
   .card {
