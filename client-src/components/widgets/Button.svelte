@@ -1,11 +1,20 @@
 <script lang="ts">
   export let primary = false;
+  export let size: "small" | "large" = "large";
   export let options: {
     disabled?: boolean;
   } = {};
 </script>
 
-<button {...options} class="button lg" class:primary class:secondary={!primary} on:click>
+<button
+  {...options}
+  class="button"
+  class:lg={size === "large"}
+  class:sm={size === "small"}
+  class:primary
+  class:secondary={!primary}
+  on:click
+>
   <slot />
 </button>
 
@@ -25,6 +34,10 @@
   .button.lg {
     @apply rounded-[var(--button-large-radius)] p-[var(--button-large-padding)] font-[var(--button-large-text-weight)];
     font-size: var(--button-large-text-size);
+  }
+
+  .button.sm {
+    @apply rounded-full px-4 py-1;
   }
 
   .button.primary {

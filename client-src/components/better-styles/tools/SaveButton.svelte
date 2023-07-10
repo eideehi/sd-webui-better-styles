@@ -1,8 +1,9 @@
 <script lang="ts">
+  import type { DefaultStyle } from "@/libs/api/getDefaultStyle";
   import type { Style } from "@/libs/styles";
   import type { StyleSaveData } from "./_logic/styleSave";
   import { getContext } from "svelte";
-  import { registerStyle } from "@/libs/api";
+  import { getDefaultStyle, registerStyle } from "@/libs/api";
   import { styleGroups } from "@/libs/store";
   import { _ } from "@/libs/util";
   import { showToast } from "@/libs/util/toast";
@@ -21,6 +22,7 @@
 
   let styleGetter: StyleGetter = createStyleGetter(tabName);
   let saveData: StyleSaveData = createDefaultSaveData({ group: "", style: {} });
+  let defaultStyle: DefaultStyle = {};
 
   function showDialog(): void {
     saveData = createDefaultSaveData({
@@ -30,7 +32,49 @@
         negativePrompt: styleGetter.negativePrompt.getOrDefault(""),
       },
     });
+    void getDefaultStyle(tabName).then((style) => (defaultStyle = style));
     showModal = true;
+  }
+
+  type Parameter = keyof Style & keyof StyleGetter;
+  const parameters: Parameter[] = [
+    "samplingMethod",
+    "samplingSteps",
+    "cfgScale",
+    "seed",
+    "restoreFaces",
+    "tiling",
+    "hiresFix",
+    "upscaler",
+    "hiresSteps",
+    "denoisingStrength",
+    "upscaleBy",
+    "clipSkip",
+    "etaNoiseSeedDelta",
+  ];
+
+  let displayOnlyChangedParameters = false;
+  let changedParameters: Parameter[] = [];
+
+  $: if (!showModal) {
+    displayOnlyChangedParameters = false;
+    changedParameters = [];
+  }
+
+  function toggleDisplayOnlyChangedParameters(): void {
+    displayOnlyChangedParameters = !displayOnlyChangedParameters;
+    if (displayOnlyChangedParameters) {
+      const changes: Parameter[] = [];
+      parameters.forEach((parameter) => {
+        const value = styleGetter[parameter].get();
+        if (value == null || defaultStyle[parameter] === value) return;
+        changes.push(parameter);
+        saveData.style = { ...saveData.style, [parameter]: value };
+      });
+      changedParameters = changes;
+    } else {
+      changedParameters = [];
+    }
   }
 
   let valid: boolean;
@@ -39,7 +83,7 @@
     valid = valid && (saveData.style.name || "").length > 0;
   }
 
-  const setParameter = (key: keyof Style & keyof StyleGetter) => (event: InputEvent) => {
+  const setParameter = (key: Parameter) => (event: InputEvent) => {
     if (!(event.target instanceof HTMLInputElement)) return;
     saveData.style = {
       ...saveData.style,
@@ -72,23 +116,64 @@
       />
     </div>
     <div class="parameters">
-      <span class="label">{_("Save these parameters as style")}</span>
+      <div class="header">
+        <span class="label">{_("Save these parameters as style")}</span>
+        <Button size="small" on:click={toggleDisplayOnlyChangedParameters}>
+          {#if displayOnlyChangedParameters}
+            {_("Display all parameters")}
+          {:else}
+            {_("Display only the changed parameters")}
+          {/if}
+        </Button>
+      </div>
       <ul class="parameter-fields">
-        <Checkbox label={_("Sampling method")} on:change={setParameter("samplingMethod")} />
-        <Checkbox label={_("Sampling steps")} on:change={setParameter("samplingSteps")} />
-        <Checkbox label={_("CFG Scale")} on:change={setParameter("cfgScale")} />
-        <Checkbox label={_("Seed")} on:change={setParameter("seed")} />
-        <Checkbox label={_("Restore faces")} on:change={setParameter("restoreFaces")} />
-        <Checkbox label={_("Tiling")} on:change={setParameter("tiling")} />
-        <Checkbox label={_("Hires. fix")} on:change={setParameter("hiresFix")} />
-        {#if styleGetter.hiresFix.getOrDefault(false)}
-          <Checkbox label={_("Upscaler")} on:change={setParameter("upscaler")} />
-          <Checkbox label={_("Hires steps")} on:change={setParameter("hiresSteps")} />
-          <Checkbox label={_("Denoising strength")} on:change={setParameter("denoisingStrength")} />
-          <Checkbox label={_("Upscale by")} on:change={setParameter("upscaleBy")} />
+        {#if !displayOnlyChangedParameters || changedParameters.includes("samplingMethod")}
+          <Checkbox label={_("Sampling method")} on:change={setParameter("samplingMethod")} />
         {/if}
-        <Checkbox label={_("Clip skip")} on:change={setParameter("clipSkip")} />
-        <Checkbox label={_("Eta noise seed delta")} on:change={setParameter("etaNoiseSeedDelta")} />
+        {#if !displayOnlyChangedParameters || changedParameters.includes("samplingSteps")}
+          <Checkbox label={_("Sampling steps")} on:change={setParameter("samplingSteps")} />
+        {/if}
+        {#if !displayOnlyChangedParameters || changedParameters.includes("cfgScale")}
+          <Checkbox label={_("CFG Scale")} on:change={setParameter("cfgScale")} />
+        {/if}
+        {#if !displayOnlyChangedParameters || changedParameters.includes("seed")}
+          <Checkbox label={_("Seed")} on:change={setParameter("seed")} />
+        {/if}
+        {#if !displayOnlyChangedParameters || changedParameters.includes("restoreFaces")}
+          <Checkbox label={_("Restore faces")} on:change={setParameter("restoreFaces")} />
+        {/if}
+        {#if !displayOnlyChangedParameters || changedParameters.includes("tiling")}
+          <Checkbox label={_("Tiling")} on:change={setParameter("tiling")} />
+        {/if}
+        {#if !displayOnlyChangedParameters || changedParameters.includes("hiresFix")}
+          <Checkbox label={_("Hires. fix")} on:change={setParameter("hiresFix")} />
+        {/if}
+        {#if styleGetter.hiresFix.getOrDefault(false)}
+          {#if !displayOnlyChangedParameters || changedParameters.includes("upscaler")}
+            <Checkbox label={_("Upscaler")} on:change={setParameter("upscaler")} />
+          {/if}
+          {#if !displayOnlyChangedParameters || changedParameters.includes("hiresSteps")}
+            <Checkbox label={_("Hires steps")} on:change={setParameter("hiresSteps")} />
+          {/if}
+          {#if !displayOnlyChangedParameters || changedParameters.includes("denoisingStrength")}
+            <Checkbox
+              label={_("Denoising strength")}
+              on:change={setParameter("denoisingStrength")}
+            />
+          {/if}
+          {#if !displayOnlyChangedParameters || changedParameters.includes("upscaleBy")}
+            <Checkbox label={_("Upscale by")} on:change={setParameter("upscaleBy")} />
+          {/if}
+        {/if}
+        {#if !displayOnlyChangedParameters || changedParameters.includes("clipSkip")}
+          <Checkbox label={_("Clip skip")} on:change={setParameter("clipSkip")} />
+        {/if}
+        {#if !displayOnlyChangedParameters || changedParameters.includes("etaNoiseSeedDelta")}
+          <Checkbox
+            label={_("Eta noise seed delta")}
+            on:change={setParameter("etaNoiseSeedDelta")}
+          />
+        {/if}
       </ul>
     </div>
     <div class="other-options">
@@ -113,7 +198,7 @@
 
 <style lang="postcss">
   .save-style {
-    @apply flex max-h-[60vh] max-w-[768px] flex-col gap-y-6 overflow-auto p-4;
+    @apply box-border flex max-h-[calc(100vh_-_8rem)] w-[clamp(300px,calc(100vw_-_8rem),768px)] flex-col gap-y-6 overflow-auto p-4;
   }
 
   .input-fields {
@@ -122,6 +207,10 @@
 
   .input-fields > :global(.text-field) {
     @apply contents;
+  }
+
+  .parameters > .header {
+    @apply flex items-center justify-between gap-x-3;
   }
 
   .buttons {

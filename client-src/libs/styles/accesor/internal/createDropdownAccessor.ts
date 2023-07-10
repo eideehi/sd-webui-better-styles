@@ -8,10 +8,9 @@ let dropdownSetValueQueue: Promise<void> = Promise.resolve();
 export function createDropdownAccessor(baseSelector: string): ValueAccessor<string> {
   return createValueAccessor<string>({
     get: () => {
-      let data = getElement(`${baseSelector} .single-select`); // for older gradio
-      if (data == null) {
-        data = getElement(`${baseSelector} [data-testid="block-info"]`);
-      }
+      let data = getElement(`${baseSelector} input`); // for older gradio
+      if (data instanceof HTMLInputElement) return data.value;
+      data = getElement(`${baseSelector} [data-testid="block-info"]`);
       return data?.textContent;
     },
     set: (value) => {

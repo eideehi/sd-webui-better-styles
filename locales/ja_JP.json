@@ -9,6 +9,8 @@
   "default": "デフォルト",
   "Delete all selected styles. This action cannot be undone. Are you sure?": "選択されたスタイルを削除します。この動作は取り消すことが出来ませんが本当に削除しますか？",
   "Delete style": "スタイルを削除",
+  "Display all parameters": "すべてのパラメータを表示する",
+  "Display only the changed parameters": "変更されたパラメーターのみ表示する",
   "Exclusive": "現在のモデル専用",
   "Execute the deletion": "削除を実行する",
   "Group": "グループ",
