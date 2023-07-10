@@ -325,17 +325,18 @@ def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
         STYLES_JSON.write_text(json_data, encoding="UTF-8")
         return JSONResponse(content=json.loads(json_data))
 
-    @app.post("/better-styles-api/v1/import-styles-csv")
-    async def import_styles_csv(group: str):
+    @app.get("/better-styles-api/v1/import-styles-csv")
+    async def import_styles_csv(request: Request):
         file_data = load_styles_json()
-
-        style_group = next((x for x in file_data if x.name == group), None)
-        if not style_group:
-            return JSONResponse(content={"status": "error", "error_code": 1})
 
         csv_file = WEBUI_ROOT.joinpath("styles.csv")
         if not csv_file.is_file():
-            return JSONResponse(content={"status": "error", "error_code": 2})
+            return JSONResponse(content={})
+
+        style_group = next((x for x in file_data if x.name == "styles.csv"), None)
+        if not style_group:
+            style_group = StyleGroup(name="styles.csv", styles=[])
+            file_data.append(style_group)
 
         with csv_file.open("r", encoding="utf_8_sig") as f:
             reader = csv.reader(f)
@@ -359,7 +360,7 @@ def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
 
         json_data = style_data_encoder(file_data)
         STYLES_JSON.write_text(json_data, encoding="UTF-8")
-        return JSONResponse(content={"status": "success", "styles": json.loads(json_data)})
+        return JSONResponse(content=json.loads(json_data))
 
     @app.get("/better-styles-api/v1/get-default-style/{tab_name}")
     async def get_default_style(tab_name: str):
@@ -400,6 +401,8 @@ def on_ui_settings():
                            shared.OptionInfo(False, _("Hide the original Styles"), section=SETTINGS_SECTION))
     shared.opts.add_option("better_styles_hide_by_default",
                            shared.OptionInfo(False, _("Hide Better Styles by default"), section=SETTINGS_SECTION))
+    shared.opts.add_option("better_styles_hide_import_styles_csv",
+                           shared.OptionInfo(False, _("Hide \"Import styles.csv\" button"), section=SETTINGS_SECTION))
     shared.opts.add_option("better_styles_default_clip_skip",
                            shared.OptionInfo(1, _("Default Click skip. (Used when resetting the style)"), gr.Slider,
                                              {"minimum": 1, "maximum": 12, "step": 1}, section=SETTINGS_SECTION))

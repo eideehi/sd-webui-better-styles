@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { _ } from "@/libs/util";
+  import { _, getBooleanOption } from "@/libs/util";
   import SearchInput from "#/better-styles/tools/SearchInput.svelte";
   import ApplyButton from "#/better-styles/tools/ApplyButton.svelte";
   import SaveButton from "#/better-styles/tools/SaveButton.svelte";
   import DeleteButton from "#/better-styles/tools/DeleteButton.svelte";
   import CloseButton from "#/better-styles/tools/CloseButton.svelte";
   import ResetButton from "#/better-styles/tools/ResetButton.svelte";
+  import ImportButton from "#/better-styles/tools/ImportButton.svelte";
 </script>
 
 <div class="tab-nav scroll-hide">
@@ -15,6 +16,9 @@
   <SaveButton />
   <DeleteButton />
   <ResetButton />
+  {#if !getBooleanOption("better_styles_hide_import_styles_csv", false)}
+    <ImportButton />
+  {/if}
   <CloseButton />
 </div>
 
