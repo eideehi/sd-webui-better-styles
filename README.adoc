@@ -9,6 +9,9 @@ Better Styles is a GUI for managing styles that has a UI similar to Extra networ
 
 image::docs/images/overview.png[Image - Better Styles UI]
 
+== Precautions
+Better Styles is a JavaScript-based extension. Please be aware that if JavaScript files are not loaded correctly, such as when using the `--data-dir` option, Better Styles not function properly.
+
 == Installation
 === Installing from the Browser (Recommended)
 You can install it from the Install from URL in the Extensions tab. Just enter https://github.com/eideehi/sd-webui-better-styles.git in the "URL for extension's git repository" field and press the "Install" button.
@@ -37,7 +40,8 @@ NOTE: Replace "x.y.z" above with the version you want to use. The available vers
 | Version       | Web UI Version (minimum) | Web UI Version (maximum)
 | 1.0.0 - 1.0.1 | b2073781 (2023-02-16)    | a9eab236 (2023-03-24)
 | 1.1.0 - 1.1.3 | 9e1afa9e (2023-03-25)    | Somewhere up to 1.1.0
-| 1.2.0         | 1.1.0                    | ~
+| 1.2.0         | 1.1.0                    | 1.4.0 (Unconfirmed after this)
+| 1.3.0         | 1.1.1                    | ~
 |===
 
 Please note that the minimum and maximum Web UI versions where Better Styles works are based on the developer's testing, and the version may vary.
@@ -50,8 +54,6 @@ git checkout main
 ----
 
 With this command, you can update Better Styles using the "Check for updates" button.
-
-NOTE: Since version 1.2.0, you can change the version from the Settings tab. For details, please refer to <<version_change>>.
 
 == Usage
 === Displaying Better Styles content
@@ -75,7 +77,7 @@ Enter the prompt you want to save as a style. The default value is the value cur
 Enter the negative prompt you want to save as a style. The default value is the value currently entered in the negative prompt area. You can leave this field blank if you don't want to include a negative prompt for the style.
 
 ==== Save these parameters as style
-Save the parameters that have been checked as a style.
+Save the checked parameters as a style. Press the `Display only the changed parameters` button to show only the parameters that have been changed from their default values.
 
 ==== Make this style exclusive to the current checkpoint
 Choose whether to make this style exclusive to the currently loaded model. If you make it an exclusive style, it will not be displayed in the list if another model is loaded.
@@ -84,37 +86,41 @@ Choose whether to make this style exclusive to the currently loaded model. If yo
 Choose whether to use the currently selected image as the thumbnail for this style. This item will be disabled if no image is selected.
 
 === Applying styles
-You can apply a style by selecting it from the list of styles and clicking the "Apply style" button. You can select multiple styles, but you cannot select styles from different groups at the same time.
+You can apply a style by selecting it from the list of styles and clicking the `Apply style` button. You can select multiple styles, but you cannot select styles from different groups at the same time.
 
 === Deleting styles
-You can delete a style by selecting it from the list of styles and clicking the "Delete style" button.
+You can delete a style by selecting it from the list of styles and clicking the `Delete style` button.
+
+=== Reset style
+By pressing the `Reset style` button, you can reset the current style to its default values.
+
+=== Import styles.csv
+Press the `Import styles.csv` button to import the contents of styles.csv into the `styles.csv` group. If the `styles.csv` group does not exist, it will be created. This button can be hidden using the <<hide_import_styles_csv>> option.
 
 == Configuration
 Better Styles creates its own config section in the Settings tab. Here's an explanation of each item:
 
 image::docs/images/settings.png[Image - Settings]
 
-=== Version of Better Styles [[version_change]]
-You can change the version of Better Styles. Selecting a blank space will change it to the latest version at that point. If you change the settings, it is necessary to restart the Web UI. (not just reload)
-
-TIP: The current version of Better Styles is displayed in the console of the Web UI.
-
-=== Display update notifications
-If checked, it will display notifications when updates are available.
-
-=== Notify of updates only once per version
-If checked, it will only notify once for each version when updates are available.
-
-=== Interval at which to display update notifications
-Specify the interval for displaying update notifications. The unit is "days", and the default value is 1 day.
+=== Language of Better Styles
+Specify the language to be used for the Better Styles component. The default value is `Auto` (same as the language set in the Web UI). Currently, the `ja_JP` language is available.
 
 === Hide the original Styles
-Choose whether to hide the original Styles dropdown and associated button.
+Choose whether to hide the original Styles dropdown and related buttons.
 
-=== Language of Better Styles
-Specify the language to use for the Better Styles component. The default value is blank (English). Currently, ja_JP language is available.
+=== Hide Better Styles by default
+Choose whether to hide the Better Styles component by default.
 
-== License
+=== Hide "Import styles.csv" button [[hide_import_styles_csv]]
+Choose whether to hide the `Import styles.csv` button.
+
+=== Default Click skip
+Set the initial value of `Click skip` used when resetting the style with the `Reset style` button.
+
+=== Default Eta noise seed delta
+Set the initial value of `Eta noise seed delta` used when resetting the style with the `Reset style` button.
+
+=== License
 Better Styles is developed and released under the MIT license. For details on the license, please refer to the following link:
 
 link:LICENSE[MIT License]
