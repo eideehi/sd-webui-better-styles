@@ -27,23 +27,26 @@ onUiLoaded(() => {
   new Toast({ target: gradioApp() });
 });
 
-onUiTabChange(async () => {
+onUiTabChange(() => {
   const activeTab = getCurrentTabName();
   if (activeTab !== "other") {
-    await initializeBetterStyles(activeTab);
+    initializeBetterStyles(activeTab);
   }
 });
 
-/**
- * Initialize Better Styles, including adding components and event listeners.
- * @param tabName Name of the tab on which Better Styles will be initialized.
- */
-async function initializeBetterStyles(tabName: StylesAvailableTab): Promise<void> {
-  hiddenOriginalStylesComponents(tabName);
+function initializeBetterStyles(tabName: StylesAvailableTab): void {
+  window.setTimeout(function init() {
+    if (Object.keys(opts).length === 0) {
+      window.setTimeout(init, 125);
+      return;
+    }
 
-  await Promise.all([fetchLocalization]).then(() => {
-    createBetterStylesComponents(tabName);
-  });
+    hiddenOriginalStylesComponents(tabName);
+
+    void Promise.all([fetchLocalization]).then(() => {
+      createBetterStylesComponents(tabName);
+    });
+  }, 10);
 }
 
 /**
