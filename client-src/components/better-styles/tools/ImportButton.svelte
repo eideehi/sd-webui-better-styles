@@ -15,9 +15,11 @@
   function importStyles(): void {
     void importStylesCsv().then((groups) => {
       showModal = false;
-      selectedStyles.set([]);
-      styleGroups.set(groups);
-      showToast({ type: "success", text: _("styles.csv imported") });
+      if (groups.length > 0) {
+        selectedStyles.set([]);
+        styleGroups.set(groups);
+        showToast({ type: "success", text: _("styles.csv imported") });
+      }
     });
   }
 </script>
