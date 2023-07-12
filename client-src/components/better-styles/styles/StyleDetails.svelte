@@ -46,7 +46,7 @@
 
 <style lang="postcss">
   .styles-details {
-    @apply flex max-h-[60vh] max-w-[800px] flex-col gap-y-6 overflow-auto p-4;
+    @apply box-border flex max-h-[calc(100vh_-_8rem)] w-[clamp(300px,calc(100vw_-_8rem),768px)] flex-col gap-y-6 overflow-auto p-4;
   }
 
   .field-container {
