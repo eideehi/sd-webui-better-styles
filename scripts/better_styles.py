@@ -3,7 +3,7 @@ import json
 import os
 import subprocess
 from pathlib import Path
-from typing import Callable, Optional, Tuple, List, Dict
+from typing import Callable, Optional, Tuple, List, Dict, Any
 
 import gradio as gr
 from PIL import Image
@@ -139,7 +139,16 @@ def _(text: str) -> str:
 
 
 def style_data_encoder(data: List[StyleGroup]) -> str:
-    return json.dumps([d.dict() for d in data], ensure_ascii=False)
+    return json.dumps([omit_none_fields(d.dict()) for d in data], ensure_ascii=False)
+
+
+def omit_none_fields(obj: Any) -> Any:
+    if isinstance(obj, dict):
+        return {k: omit_none_fields(v) for k, v in obj.items() if v is not None}
+    elif isinstance(obj, list):
+        return [omit_none_fields(elem) for elem in obj if elem is not None]
+    else:
+        return obj
 
 
 def load_styles_json() -> List[StyleGroup]:
