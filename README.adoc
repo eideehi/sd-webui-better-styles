@@ -40,7 +40,7 @@ NOTE: Replace "x.y.z" above with the version you want to use. The available vers
 | Version       | Web UI Version (minimum) | Web UI Version (maximum)
 | 1.0.0 - 1.0.1 | b2073781 (2023-02-16)    | a9eab236 (2023-03-24)
 | 1.1.0 - 1.1.3 | 9e1afa9e (2023-03-25)    | Somewhere up to 1.1.0
-| 1.2.0         | 1.1.0                    | 1.4.0 (Unconfirmed after this)
+| 1.2.0         | 1.1.0                    | 1.4.0
 | 1.3.0         | 1.1.1                    | ~
 |===
 

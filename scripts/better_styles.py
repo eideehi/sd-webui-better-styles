@@ -46,6 +46,7 @@ class StyleGroup(BaseModel):
     styles: List[Style]
 
 
+VERSION = "1.3.0"
 SETTINGS_SECTION = ("better_styles", "Better Styles")
 WEBUI_ROOT = Path().absolute()
 EXTENSION_ROOT = scripts.basedir()
@@ -81,7 +82,7 @@ def print_version() -> None:
         version = result.strip()
         print(f"[Better Styles] Version {version}")
     else:
-        print(f"[Better Styles] Version 1.2.0")
+        print(f"[Better Styles] Version {VERSION}")
 
 
 def load_id_map() -> None:
