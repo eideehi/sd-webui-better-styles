@@ -68,7 +68,7 @@ function createBetterStylesComponents(tabName: StylesAvailableTab) {
     return;
   }
 
-  const anchor = getElement(`div#${tabName}_settings`);
+  const anchor = getElement(`#${tabName}_toprow ~ div:last-child`);
   if (anchor == null || anchor.parentElement == null) return;
   new BetterStyles({ target: anchor.parentElement, anchor, props: { tabName } });
 }
