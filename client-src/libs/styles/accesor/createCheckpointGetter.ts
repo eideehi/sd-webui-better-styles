@@ -1,5 +1,5 @@
 import type { ValueGetter } from ".";
-import { getElement } from "@/libs/util";
+import { getElement } from "#/util/dom";
 
 export function createCheckpointGetter(): ValueGetter<string> {
   const get = () => {

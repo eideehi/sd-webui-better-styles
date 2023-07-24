@@ -10,5 +10,7 @@ function parseLocalization(json: unknown): Record<string, string> {
 }
 
 function isLocalization(obj: object): obj is Record<string, string> {
-  return Object.values(obj).every((value) => typeof value === "string");
+  return Object.values(obj)
+    .filter((value) => value != null)
+    .every((value) => typeof value === "string");
 }

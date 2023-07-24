@@ -1,4 +1,4 @@
-import type { StyleGroup } from "@/libs/styles";
+import type { StyleGroup } from "#/styles";
 
 export function parseStyleGroups(json: unknown): StyleGroup[] {
   if (!Array.isArray(json)) return [];

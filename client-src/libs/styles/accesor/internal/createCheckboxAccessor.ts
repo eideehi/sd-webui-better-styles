@@ -1,5 +1,5 @@
 import type { ValueAccessor } from "..";
-import { getElement } from "@/libs/util";
+import { getElement } from "#/util/dom";
 import { createValueAccessor } from "./createValueAccessor";
 
 export function createCheckboxAccessor(selector: string): ValueAccessor<boolean> {

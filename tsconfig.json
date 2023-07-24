@@ -17,12 +17,10 @@
     "strictNullChecks": true,
     "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "client-src/*"
-      ],
-      "#/*": [
-        "client-src/components/*"
-      ]
+      "@/*": ["client-src/components/better-styles/*"],
+      "%/*": ["client-src/components/widgets/*"],
+      "#/*": ["client-src/libs/*"],
+      "~/*": ["client-src/data/*"],
     }
   },
   "include": ["client-src/**/*.d.ts", "client-src/**/*.ts", "client-src/**/*.js", "client-src/**/*.svelte"],

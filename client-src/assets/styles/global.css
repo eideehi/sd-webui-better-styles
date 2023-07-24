@@ -1,7 +1,0 @@
-deepl-inline-translate {
-  @apply contents;
-}
-
-.force-hidden {
-  @apply !hidden;
-}

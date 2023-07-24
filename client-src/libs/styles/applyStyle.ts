@@ -18,7 +18,7 @@ import {
 } from ".";
 import { concatPrompt } from "./internal/concatPrompt";
 
-export function applyStyle(tabName: StylesAvailableTab, style: Style, overwrite = false): void {
+export function applyStyle(tabName: ExtensionAvailableTab, style: Style, overwrite = false): void {
   if (style.prompt != null) {
     const accessor = createPromptAccessor(tabName);
     if (overwrite) {

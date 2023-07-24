@@ -1,4 +1,4 @@
-import type { StyleGroup } from "../styles";
+import type { StyleGroup } from "#/styles";
 import { parseStyleGroups } from "./internal/parseStyleGroups";
 
 export function importStylesCsv(): Promise<StyleGroup[]> {

@@ -1,7 +1,7 @@
 import type { ValueGetter } from ".";
-import { getElement } from "@/libs/util";
+import { getElement } from "#/util/dom";
 
-export function createImageGetter(tabName: StylesAvailableTab): ValueGetter<string> {
+export function createImageGetter(tabName: ExtensionAvailableTab): ValueGetter<string> {
   const get = () => {
     const element = getElement(`#${tabName}_gallery > div > img`);
     if (element == null || !(element instanceof HTMLImageElement)) return null;

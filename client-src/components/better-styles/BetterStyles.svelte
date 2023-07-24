@@ -1,67 +1,85 @@
 <script lang="ts">
   import { setContext } from "svelte";
   import { writable } from "svelte/store";
-  import { checkpoint, styleGroups } from "@/libs/store";
-  import { type Style, type StyleGroup, hasVisibleStyles } from "@/libs/styles";
-  import { getBooleanOption, getElement } from "@/libs/util";
-  import { type BetterStylesContext, betterStylesContextKey } from "#/better-styles/_logic/context";
-  import Tools from "#/better-styles/tools/Tools.svelte";
-  import GroupList from "#/better-styles/groups/GroupList.svelte";
-  import StyleList from "#/better-styles/styles/StyleList.svelte";
-  import BetterStylesSwitcher from "#/better-styles/BetterStylesSwitcher.svelte";
+  import { getElement } from "#/util/dom";
+  import { getBooleanOption } from "#/util/webui";
+  import { BetterStyles } from "~/messages";
+  import {
+    type BetterStylesContext,
+    type GroupedStyle,
+    betterStylesContextKey,
+  } from "./_logic/context";
+  import BetterStylesToggleButton from "./BetterStylesToggleButton.svelte";
+  import Styles from "./styles/Styles.svelte";
+  import StyleEdit from "./style-edit/StyleEdit.svelte";
 
-  export let tabName: StylesAvailableTab;
+  export let tabName: ExtensionAvailableTab;
 
-  const active = writable(!getBooleanOption("better_styles_hide_by_default", false));
+  const active = writable(getBooleanOption("better_styles_show_by_default", false));
   const activeGroup = writable("default");
+  const editData = writable<Nullable<GroupedStyle>>(null);
+
+  function cloneGroupedStyle(groupedStyle: GroupedStyle): GroupedStyle {
+    return { group: groupedStyle.group, style: { ...groupedStyle.style } };
+  }
 
   setContext<BetterStylesContext>(betterStylesContextKey, {
     tabName,
-    isBetterStylesActive: active,
-    activeGroup,
+    active,
     styleSearchKeyword: writable(""),
-    selectedStyles: writable([] as Style[]),
+    activeGroup,
+    selectedStyles: writable([]),
+    editData,
   });
 
-  const updateActiveGroup = (groups: StyleGroup[], checkpoint: string) => {
-    const group = groups.find((group) => group.name === $activeGroup);
-    if (group == null || hasVisibleStyles(group, checkpoint)) return;
-    const newGroup = groups
-      .sort((a, b) => a.name.localeCompare(b.name))
-      .find((group) => hasVisibleStyles(group, checkpoint));
-    activeGroup.set(newGroup != null ? newGroup.name : "default");
-  };
-
-  checkpoint.subscribe((checkpoint) => updateActiveGroup($styleGroups, checkpoint));
-  styleGroups.subscribe((groups) => updateActiveGroup(groups, $checkpoint));
-
-  const toggleButton = getElement(`#${tabName}_style_apply`);
-  if (toggleButton && toggleButton.parentElement) {
-    new BetterStylesSwitcher({
-      target: toggleButton.parentElement,
-      props: { baseElement: toggleButton },
+  const toolButton = getElement(`#${tabName}_style_apply`);
+  if (toolButton != null && toolButton.parentElement != null) {
+    new BetterStylesToggleButton({
+      target: toolButton.parentElement,
+      props: { baseElement: toolButton },
     });
   }
 </script>
 
-<div class="better-styles form" class:hidden={!$active} id="better-styles-{tabName}-styles">
+<div class="better-styles form" class:active={$active} id="{tabName}_better_styles">
   <div class="compact gradio-row">
-    <div class="tabs gradio-tabs extra-networks">
-      <Tools />
-      <div class="tab-item">
-        <GroupList />
-        <StyleList />
+    <div class="tabs gradio-tabs">
+      <div class="tab-nav scroll-hide">
+        <p class="label">{BetterStyles()}</p>
       </div>
+      {#if $editData == null}
+        <div class="tab-item">
+          <Styles />
+        </div>
+      {:else}
+        <div class="tab-item">
+          <StyleEdit style={cloneGroupedStyle($editData)} />
+        </div>
+      {/if}
     </div>
   </div>
 </div>
 
 <style lang="postcss">
   .better-styles {
-    @apply min-w-full;
+    @apply hidden w-[--size-full];
+  }
+
+  .better-styles.active {
+    @apply block;
+  }
+
+  .tab-nav {
+    @apply flex flex-wrap whitespace-nowrap border-b border-[var(--border-color-primary)];
+  }
+
+  .label {
+    @apply -mb-[1px] flex items-center rounded-t-[var(--container-radius)] border border-b-0 border-[var(--border-color-primary)] px-[var(--size-4)] py-[var(--size-1)] font-[var(--section-header-text-weight)] text-[var(--body-text-color)];
+    background: var(--background-fill-primary);
+    font-size: var(--section-header-text-size);
   }
 
   .tab-item {
-    @apply relative flex flex-col gap-3 rounded-b-[var(--container-radius)] border border-t-0 border-[var(--border-color-primary)] p-[var(--block-padding)];
+    @apply flex flex-col gap-3 rounded-b-[var(--container-radius)] border border-t-0 border-[var(--border-color-primary)] p-[var(--block-padding)];
   }
 </style>

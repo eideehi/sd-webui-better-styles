@@ -1,0 +1,80 @@
+deepl-inline-translate {
+  @apply contents;
+}
+
+.better-styles-hidden {
+  @apply !hidden;
+}
+
+.better-styles,
+.better-styles * {
+  @apply box-border border-0 border-solid border-transparent;
+}
+
+.better-styles svg.icon {
+  @apply pointer-events-none;
+}
+
+.better-styles :is([type="text"], [type="number"], [type="range"]) {
+  @apply outline-none;
+}
+
+.better-styles :is([type="text"], [type="number"]) {
+  @apply p-[--input-padding] text-[length:--input-text-size];
+}
+
+.better-styles .input {
+  --local-box-shadow: var(--input-shadow);
+  --local-border-color: var(--input-border-color);
+  @apply block w-full rounded-[--input-radius] border-[length:--input-border-width] border-[--local-border-color] p-[--input-padding] text-[length:--input-text-size] font-[--input-text-weight] leading-[--line-sm] text-[--body-text-color] outline-none [background:--input-background-fill] [box-shadow:--local-box-shadow];
+}
+
+.better-styles .input:is(:focus, :focus-within) {
+  --local-box-shadow: var(--input-shadow-focus);
+  --local-border-color: var(--input-border-color-focus);
+  @apply outline outline-1 outline-offset-0 outline-[--input-border-color-focus];
+}
+
+.better-styles .input [type="text"] {
+  @apply [background:none] [border:none];
+}
+
+.better-styles .button {
+  @apply inline-flex cursor-pointer items-center justify-center px-[--size-2] py-[--size-1] text-center transition-opacity duration-75 ease-linear [border-width:--button-border-width] [box-shadow:--button-shadow];
+}
+
+.better-styles .button:disabled {
+  @apply cursor-not-allowed opacity-50;
+}
+
+.better-styles .button.lg {
+  @apply rounded-[--button-large-radius] p-[--button-large-padding] text-[length:--button-large-text-size] font-[--button-large-text-weight];
+}
+
+.better-styles .button.sm {
+  @apply rounded-[--radius-sm];
+}
+
+.better-styles .button.primary {
+  @apply border-[--button-primary-border-color] text-[--button-primary-text-color] [background:--button-primary-background-fill];
+}
+
+.better-styles .button.primary:not(:disabled):hover {
+  @apply border-[--button-primary-border-color-hover] text-[--button-primary-text-color-hover] [background:--button-primary-background-fill-hover];
+}
+
+.better-styles .button.secondary {
+  @apply border-[--button-secondary-border-color] text-[--button-secondary-text-color] [background:--button-secondary-background-fill];
+}
+
+.better-styles .button.secondary:not(:disabled):hover {
+  @apply border-[--button-secondary-border-color-hover] text-[--button-secondary-text-color-hover] [background:--button-secondary-background-fill-hover];
+}
+
+.better-styles .button.extra {
+  @apply border-[--checkbox-border-color-selected] text-[--button-primary-text-color] [background:--checkbox-background-color-selected];
+}
+
+.better-styles .button.extra:not(:disabled):hover {
+  @apply [filter:brightness(1.1)];
+}

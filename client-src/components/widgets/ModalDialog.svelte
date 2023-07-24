@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { isDarkMode } from "@/libs/util";
   import { createEventDispatcher } from "svelte";
+  import CloseIcon from "~icons/mdi/close-thick";
 
   export let show: boolean;
   export let options: { hideCloseButton?: boolean } = {};
@@ -44,10 +44,12 @@
 </script>
 
 {#if show}
-  <dialog class="modal-dialog" class:dark={isDarkMode()} bind:this={dialog}>
+  <dialog class="better-styles modal-dialog" bind:this={dialog}>
     <div class="content-wrapper">
       {#if !hideCloseButton}
-        <button class="close-button" on:click={() => dialog?.close()}>×</button>
+        <button class="close-button" on:click={() => dialog?.close()}>
+          <CloseIcon />
+        </button>
       {/if}
       <slot />
     </div>
@@ -56,11 +58,7 @@
 
 <style lang="postcss">
   .modal-dialog {
-    @apply fixed overflow-hidden p-10 [background:none] [border:none];
-  }
-
-  .modal-dialog:focus-visible {
-    @apply outline-none;
+    @apply fixed overflow-hidden p-10 [background:none] [border:none] [font-family:--font] [outline:none];
   }
 
   .modal-dialog::backdrop {
@@ -68,14 +66,10 @@
   }
 
   .content-wrapper {
-    @apply rounded border-2 border-solid border-[var(--input-border-color)] text-[--button-secondary-text-color] [background:--body-background-fill];
+    @apply rounded border-2 border-[var(--input-border-color)] text-[--button-secondary-text-color] [background:--body-background-fill];
   }
 
   .close-button {
-    @apply absolute right-0 top-0 cursor-pointer border-none bg-transparent text-5xl text-white;
-  }
-
-  .close-button:focus-visible {
-    outline: none;
+    @apply absolute right-0 top-0 cursor-pointer border-none bg-transparent text-[length:--text-xxl] text-white [outline:none];
   }
 </style>

@@ -1,9 +1,10 @@
-import "@/assets/styles/global.css";
-import { getAllStyles, getImagesDir, getLocalization } from "@/libs/api";
-import { imagesDir, styleGroups, stylesUpdate } from "@/libs/store";
-import { getCurrentTabName, getElement, hidden, withBooleanOption } from "@/libs/util";
-import BetterStyles from "#/better-styles/BetterStyles.svelte";
-import Toast from "#/toast/Toast.svelte";
+import "./styles/main.css";
+import { getAllStyles, getImagesDir, getLocalization } from "#/api";
+import { imagesDir, styleGroups, stylesUpdate } from "#/store";
+import { getElement, hidden } from "#/util/dom";
+import { getBooleanOption, getCurrentTabName } from "#/util/webui";
+import BetterStyles from "@/BetterStyles.svelte";
+import Toast from "%/Toast.svelte";
 
 let fetchLocalization: Nullable<Promise<void>> = null;
 
@@ -34,7 +35,7 @@ onUiTabChange(() => {
   }
 });
 
-function initializeBetterStyles(tabName: StylesAvailableTab): void {
+function initializeBetterStyles(tabName: ExtensionAvailableTab): void {
   window.setTimeout(function init() {
     if (Object.keys(opts).length === 0) {
       window.setTimeout(init, 125);
@@ -49,22 +50,16 @@ function initializeBetterStyles(tabName: StylesAvailableTab): void {
   }, 10);
 }
 
-/**
- * Hides original style components in the specified tab.
- * @param tabName - The name of the tab to hide original style components from.
- */
-function hiddenOriginalStylesComponents(tabName: StylesAvailableTab) {
-  withBooleanOption("better_styles_hide_original_styles", (value) => {
-    if (value) {
-      hidden(getElement(`#${tabName}_style_apply`), true);
-      hidden(getElement(`#${tabName}_style_create`), true);
-      hidden(getElement(`#${tabName}_styles_row`), true);
-    }
+function hiddenOriginalStylesComponents(tabName: ExtensionAvailableTab) {
+  getBooleanOption("better_styles_hide_original_styles", (value) => {
+    hidden(getElement(`#${tabName}_style_apply`), value);
+    hidden(getElement(`#${tabName}_style_create`), value);
+    hidden(getElement(`#${tabName}_styles_row`), value);
   });
 }
 
-function createBetterStylesComponents(tabName: StylesAvailableTab) {
-  if (getElement(`#better-styles-${tabName}-styles`)) {
+function createBetterStylesComponents(tabName: ExtensionAvailableTab) {
+  if (getElement(`#${tabName}_better_styles`)) {
     return;
   }
 

@@ -24,7 +24,7 @@ type StyleKey = keyof Omit<Style, "name">;
 
 export type StyleGetter = { [key in StyleKey]: ValueGetter<Style[key]> };
 
-export function createStyleGetter(tabName: StylesAvailableTab): StyleGetter {
+export function createStyleGetter(tabName: ExtensionAvailableTab): StyleGetter {
   return {
     image: createImageGetter(tabName),
     checkpoint: createCheckpointGetter(),

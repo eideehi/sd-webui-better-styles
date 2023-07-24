@@ -1,8 +1,8 @@
-import type { Style } from "../styles";
+import type { Style } from "#/styles";
 
 export type DefaultStyle = Omit<Style, "name" | "image" | "checkpoint">;
 
-export function getDefaultStyle(tabName: StylesAvailableTab): Promise<DefaultStyle> {
+export function getDefaultStyle(tabName: ExtensionAvailableTab): Promise<DefaultStyle> {
   return fetch(`/better-styles-api/v1/get-default-style/${tabName}?ts=${new Date().getTime()}`)
     .then((response) => response.json())
     .then(parseResponse);

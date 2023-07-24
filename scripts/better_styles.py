@@ -1,4 +1,5 @@
 import csv
+import io
 import json
 import os
 import subprocess
@@ -7,7 +8,7 @@ from typing import Callable, Optional, Tuple, List, Dict, Any
 
 import gradio as gr
 from PIL import Image
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, UploadFile, File, Form
 from fastapi.responses import FileResponse, JSONResponse
 from gradio import Blocks
 from pydantic import BaseModel, parse_obj_as
@@ -44,6 +45,13 @@ class Style(BaseModel):
 class StyleGroup(BaseModel):
     name: str
     styles: List[Style]
+
+
+class MoveStyleRequest(BaseModel):
+    from_group: str
+    to_group: str
+    original_style_name: str
+    style: Style
 
 
 VERSION = "1.3.0"
@@ -140,6 +148,7 @@ def _(text: str) -> str:
 
 
 def style_data_encoder(data: List[StyleGroup]) -> str:
+    data = [group for group in data if group.styles]
     return json.dumps([omit_none_fields(d.dict()) for d in data], ensure_ascii=False)
 
 
@@ -160,36 +169,39 @@ def load_styles_json() -> List[StyleGroup]:
     return []
 
 
-def update_styles(styles: List[Style], *args: Style) -> Tuple[List[Style], List[Style]]:
-    updated_styles = {style.name: style for style in styles}
-    overwritten_styles = []
-    for style in args:
-        if style.name in updated_styles:
-            old_style = updated_styles[style.name]
-            if not style.image and old_style.image:
-                style.image = old_style.image
-                old_style.image = None
-            overwritten_styles.append(old_style)
-        updated_styles[style.name] = style
-    return list(updated_styles.values()), overwritten_styles
+def update_style(style_group: StyleGroup, group: str, style: Style):
+    updated_styles = []
+    deleted_style: Optional[Style] = None
+    for item in style_group.styles:
+        if item.name == style.name:
+            deleted_style = item
+            updated_styles.append(style)
+        else:
+            updated_styles.append(item)
+
+    if not deleted_style:
+        updated_styles.append(style)
+
+    style_group.styles = updated_styles
+    delete_disused_image(group, style, deleted_style)
 
 
-def filtering_styles(styles: List[Style], predicate: Callable[[Style], bool]) -> Tuple[List[Style], List[Style]]:
-    filtered_styles = []
-    removed_styles = []
+def delete_styles(styles: List[Style], predicate: Callable[[Style], bool]) -> Tuple[List[Style], List[Style]]:
+    updated_styles = []
+    deleted_styles = []
     for style in styles:
         if predicate(style):
-            removed_styles.append(style)
+            deleted_styles.append(style)
         else:
-            filtered_styles.append(style)
-    return filtered_styles, removed_styles
+            updated_styles.append(style)
+    return updated_styles, deleted_styles
 
 
-def get_image_path(group: str, style_name: str) -> str:
+def get_image_path(group: str, style_name: str) -> Path:
     directory_id = get_or_create_id("groups", group)
     file_id = get_or_create_id("{}-images".format(group), style_name)
     file_name = "{}.webp".format(file_id)
-    return IMAGES_DIR.joinpath(directory_id).joinpath(file_name).as_posix()
+    return IMAGES_DIR.joinpath(directory_id).joinpath(file_name)
 
 
 def get_or_create_id(category: str, key: str) -> str:
@@ -224,27 +236,24 @@ def get_available_id(id_map: IdMap) -> int:
     return min_id
 
 
-def save_image(input_file: str, output_file: str):
-    input_path = Path(input_file)
-    output_path = Path(output_file)
-    if input_path.is_file():
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        with Image.open(input_path) as image:
-            image.thumbnail((512, 512))
-            image.save(output_path, "webp")
+def delete_disused_image(group: str, updated_style: Optional[Style], deleted_style: Optional[Style]) -> None:
+    if not deleted_style or not deleted_style.image:
+        return
 
+    updated_image = None
+    if updated_style:
+        updated_image = updated_style.image
 
-def delete_disused_images(group: str, disused_styles: List[Style]) -> None:
-    for style in disused_styles:
-        if style.image:
-            path = IMAGES_DIR.joinpath(style.image)
-            if path.is_file():
-                path.unlink()
+    if updated_image != deleted_style.image:
+        path = IMAGES_DIR.joinpath(deleted_style.image)
+        if path.is_file():
+            path.unlink()
+            print(f"[Better Styles] Delete disused thumbnail: {path}")
 
         category = "{}-images".format(group)
         if category in id_maps:
             id_map = id_maps[category]
-            if remove_id(id_map, style.name):
+            if remove_id(id_map, deleted_style.name):
                 if not id_map.values:
                     id_maps.pop(category)
 
@@ -270,17 +279,6 @@ def remove_id(id_map: IdMap, key: str) -> bool:
     return True
 
 
-def find_disused_images(styles1: List[Style], styles2: List[Style]) -> List[Style]:
-    disused_images = []
-    for style1 in styles1:
-        for style2 in styles2:
-            if style1.name != style2.name:
-                continue
-            if style1.image != style2.image and style2.image:
-                disused_images.append(style2)
-    return disused_images
-
-
 def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
     @app.get("/better-styles-api/v1/get-localization")
     async def get_localization(request: Request):
@@ -297,22 +295,15 @@ def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
         else:
             return JSONResponse(content=[])
 
-    @app.post("/better-styles-api/v1/register-style/{group}")
-    async def register_style(group: str, style: Style):
-        if style.image:
-            image_path = get_image_path(group, style.name)
-            save_image(style.image, image_path)
-            style.image = Path(image_path).relative_to(IMAGES_DIR).as_posix()
-
+    @app.post("/better-styles-api/v1/save-style/{group}")
+    async def save_style_api(group: str, style: Style):
         file_data = load_styles_json()
         if file_data:
             is_new_group = True
             for data in file_data:
                 if data.name == group:
                     is_new_group = False
-                    updated_styles, overwritten_styles = update_styles(data.styles, style)
-                    data.styles = updated_styles
-                    delete_disused_images(group, find_disused_images(updated_styles, overwritten_styles))
+                    update_style(data, group, style)
             if is_new_group:
                 file_data.append(StyleGroup(name=group, styles=[style]))
         else:
@@ -322,14 +313,49 @@ def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
         STYLES_JSON.write_text(json_data, encoding="UTF-8")
         return JSONResponse(content=json.loads(json_data))
 
-    @app.post("/better-styles-api/v1/delete-styles/{group}")
-    async def delete_styles(group: str, styles: List[str]):
+    @app.post("/better-styles-api/v1/delete-styles")
+    async def delete_styles_api(request: Dict[str, List[str]]):
         file_data = load_styles_json()
-        for style_data in file_data:
-            if style_data.name == group:
-                filtered_styles, removed_styles = filtering_styles(style_data.styles, lambda x: x.name in styles)
-                style_data.styles = filtered_styles
-                delete_disused_images(group, removed_styles)
+        for data in file_data:
+            for group in list(request.keys()):
+                if data.name != group:
+                    continue
+
+                styles = request.pop(group)
+                updated_styles, deleted_styles = delete_styles(data.styles, lambda x: x.name in styles)
+                data.styles = updated_styles
+
+                for deleted_style in deleted_styles:
+                    delete_disused_image(group, None, deleted_style)
+
+        json_data = style_data_encoder(file_data)
+        STYLES_JSON.write_text(json_data, encoding="UTF-8")
+        return JSONResponse(content=json.loads(json_data))
+
+    @app.post("/better-styles-api/v1/move-style")
+    async def move_style_api(request: MoveStyleRequest):
+        from_group = request.from_group
+        to_group = request.to_group
+        original_style_name = request.original_style_name
+        style = request.style
+        file_data = load_styles_json()
+
+        if not file_data:
+            file_data.append(StyleGroup(name=to_group, styles=[style]))
+        else:
+            is_new_group = True
+            for data in file_data:
+                if data.name == from_group:
+                    updated_styles, deleted_styles = delete_styles(data.styles, lambda x: x.name == original_style_name)
+                    data.styles = updated_styles
+
+                    for deleted_style in deleted_styles:
+                        delete_disused_image(from_group, None, deleted_style)
+                elif data.name == to_group:
+                    is_new_group = False
+                    update_style(data, to_group, style)
+            if is_new_group:
+                file_data.append(StyleGroup(name=to_group, styles=[style]))
 
         json_data = style_data_encoder(file_data)
         STYLES_JSON.write_text(json_data, encoding="UTF-8")
@@ -398,6 +424,19 @@ def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
 
         return JSONResponse(content=style)
 
+    @app.post("/better-styles-api/v1/upload-thumbnail")
+    async def upload_thumbnail(group: str = Form(), style_name: str = Form(), file: UploadFile = File()):
+        path = get_image_path(group, style_name)
+        data = await file.read()
+        with Image.open(io.BytesIO(data)) as image:
+            path.parent.mkdir(parents=True, exist_ok=True)
+
+            image.thumbnail((512, 512))
+            image.save(path, "webp")
+            print(f"[Better Styles] Thumbnail saved: {path}")
+
+        return {"path": path.relative_to(IMAGES_DIR).as_posix()}
+
 
 script_callbacks.on_app_started(on_app_started)
 
@@ -409,8 +448,8 @@ def on_ui_settings():
                                              refresh=refresh_available_localization, section=SETTINGS_SECTION)),
     shared.opts.add_option("better_styles_hide_original_styles",
                            shared.OptionInfo(False, _("Hide the original Styles"), section=SETTINGS_SECTION))
-    shared.opts.add_option("better_styles_hide_by_default",
-                           shared.OptionInfo(False, _("Hide Better Styles by default"), section=SETTINGS_SECTION))
+    shared.opts.add_option("better_styles_show_by_default",
+                           shared.OptionInfo(False, _("Show the Better Styles by default"), section=SETTINGS_SECTION))
     shared.opts.add_option("better_styles_hide_import_styles_csv",
                            shared.OptionInfo(False, _("Hide \"Import styles.csv\" button"), section=SETTINGS_SECTION))
     shared.opts.add_option("better_styles_default_clip_skip",

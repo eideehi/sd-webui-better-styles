@@ -1,6 +1,7 @@
 import { resolve } from "path";
 import { defineConfig } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
+import icons from "unplugin-icons/vite";
 
 export default defineConfig({
   build: {
@@ -12,11 +13,13 @@ export default defineConfig({
       fileName: () => "betterStyles.js",
     },
   },
-  plugins: [svelte()],
+  plugins: [svelte(), icons({ compiler: "svelte", defaultClass: "icon" })],
   resolve: {
     alias: {
-      "@/": `${resolve(__dirname, "client-src")}/`,
-      "#/": `${resolve(__dirname, "client-src", "components")}/`,
+      "@/": `${resolve(__dirname, "client-src", "components", "better-styles")}/`,
+      "%/": `${resolve(__dirname, "client-src", "components", "widgets")}/`,
+      "#/": `${resolve(__dirname, "client-src", "libs")}/`,
+      "~/": `${resolve(__dirname, "client-src", "data")}/`,
     },
   },
 });

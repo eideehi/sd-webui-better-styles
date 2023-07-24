@@ -1,6 +1,6 @@
 import type { ValueAccessor } from "..";
 import { tick } from "svelte";
-import { getElement } from "@/libs/util";
+import { getElement } from "#/util/dom";
 import { createValueAccessor } from "./createValueAccessor";
 
 let dropdownSetValueQueue: Promise<void> = Promise.resolve();

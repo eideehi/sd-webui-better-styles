@@ -4,4 +4,6 @@ export { getDefaultStyle } from "./getDefaultStyle";
 export { getImagesDir } from "./getImagesDir";
 export { getLocalization } from "./getLocalization";
 export { importStylesCsv } from "./importStylesCsv";
-export { registerStyle } from "./registerStyle";
+export * from "./moveStyle";
+export * from "./saveStyle";
+export * from "./uploadThumbnail";
