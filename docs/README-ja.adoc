@@ -1,11 +1,11 @@
 = Better Styles
 
-Better Stylesは https://github.com/AUTOMATIC1111/stable-diffusion-webui[Stable Diffusion web UI] の拡張機能で、より良いスタイルの管理用UIを提供します。
-
 link:../README.adoc[English] | 日本語
 
+Better Stylesは https://github.com/AUTOMATIC1111/stable-diffusion-webui[Stable Diffusion web UI] の拡張機能で、より良いスタイルの管理用UIを提供します。
+
 == 概要
-Better Stylesは Extra networks のギャラリーに似たUIをもつスタイル管理用GUIです。オリジナルのStyles機能ではプロンプトとネガティブプロンプトしか保存できませんが、Better StylesはサンプリングメソッドやCFGスケールなどのパラメータもスタイルとして保存することができます。さらに、Extra networks のUIと同じように、スタイルに対してサムネイルを設定することで、直感的にスタイルを扱うことができます。
+Better Stylesはスタイルを管理するためのより良いGUIを提供します。オリジナルのStyles機能ではプロンプトとネガティブプロンプトしか保存できませんが、Better StylesはサンプリングメソッドやCFGスケールなどのパラメータもスタイルとして保存することができます。さらに、スタイルに対してサムネイルを設定するが可能で、直感的にスタイルを扱うことができます。
 
 image::images/overview.png[Image - Better Styles UI]
 
@@ -14,7 +14,7 @@ Better StylesはJavaScriptベースの拡張機能です。``--data-dir``のオ�
 
 == インストール
 === ブラウザからインストール (推奨)
-Extensions タブの Install from URL からインストールすることができます。"URL for extension's git repository" の項目に https://github.com/eideehi/sd-webui-better-styles.git を入力して「Install」ボタンを押すだけです。
+Extensions タブの``Install from URL``からインストールすることができます。``URL for extension's git repository``の項目に https://github.com/eideehi/sd-webui-better-styles.git を入力して``Install``ボタンを押すだけです。
 
 image::images/install.png[Image - Install]
 
@@ -41,7 +41,8 @@ NOTE: 上記の "x.y.z" を使用したいバージョンに置き換えてく�
 | 1.0.0 - 1.0.1 | b2073781 (2023-02-16)     | a9eab236 (2023-03-24)
 | 1.1.0 - 1.1.3 | 9e1afa9e (2023-03-25)     | 1.1.0までのどこか
 | 1.2.0         | 1.1.0                     | 1.4.0
-| 1.3.0         | 1.1.1                     | ~
+| 1.3.0         | 1.1.1                     | 1.4.0
+| 1.4.0         | 1.1.1                     | ~
 |===
 
 Better Stylesが動作するWeb UIの最小と最大のバージョンは開発者が動作を確認したものであり、正確にはバージョンが前後することもあることをご承知おきください。
@@ -57,39 +58,36 @@ git checkout main
 
 == 使用方法
 === Better Stylesコンテンツの表示
-Better Stylesをインストールすると、txt2img と img2img のタブにある「Generate」ボタンの下に新しいボタン（栞の絵文字のボタン 🔖）が追加されます。このボタンをクリックするとBetter Stylesのコンテンツが表示されます。
+Better Stylesをインストールすると、``txt2img``と``img2img``のタブにある``Generate``ボタンの下に新しいボタン（栞の絵文字のボタン 🔖）が追加されます。このボタンをクリックするとBetter Stylesのコンテンツが表示されます。Web UIの起動毎にボタンを押すのが面倒な場合は <<show_by_default>> オプションを使用することでBetter Stylesが表示された状態でWeb UIが開始するように変更できます。
 
 === スタイルの保存
-「Save style」ボタンをクリックすると、スタイルを保存するためのダイアログが表示されます。以下に各項目について説明します。
+``Add style``ボタンをクリックすると、スタイルを保存するためのフォームが表示されます。基本的にはWeb UIと同じですが、フィールドに空白を設定することでその項目をスタイルの保存対象から除外することができます。また、<<exclude_default_values>> のチェックボックスを利用して、デフォルト値の設定されたフィールドを無視することも可能です。
 
-image::images/save-dialog.png[Image - Save dialog]
+image::images/style-editor.png[Image - Style editor,768]
 
-==== Style name (必須)
-保存するスタイルの名前を入力します。長い名前を付けると一覧で省略表示されてしまうので、注意してください。既存のスタイルと同じ名前を入力すると、そのスタイルを上書きできます。
+==== Better Styles独自の項目
+以降ではフォーム内に存在するBetter Styles独自の項目について説明していきます。
 
-==== Group (必須)
-スタイルが所属するグループを入力します。デフォルト値は現在選択されているグループです。
+===== Group (必須)
+スタイルが所属するグループを入力します。デフォルト値は現在選択されているグループです。``all``グループが選択されている場合は``default``グループが初期値に設定されます。
 
-==== Prompt
-スタイルとして保存するプロンプトを入力します。デフォルト値は現在プロンプトエリアに入力されている値です。プロンプトをスタイルに含めない場合、この項目を空白にしてください。
+===== Style name (必須)
+保存するスタイルの名前を入力します。長い名前を付けると一覧で省略表示されてしまうので、注意してください。
 
-==== Negative prompt
-スタイルとして保存するネガティブプロンプトを入力します。デフォルト値は現在ネガティブプロンプトエリアに入力されている値です。ネガティブプロンプトをスタイルに含めない場合、この項目を空白にしてください。
+===== Checkpoint exclusive
+スタイルをドロップダウンで選択したチェックポイント専用に設定することができます。専用となったスタイルは別のチェックポイントがロードされている場合、一覧に表示されなくなります。これらの非表示となったスタイルは``all``グループでは引き続き表示されます。
 
-==== Save these parameters as style
-チェックを入れたパラメータをスタイルとして保存します。``Display only the changed parameters``ボタンを押すことで、値が初期値から変更されているパラメーターのみ表示されるようになります。
+===== Fields with default values will be excluded [[exclude_default_values]]
+この項目にチェックが入っている場合、値が入力されているフィールドであってもそれがデフォルト値の場合、スタイルとして保存されなくなります。
 
-==== Make this style exclusive to the current checkpoint
-このスタイルを現在ロードされているモデル専用のスタイルにするかどうかを選択します。専用のスタイルにすると、別のモデルがロードされている場合、このスタイルは一覧に表示されなくなります。
-
-==== Use the current image as a thumbnail
-現在選択されている画像を、このスタイルのサムネイルにするかどうかを選択します。画像が選択されていない場合、この項目は無効になります。
+===== Thumbnail
+画像が生成されてギャラリーが有効になっている場合、サムネイルを選択することができるようになります。
 
 === スタイルの適用
-スタイルの一覧から、適用したいスタイルを選択し、``Apply style``ボタンを押すことでスタイルを適用できます。複数のスタイルを選択することもできますが、異なるグループのスタイルを同時に選択することはできません。
+スタイルの一覧から、適用したいスタイルを選択し、``Apply styles``ボタンを押すことでスタイルを適用できます。
 
 === スタイルの削除
-スタイルの一覧から、削除したいスタイルを選択し、``Delete style``ボタンを押すことでスタイルを削除できます。
+スタイルの一覧から、削除したいスタイルを選択し、``Delete styles``ボタンを押すことでスタイルを削除できます。
 
 === スタイルのリセット
 ``Reset style``ボタンを押すことで現在のスタイルを初期値に戻すことができます。
@@ -108,8 +106,8 @@ Better Stylesコンポーネントの使用言語を指定します。デフォ�
 === Hide the original Styles
 オリジナルのStylesドロップダウンと関連するボタンを非表示にするかどうかを選択します。
 
-=== Hide Better Styles by default
-Better Stylesのコンポーネントを初期状態で非表示にするかどうかを選択します。
+=== Show the Better Styles by default [[show_by_default]]
+Better Stylesのコンポーネントを初期状態で表示しておくかどうかを選択します。
 
 === Hide "Import styles.csv" button [[hide_import_styles_csv]]
 ``Import styles.csv``ボタンを非表示にするかどうかを選択します。

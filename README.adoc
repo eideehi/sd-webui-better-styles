@@ -1,126 +1,124 @@
 = Better Styles
 
-Better Styles is an extension of https://github.com/AUTOMATIC1111/stable-diffusion-webui[Stable Diffusion web UI] that improves the user interface for managing styles.
-
 English | link:docs/README-ja.adoc[日本語]
 
+Better Styles is an extension of https://github.com/AUTOMATIC1111/stable-diffusion-webui[Stable Diffusion web UI] that provides a user-friendly UI for managing styles.
+
 == Overview
-Better Styles is a GUI for managing styles that has a UI similar to Extra networks' gallery. While the original Styles feature can only save prompts and negative prompts, Better Styles can save parameters such as "Sampling method" and "CFG Scale" as styles. Additionally, by setting a thumbnail for each style like in Extra networks' UI, you can handle styles intuitively.
+Better Styles offers an improved GUI for managing styles. Unlike the original Styles feature, which only saves prompts and negative prompts, Better Styles allows you to save parameters such as sampling methods and CFG scales as styles. Additionally, it supports setting thumbnails for styles, making it intuitive to handle styles.
 
 image::docs/images/overview.png[Image - Better Styles UI]
 
-== Precautions
-Better Styles is a JavaScript-based extension. Please be aware that if JavaScript files are not loaded correctly, such as when using the `--data-dir` option, Better Styles not function properly.
+== Notes
+Better Styles is a JavaScript-based extension. If JavaScript files are not loaded correctly, such as when using the `--data-dir` option, Better Styles may not function properly.
 
 == Installation
-=== Installing from the Browser (Recommended)
-You can install it from the Install from URL in the Extensions tab. Just enter https://github.com/eideehi/sd-webui-better-styles.git in the "URL for extension's git repository" field and press the "Install" button.
+=== Install from the Browser (Recommended)
+You can install it from the Extensions tab by clicking `Install from URL` and entering https://github.com/eideehi/sd-webui-better-styles.git in the `URL for extension's git repository` field, then clicking the `Install` button.
 
 image::docs/images/install.png[Image - Install]
 
-=== Installing using Git
-You can also install it by running the following command in the directory where you installed Stable Diffusion web UI:
+=== Install Using Git
+You can also install it by running the following command in the directory where Stable Diffusion web UI is installed.
 [source,shell]
 ----
 git clone https://github.com/eideehi/sd-webui-better-styles.git extensions/sd-webui-better-styles
 ----
 
-=== Using a different version
-By following the above steps, the latest version will be installed. However, it may not work with the version of your Web UI that you are using. If Better Styles is not working properly, you may be able to solve the problem by using a different version.
+=== Using a Different Version
+When you install using the methods above, the latest version will be installed. However, it might not work with the version of Web UI you are using. If Better Styles does not work correctly, you can try using a different version.
 
-To change the version of Better Styles, you need to use git. In the **directory where you installed Better Styles** in the **extensions** directory of the Stable Diffusion web UI, run the following command.
+To change the version of Better Styles, use git in the **Better Styles installed directory** inside the **extensions** directory of Stable Diffusion web UI. Execute the following command:
 [source,shell]
 ----
 git checkout x.y.z
 ----
 
-NOTE: Replace "x.y.z" above with the version you want to use. The available versions are as follows.
+NOTE: Replace "x.y.z" with the version you want to use. The available versions are as follows:
 
 |===
-| Version       | Web UI Version (minimum) | Web UI Version (maximum)
-| 1.0.0 - 1.0.1 | b2073781 (2023-02-16)    | a9eab236 (2023-03-24)
-| 1.1.0 - 1.1.3 | 9e1afa9e (2023-03-25)    | Somewhere up to 1.1.0
-| 1.2.0         | 1.1.0                    | 1.4.0
-| 1.3.0         | 1.1.1                    | ~
+| Version   | Web UI Version (Minimum) | Web UI Version (Maximum)
+| 1.0.0 - 1.0.1 | b2073781 (2023-02-16)     | a9eab236 (2023-03-24)
+| 1.1.0 - 1.1.3 | 9e1afa9e (2023-03-25)     | 1.1.0 somewhere
+| 1.2.0         | 1.1.0                     | 1.4.0
+| 1.3.0         | 1.1.1                     | 1.4.0
+| 1.4.0         | 1.1.1                     | ~
 |===
 
-Please note that the minimum and maximum Web UI versions where Better Styles works are based on the developer's testing, and the version may vary.
+The minimum and maximum versions of Web UI in which Better Styles work are based on the developer's testing, and versions might change slightly.
 
-=== Reverting to the latest version
-Now that you have switched to a different version, clicking the "Check for updates" button will not fetch updates for Better Styles, and it will always display "Latest". To update Better Styles by reverting to the latest version, use the following git command.
+=== Reverting to the Latest Version
+If you switched to a different version, the "Check for updates" button will not fetch updates for Better Styles, and it will always show "Latest." To revert to the latest version and enable updates, use the following git command:
 [source,shell]
 ----
 git checkout main
 ----
 
-With this command, you can update Better Styles using the "Check for updates" button.
+Now you can update Better Styles using the "Check for updates" button.
 
 == Usage
-=== Displaying Better Styles content
-When you install Better Styles, a new button (an emoji of a bookmark 🔖) will be added under the "Generate" button in the txt2img and img2img tabs. Clicking this button will display the content of Better Styles.
+=== Displaying Better Styles Contents
+After installing Better Styles, a new button (bookmark emoji 🔖) will be added below the "Generate" buttons in the `txt2img` and `img2img` tabs. Click this button to display Better Styles contents. If you want Better Styles to be displayed by default when the Web UI starts, you can use the <<show_by_default>> option to make the change.
 
-=== Saving styles
-When you click the "Save style" button, a dialog box will appear for saving the style. Here's an explanation of each item:
+=== Saving Styles
+Click the `Add style` button to display a form for saving styles. It is similar to the Web UI's form, but you can exclude fields by setting them as blank. Additionally, you can use the <<exclude_default_values>> checkbox to ignore fields with default values when saving the style.
 
-image::docs/images/save-dialog.png[Image - Save dialog]
+image::docs/images/style-editor.png[Image - Style editor,768]
 
-==== Style name (required)
-Enter a name for the style you want to save. Be careful not to give it a long name, as it may be abbreviated in the list. If you enter a name that is the same as an existing style, you can overwrite that style.
+==== Unique Items in Better Styles
+In the following, we will explain the unique items in Better Styles that appear in the form.
 
-==== Group (required)
-Enter the group to which the style belongs. The default value is the currently selected group.
+===== Group (Required)
+Enter the group to which the style belongs. The default value is the currently selected group. If the "all" group is selected, the `default` group will be set as the initial value.
 
-==== Prompt
-Enter the prompt you want to save as a style. The default value is the value currently entered in the prompt area. You can leave this field blank if you don't want to include a prompt for the style.
+===== Style name (Required)
+Enter the name of the style to be saved. Be cautious about using long names as they may be truncated in the list.
 
-==== Negative prompt
-Enter the negative prompt you want to save as a style. The default value is the value currently entered in the negative prompt area. You can leave this field blank if you don't want to include a negative prompt for the style.
+===== Checkpoint exclusive
+You can set the style to be exclusive to a selected checkpoint using a dropdown. Styles marked as exclusive will not appear in the list if a different checkpoint is loaded. However, they will still be displayed in the `all` group.
 
-==== Save these parameters as style
-Save the checked parameters as a style. Press the `Display only the changed parameters` button to show only the parameters that have been changed from their default values.
+===== Fields with default values will be excluded [[exclude_default_values]]
+If this option is checked, fields with default values will not be saved as part of the style, even if they have values entered.
 
-==== Make this style exclusive to the current checkpoint
-Choose whether to make this style exclusive to the currently loaded model. If you make it an exclusive style, it will not be displayed in the list if another model is loaded.
+===== Thumbnail
+If images are generated and the gallery is enabled, you can select a thumbnail.
 
-==== Use the current image as a thumbnail
-Choose whether to use the currently selected image as the thumbnail for this style. This item will be disabled if no image is selected.
+=== Applying Styles
+From the list of styles, select the style you want to apply, and click the `Apply styles` button to apply the style.
 
-=== Applying styles
-You can apply a style by selecting it from the list of styles and clicking the `Apply style` button. You can select multiple styles, but you cannot select styles from different groups at the same time.
+=== Deleting Styles
+From the list of styles, select the style you want to delete, and click the `Delete styles` button to delete the style.
 
-=== Deleting styles
-You can delete a style by selecting it from the list of styles and clicking the `Delete style` button.
+=== Resetting Styles
+Click the `Reset style` button to reset the current style to its default values.
 
-=== Reset style
-By pressing the `Reset style` button, you can reset the current style to its default values.
-
-=== Import styles.csv
-Press the `Import styles.csv` button to import the contents of styles.csv into the `styles.csv` group. If the `styles.csv` group does not exist, it will be created. This button can be hidden using the <<hide_import_styles_csv>> option.
+=== Importing styles.csv
+Click the `Import styles.csv` button to import the contents of styles.csv into the `styles.csv` group. If the `styles.csv` group does not exist, it will be created. Additionally, you can hide this button using the <<hide_import_styles_csv>> option.
 
 == Configuration
-Better Styles creates its own config section in the Settings tab. Here's an explanation of each item:
+Better Styles creates its own configuration section in the Settings tab. Below are explanations for each item.
 
 image::docs/images/settings.png[Image - Settings]
 
 === Language of Better Styles
-Specify the language to be used for the Better Styles component. The default value is `Auto` (same as the language set in the Web UI). Currently, the `ja_JP` language is available.
+Specify the language for using the Better Styles component. The default value is `Auto`, which means it uses the language set in the Web UI. Currently, the language `ja_JP` is available.
 
 === Hide the original Styles
 Choose whether to hide the original Styles dropdown and related buttons.
 
-=== Hide Better Styles by default
-Choose whether to hide the Better Styles component by default.
+=== Show the Better Styles by default [[show_by_default]]
+Select whether to show the Better Styles component by default when starting the Web UI.
 
 === Hide "Import styles.csv" button [[hide_import_styles_csv]]
 Choose whether to hide the `Import styles.csv` button.
 
 === Default Click skip
-Set the initial value of `Click skip` used when resetting the style with the `Reset style` button.
+Set the initial value for `Click skip` when resetting styles using the `Reset style` button.
 
 === Default Eta noise seed delta
-Set the initial value of `Eta noise seed delta` used when resetting the style with the `Reset style` button.
+Set the initial value for `Eta noise seed delta` when resetting styles using the `Reset style` button.
 
-=== License
-Better Styles is developed and released under the MIT license. For details on the license, please refer to the following link:
+== License
+Better Styles is developed and released under the MIT license. For details about the license, refer to the following link:
 
-link:LICENSE[MIT License]
+link:./LICENSE[MIT License]
