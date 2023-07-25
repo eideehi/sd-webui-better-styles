@@ -1,4 +1,4 @@
-export type { Style, StyleGroup } from "./style";
-export { applyStyle } from "./applyStyle";
-export { getCurrentStyle } from "./getCurrentStyle";
+export type * from "./style";
+export * from "./applyStyle";
+export * from "./getCurrentStyle";
 export * from "./accesor";
