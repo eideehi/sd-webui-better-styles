@@ -281,15 +281,15 @@ def remove_id(id_map: IdMap, key: str) -> bool:
 
 def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
     @app.get("/better-styles-api/v1/get-localization")
-    async def get_localization(request: Request):
+    async def get_localization_api(request: Request):
         return JSONResponse(content=localization_dict)
 
     @app.get("/better-styles-api/v1/images-dir")
-    async def images_dir(request: Request):
+    async def images_dir_api(request: Request):
         return JSONResponse(content={"imagesDir": IMAGES_DIR.relative_to(WEBUI_ROOT).as_posix()})
 
     @app.get("/better-styles-api/v1/all-style")
-    async def all_style(request: Request):
+    async def all_style_api(request: Request):
         if STYLES_JSON.is_file():
             return FileResponse(path=STYLES_JSON, media_type="application/json")
         else:
@@ -362,7 +362,7 @@ def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
         return JSONResponse(content=json.loads(json_data))
 
     @app.get("/better-styles-api/v1/import-styles-csv")
-    async def import_styles_csv(request: Request):
+    async def import_styles_csv_api(request: Request):
         file_data = load_styles_json()
 
         csv_file = WEBUI_ROOT.joinpath("styles.csv")
@@ -399,7 +399,7 @@ def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
         return JSONResponse(content=json.loads(json_data))
 
     @app.get("/better-styles-api/v1/get-default-style/{tab_name}")
-    async def get_default_style(tab_name: str):
+    async def get_default_style_api(tab_name: str):
         if tab_name != "txt2img" and tab_name != "img2img":
             return JSONResponse(content={})
 
@@ -425,7 +425,7 @@ def on_app_started(demo: Optional[Blocks], app: FastAPI) -> None:
         return JSONResponse(content=style)
 
     @app.post("/better-styles-api/v1/upload-thumbnail")
-    async def upload_thumbnail(group: str = Form(), style_name: str = Form(), file: UploadFile = File()):
+    async def upload_thumbnail_api(group: str = Form(), style_name: str = Form(), file: UploadFile = File()):
         path = get_image_path(group, style_name)
         data = await file.read()
         with Image.open(io.BytesIO(data)) as image:
