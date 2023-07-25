@@ -143,12 +143,12 @@
   <div class="form">
     <Group bind:group={style.group} />
     <TextField label={t.StyleName()} bind:value={styleValue.name} required={true} />
-    <div class="prompt">
-      <TextArea bind:value={styleValue.prompt} label={t.Prompt()} options={{ rows: 4 }} />
-    </div>
     {#if hasElement("#setting_sd_model_checkpoint")}
       <CheckpointExclusive bind:checkpoint={styleValue.checkpoint} />
     {/if}
+    <div class="prompt">
+      <TextArea bind:value={styleValue.prompt} label={t.Prompt()} options={{ rows: 4 }} />
+    </div>
     <div class="negative-prompt">
       <TextArea
         bind:value={styleValue.negativePrompt}
