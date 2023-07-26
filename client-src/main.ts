@@ -1,7 +1,7 @@
 import "./styles/main.css";
 import { getAllStyles, getImagesDir, getLocalization } from "#/api";
 import { imagesDir, styleGroups, stylesUpdate } from "#/store";
-import { getElement, hidden } from "#/util/dom";
+import { getElement, hasElement, hidden } from "#/util/dom";
 import { getBooleanOption, getCurrentTabName } from "#/util/webui";
 import BetterStyles from "@/BetterStyles.svelte";
 import Toast from "%/Toast.svelte";
@@ -25,7 +25,9 @@ onUiLoaded(() => {
     styleGroups.set(response);
   });
 
-  new Toast({ target: gradioApp() });
+  if (!hasElement("#eidee-net-toast-container")) {
+    new Toast({ target: gradioApp() });
+  }
 });
 
 onUiTabChange(() => {
