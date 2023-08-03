@@ -90,7 +90,7 @@
           ...loadedStyles,
           ...loadStyles(activeStyles, page * chunkSize, chunkSize),
         ]);
-      }, 10000);
+      }, 150);
     });
   });
 
