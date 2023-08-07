@@ -1,3 +1,8 @@
+# v1.4.1
+## Fix
+- Fixed an issue where loading more than 32 styles would take a significant amount of time.
+- Fixed the display position of the `Checkpoint exclusive` field in the style editing form.
+
 # v1.4.0
 ## Change
 - Redesigned the overall UI. **([#8])**
