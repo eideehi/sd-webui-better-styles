@@ -32,7 +32,7 @@
     editData,
   });
 
-  const toolButton = getElement(`#${tabName}_style_apply`);
+  const toolButton = getElement(`#${tabName}_clear_prompt`);
   if (toolButton != null && toolButton.parentElement != null) {
     new BetterStylesToggleButton({
       target: toolButton.parentElement,
