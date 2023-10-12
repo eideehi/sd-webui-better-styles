@@ -54,8 +54,6 @@ function initializeBetterStyles(tabName: ExtensionAvailableTab): void {
 
 function hiddenOriginalStylesComponents(tabName: ExtensionAvailableTab) {
   getBooleanOption("better_styles_hide_original_styles", (value) => {
-    hidden(getElement(`#${tabName}_style_apply`), value);
-    hidden(getElement(`#${tabName}_style_create`), value);
     hidden(getElement(`#${tabName}_styles_row`), value);
   });
 }
