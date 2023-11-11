@@ -4,6 +4,7 @@
   import { styleGroups } from "#/store";
   import type { Style, StyleGroup } from "#/styles";
   import { hasElement } from "#/util/dom";
+  import { hasProperty } from "#/util/object";
   import * as t from "~/messages";
   import { showToast } from "%/Toast.svelte";
   import {
@@ -80,6 +81,7 @@
     return api.getDefaultStyle(tabName).then((defaultValues) => {
       let key: keyof Style;
       for (key in defaultValues) {
+        if (!hasProperty(defaultValues, key)) continue;
         if (defaultValues[key] !== style[key]) continue;
         delete style[key];
       }

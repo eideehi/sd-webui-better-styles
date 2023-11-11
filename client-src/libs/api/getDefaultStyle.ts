@@ -1,4 +1,5 @@
 import type { Style } from "#/styles";
+import { propertyTypeEquals } from "#/util/object";
 
 export type DefaultStyle = Omit<Style, "name" | "image" | "checkpoint">;
 
@@ -16,20 +17,20 @@ function parseResponse(json: unknown): DefaultStyle {
 }
 
 function isDefaultStyle(obj: object): obj is DefaultStyle {
-  if (typeof obj["prompt"] !== "string") return false;
-  if (typeof obj["negativePrompt"] !== "string") return false;
-  if (typeof obj["samplingMethod"] !== "string") return false;
-  if (typeof obj["samplingSteps"] !== "number") return false;
-  if (typeof obj["cfgScale"] !== "number") return false;
-  if (typeof obj["seed"] !== "number") return false;
-  if (typeof obj["restoreFaces"] !== "boolean") return false;
-  if (typeof obj["tiling"] !== "boolean") return false;
-  if (typeof obj["hiresFix"] !== "boolean") return false;
-  if (typeof obj["upscaler"] !== "string") return false;
-  if (typeof obj["hiresSteps"] !== "number") return false;
-  if (typeof obj["denoisingStrength"] !== "number") return false;
-  if (typeof obj["upscaleBy"] !== "number") return false;
-  if (typeof obj["clipSkip"] !== "number") return false;
-  if (typeof obj["etaNoiseSeedDelta"] !== "number") return false;
+  if (!propertyTypeEquals(obj, "prompt", "string")) return false;
+  if (!propertyTypeEquals(obj, "negativePrompt", "string")) return false;
+  if (!propertyTypeEquals(obj, "samplingMethod", "string")) return false;
+  if (!propertyTypeEquals(obj, "samplingSteps", "number")) return false;
+  if (!propertyTypeEquals(obj, "cfgScale", "number")) return false;
+  if (!propertyTypeEquals(obj, "seed", "number")) return false;
+  if (!propertyTypeEquals(obj, "restoreFaces", "boolean")) return false;
+  if (!propertyTypeEquals(obj, "tiling", "boolean")) return false;
+  if (!propertyTypeEquals(obj, "hiresFix", "boolean")) return false;
+  if (!propertyTypeEquals(obj, "upscaler", "string")) return false;
+  if (!propertyTypeEquals(obj, "hiresSteps", "number")) return false;
+  if (!propertyTypeEquals(obj, "denoisingStrength", "number")) return false;
+  if (!propertyTypeEquals(obj, "upscaleBy", "number")) return false;
+  if (!propertyTypeEquals(obj, "clipSkip", "number")) return false;
+  if (!propertyTypeEquals(obj, "etaNoiseSeedDelta", "number")) return false;
   return true;
 }

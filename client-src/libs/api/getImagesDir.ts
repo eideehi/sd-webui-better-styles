@@ -1,3 +1,5 @@
+import { hasProperty } from "#/util/object";
+
 export function getImagesDir(): Promise<string> {
   return fetch(`/better-styles-api/v1/images-dir?ts=${new Date().getTime()}`)
     .then((response) => response.json())
@@ -6,5 +8,6 @@ export function getImagesDir(): Promise<string> {
 
 function parseImagesDir(json: unknown): string {
   if (json == null || typeof json !== "object") return "";
-  return typeof json["imagesDir"] !== "string" ? "" : json["imagesDir"];
+  if (!hasProperty(json, "imagesDir")) return "";
+  return typeof json["imagesDir"] === "string" ? json["imagesDir"] : "";
 }

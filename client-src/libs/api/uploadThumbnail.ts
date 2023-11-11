@@ -1,3 +1,5 @@
+import { hasProperty } from "#/util/object";
+
 export function uploadThumbnail(
   group: string,
   styleName: string,
@@ -18,5 +20,6 @@ export function uploadThumbnail(
 
 function parseResponse(json: unknown): Nullable<string> {
   if (json == null || typeof json !== "object") return null;
-  return typeof json["path"] === "string" ? json["path"] : null;
+  if (!hasProperty(json, "path") || typeof json["path"] !== "string") return null;
+  return json["path"];
 }

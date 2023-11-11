@@ -1,4 +1,5 @@
 import type { StyleGroup } from "#/styles";
+import { hasProperty } from "#/util/object";
 
 export function parseStyleGroups(json: unknown): StyleGroup[] {
   if (!Array.isArray(json)) return [];
@@ -7,6 +8,7 @@ export function parseStyleGroups(json: unknown): StyleGroup[] {
 
 function isStyleGroup(obj: unknown): obj is StyleGroup {
   if (obj == null || typeof obj !== "object") return false;
-  if (typeof obj["name"] !== "string") return false;
-  return Array.isArray(obj["styles"]);
+  if (!hasProperty(obj, "name")) return false;
+  if (!hasProperty(obj, "styles")) return false;
+  return typeof obj["name"] === "string" && Array.isArray(obj["styles"]);
 }
