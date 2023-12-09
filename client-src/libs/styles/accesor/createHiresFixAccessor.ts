@@ -1,6 +1,6 @@
 import type { ValueAccessor } from ".";
-import { createCheckboxAccessor } from "./internal/createCheckboxAccessor";
+import { createAccordionAccessor } from "./internal/createAccordionAccessor";
 
 export function createHiresFixAccessor(tabName: ExtensionAvailableTab): ValueAccessor<boolean> {
-  return createCheckboxAccessor(`#${tabName}_enable_hr input[type='checkbox']`);
+  return createAccordionAccessor(`#${tabName}_hr`);
 }
