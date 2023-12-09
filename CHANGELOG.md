@@ -1,3 +1,10 @@
+# v1.4.2
+## Fix
+- Fix an issue where the show/hide button for Better Styles was not added due to changes in Web UI 1.6.0.
+## Change
+- Change due to the "Hires. fix" option becoming an accordion.
+- Ended handling of "Tiling" and "Restore faces" in Better Styles, as they have been moved to the "Settings" tab.
+
 # v1.4.1
 ## Fix
 - Fixed an issue where loading more than 32 styles would take a significant amount of time.

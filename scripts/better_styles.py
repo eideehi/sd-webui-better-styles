@@ -54,7 +54,7 @@ class MoveStyleRequest(BaseModel):
     style: Style
 
 
-VERSION = "1.4.1"
+VERSION = "1.4.2"
 SETTINGS_SECTION = ("better_styles", "Better Styles")
 WEBUI_ROOT = Path().absolute()
 EXTENSION_ROOT = scripts.basedir()
