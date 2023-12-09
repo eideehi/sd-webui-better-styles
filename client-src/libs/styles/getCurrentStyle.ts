@@ -9,11 +9,9 @@ import {
   createImageGetter,
   createNegativePromptAccessor,
   createPromptAccessor,
-  createRestoreFacesAccessor,
   createSamplingMethodAccessor,
   createSamplingStepsAccessor,
   createSeedAccessor,
-  createTilingAccessor,
   createUpscaleByAccessor,
   createUpscalerAccessor,
 } from ".";
@@ -27,8 +25,6 @@ export function getCurrentStyle(tabName: ExtensionAvailableTab): Style {
   createSamplingStepsAccessor(tabName).with((value) => (style.samplingSteps = value));
   createCfgScaleAccessor(tabName).with((value) => (style.cfgScale = value));
   createSeedAccessor(tabName).with((value) => (style.seed = value));
-  createRestoreFacesAccessor(tabName).with((value) => (style.restoreFaces = value));
-  createTilingAccessor(tabName).with((value) => (style.tiling = value));
   createHiresFixAccessor(tabName).with((value) => (style.hiresFix = value));
   createUpscalerAccessor(tabName).with((value) => (style.upscaler = value));
   createHiresStepsAccessor(tabName).with((value) => (style.hiresSteps = value));

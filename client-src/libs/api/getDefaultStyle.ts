@@ -23,8 +23,6 @@ function isDefaultStyle(obj: object): obj is DefaultStyle {
   if (!propertyTypeEquals(obj, "samplingSteps", "number")) return false;
   if (!propertyTypeEquals(obj, "cfgScale", "number")) return false;
   if (!propertyTypeEquals(obj, "seed", "number")) return false;
-  if (!propertyTypeEquals(obj, "restoreFaces", "boolean")) return false;
-  if (!propertyTypeEquals(obj, "tiling", "boolean")) return false;
   if (!propertyTypeEquals(obj, "hiresFix", "boolean")) return false;
   if (!propertyTypeEquals(obj, "upscaler", "string")) return false;
   if (!propertyTypeEquals(obj, "hiresSteps", "number")) return false;

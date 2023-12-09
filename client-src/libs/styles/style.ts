@@ -8,8 +8,6 @@ export interface Style {
   samplingSteps?: number;
   cfgScale?: number;
   seed?: number;
-  restoreFaces?: boolean;
-  tiling?: boolean;
   hiresFix?: boolean;
   upscaler?: string;
   hiresSteps?: number;

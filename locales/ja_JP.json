@@ -51,7 +51,6 @@
   "better-styles.reset-style.confirm": "はい、スタイルをリセットします",
   "better-styles.reset-style.dialog": "現在変更されているスタイルをすべて初期値に戻しますが本当によろしいですか？",
   "better-styles.reset-style": "スタイルをリセット",
-  "better-styles.restore-faces": null,
   "better-styles.sampling-method": null,
   "better-styles.sampling-steps": null,
   "better-styles.save-as-new-style": "この内容を新規スタイルとして追加する",
@@ -69,7 +68,6 @@
   "better-styles.thumbnail-not-set": "このスタイルにはサムネイルが設定されていません。",
   "better-styles.thumbnail-save-error": "サムネイルの保存に失敗しました",
   "better-styles.thumbnail": "サムネイル",
-  "better-styles.tiling": null,
   "better-styles.unset-thumbnail": "サムネイルの設定を解除する",
   "better-styles.upscale-by": null,
   "better-styles.upscaler": null

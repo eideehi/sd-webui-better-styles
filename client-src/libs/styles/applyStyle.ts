@@ -6,8 +6,6 @@ import {
   createSamplingStepsAccessor,
   createCfgScaleAccessor,
   createSeedAccessor,
-  createRestoreFacesAccessor,
-  createTilingAccessor,
   createHiresFixAccessor,
   createUpscalerAccessor,
   createHiresStepsAccessor,
@@ -50,14 +48,6 @@ export function applyStyle(tabName: ExtensionAvailableTab, style: Style, overwri
   if (style.seed != null) {
     const accessor = createSeedAccessor(tabName);
     accessor.set(style.seed);
-  }
-  if (style.restoreFaces != null) {
-    const accessor = createRestoreFacesAccessor(tabName);
-    accessor.set(style.restoreFaces);
-  }
-  if (style.tiling != null) {
-    const accessor = createTilingAccessor(tabName);
-    accessor.set(style.tiling);
   }
   if (style.hiresFix != null) {
     const accessor = createHiresFixAccessor(tabName);

@@ -23,8 +23,6 @@
       { label: t.SamplingSteps(), value: style.samplingSteps?.toString() },
       { label: t.CfgScale(), value: style.cfgScale?.toString() },
       { label: t.Seed(), value: style.seed?.toString() },
-      { label: t.RestoreFaces(), value: style.restoreFaces ? t.Enabled() : undefined },
-      { label: t.Tiling(), value: style.tiling ? t.Enabled() : undefined },
       { label: t.HiresFix(), value: style.hiresFix ? t.Enabled() : undefined },
       { label: t.Upscaler(), value: style.upscaler },
       { label: t.HiresSteps(), value: style.hiresSteps?.toString() },

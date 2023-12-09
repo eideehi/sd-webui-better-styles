@@ -95,7 +95,6 @@ const ResetStyleDialog = Message(
   "better-styles.reset-style.dialog",
   "Are you certain you wish to revert all the currently modified styles to their default values?"
 );
-const RestoreFaces = Message("better-styles.restore-faces", "Restore faces");
 const SamplingMethod = Message("better-styles.sampling-method", "Sampling method");
 const SamplingSteps = Message("better-styles.sampling-steps", "Sampling steps");
 const SaveAsNewStyle = Message(
@@ -141,7 +140,6 @@ const ThumbnailSaveError = Message(
   "better-styles.thumbnail-save-error",
   "The thumbnail could not be saved"
 );
-const Tiling = Message("better-styles.tiling", "Tiling");
 const UnsetThumbnail = Message("better-styles.unset-thumbnail", "Unset this thumbnail");
 const UpscaleBy = Message("better-styles.upscale-by", "Upscale by");
 const Upscaler = Message("better-styles.upscaler", "Upscaler");
@@ -192,7 +190,6 @@ export {
   ResetStyleCancel,
   ResetStyleConfirm,
   ResetStyleDialog,
-  RestoreFaces,
   SamplingMethod,
   SamplingSteps,
   SaveAsNewStyle,
@@ -211,7 +208,6 @@ export {
   ThumbnailEmpty,
   ThumbnailNotSet,
   ThumbnailSaveError,
-  Tiling,
   UnsetThumbnail,
   UpscaleBy,
   Upscaler,

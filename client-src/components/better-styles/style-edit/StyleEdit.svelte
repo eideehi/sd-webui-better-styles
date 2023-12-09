@@ -169,8 +169,6 @@
       srcElementId="{tabName}_steps"
     />
     <div class="checkbox-container">
-      <Checkbox bind:value={styleValue.restoreFaces} label={t.RestoreFaces()} />
-      <Checkbox bind:value={styleValue.tiling} label={t.Tiling()} />
       <Checkbox bind:value={styleValue.hiresFix} label={t.HiresFix()} />
     </div>
     <div class="hires-field-container" class:active={styleValue.hiresFix}>
